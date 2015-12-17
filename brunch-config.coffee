@@ -6,4 +6,6 @@ module.exports = config:
         stylesheets: joinTo: 'css/app.css'
         templates: joinTo: 'js/app.js'
     server:
+        path: './server/httpServer.js'
         run: yes
+        port: 3333

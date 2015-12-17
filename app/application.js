@@ -2,16 +2,20 @@
 
 var App = {
 
-	items: ['cordons bleus', 'Vin blanc', 'test', 'Poisson'],
+	init: function(gameContainerElementId){
 
-	init: function init() {
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
 
-		var template = require('views/list');
-		var html = template({ items: App.items });
+		function preload() {
+		}
 
-		$('body').append(html);
+		function create() {
+		}
 
-	}
+		function update() {
+		}
+
+    }
 };
 
 module.exports = App;
