@@ -1,0 +1,11 @@
+{
+  "name": "tower-defense",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "brunch": "^1.8.5",
+    "jade-brunch": "^1.8.1",
+    "javascript-brunch": "^1.8.0",
+    "sass-brunch": "^1.9.1"
+  }
+}
