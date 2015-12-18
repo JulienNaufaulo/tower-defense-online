@@ -11,9 +11,14 @@ body {
 h1 {
   font-size: 2em;
   margin: 0.5em 0 1em;
-
-  & > small {
-    color: gray;
-    font-size: 70%;
-  }
+}
+section{
+  width: 800px;
+  height:600px;
+  margin:0 auto;
+}
+#game {
+  width:800px;
+  height:600px;
+  border:solid 1px #000;
 }

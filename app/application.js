@@ -4,17 +4,10 @@ var App = {
 
 	init: function(gameContainerElementId){
 
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+        game.state.add('boot', require('./states/boot'));
 
-		function preload() {
-		}
-
-		function create() {
-		}
-
-		function update() {
-		}
-
+        game.state.start('boot');
     }
 };
 
