@@ -12,20 +12,16 @@ Boot.prototype = {
         this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
 
         this.showLoadingText();
-        //this.loadAssets();
+        this.loadAssets();
     },
 
     onLoadComplete: function(){
-        //this.game.state.start('login');
-        console.log("Chargement terminé !")
+        this.game.state.start('menu');
     },
 
     loadAssets: function(){
-        this.game.load.tilemap('map', 'gameAssets/map/map.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('tiles', 'gameAssets/map/tile1.png');
-        this.game.load.image('walkables', 'gameAssets/map/walkable.png');
-
-        this.load.atlasJSONArray('sprites', 'gameAssets/sprites/sprites.png', 'gameAssets/sprites/sprites.json');
+        this.game.load.image('bgmenu', 'images/bg-menu.jpg');
+        this.game.load.spritesheet('btnPlay', 'images/btn_play.jpg', 213, 52);
     },
 
     showLoadingText: function(){
