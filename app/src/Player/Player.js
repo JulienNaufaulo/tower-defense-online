@@ -1,6 +1,7 @@
 'use strict';
 
-function Player(color){
+function Player(id, color){
+	this._id = id;
     this._color = color;
 }
 

@@ -9,10 +9,10 @@ function ListPlayers(){
 	};
 }
 
-ListPlayers.prototype.addPlayer = function() {
+ListPlayers.prototype.addPlayer = function(id) {
 	for(var color in this._players) {
 		if( this._players[color] == null ) {
-			var player = new Player(color);
+			var player = new Player(id, color);
 			this._players[color] = player;
     		return player;
 		}
@@ -40,6 +40,25 @@ ListPlayers.prototype.maximumNumberOfPlayers = function() {
         if (this._players.hasOwnProperty(color)) size++;
     }
     return size;
+};
+
+ListPlayers.prototype.removePlayer = function(playerDisconnected) {
+	for (var color in this._players) 
+    {
+        if ( this._players[color] != null && this._players[color]._id == playerDisconnected._id ) {
+        	this._players[color] = null;
+        	break;
+        }
+    }
+};
+
+ListPlayers.prototype.getDisconnectedPlayer = function(id) {
+	for (var color in this._players) 
+    {
+        if ( this._players[color] != null && this._players[color]._id == id ) {
+        	return this._players[color];
+        }
+    }
 };
 
 module.exports = ListPlayers;
