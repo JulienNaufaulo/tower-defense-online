@@ -2,15 +2,14 @@
 
 var NetworkManager = require('utils/NetworkManager');
 var Player = require('src/Player/Player');
-var mainPlayer = new Player("Bleu");
 
 function Room(){}
 
 Room.prototype = {
 
     create: function() {
-        var loadingText = "En attente d'un autre joueur...";
-        var text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, loadingText);
+        var loadingText = "En attente des autres joueurs...";
+        var text = this.game.add.text(this.game.world.centerX, 100, loadingText);
 
         //  Centers the text
         text.anchor.set(0.5);
@@ -22,8 +21,9 @@ Room.prototype = {
         text.fontSize = 25;
         text.fill = '#000000';
 
-        NetworkManager.connect(mainPlayer);
-        console.log("coucou "+mainPlayer.toString());
+        NetworkManager.connect(this.game);
+
+        console.log();
     }
 
 };

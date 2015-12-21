@@ -4,7 +4,7 @@ function Player(color){
     this._color = color;
 }
 
-Player.prototype.toString = function () {
+Player.prototype.toString = function() {
     return "Joueur "+this._color;
 };
 
