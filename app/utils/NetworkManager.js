@@ -50,7 +50,7 @@ function onReceivePlayerId(player) {
 
 function onReceiveListPlayers(list) {
     for(var i=0, count=list.length; i < count; i++) {
-        $('#content').append("<p><span>"+timeUtils.getTime()+"</span><span class=\"txt-"+list[i]._color+"\">Joueur "+list[i]._color+" s'est connecté.</span></p>");
+        $('#content').append("<p><span>"+timeUtils.getTime()+"</span><span class=\"txt-"+list[i]._color+"\">Joueur "+list[i]._color+" est déjà connecté.</span></p>");
     }
 }
 
