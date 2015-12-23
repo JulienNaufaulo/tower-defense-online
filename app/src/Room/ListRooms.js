@@ -48,4 +48,14 @@ ListRooms.prototype.getRoom = function(idRoom) {
 	return this._rooms[idRoom];	
 };
 
+ListRooms.prototype.removeEmptyRooms = function() {
+	var newRooms = [];
+	for(var i=0, count=this._rooms.length; i < count; i++) {
+		if(!this._rooms[i].isEmpty()) {
+			newRooms.push(this._rooms[i]);
+		}
+	}
+	return newRooms;
+};
+
 module.exports = ListRooms;

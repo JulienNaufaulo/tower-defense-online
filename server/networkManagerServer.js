@@ -101,7 +101,7 @@ function NetworkManagerServer(client, rooms){
 			client.broadcast.in(room._name).emit('SERVER_OTHER_PLAYER_DISCONNECTED', player);
 			room.removePlayer(client);
 			client.emit('GO_TO_MENU');
-			console.log(playerDisconnected.toString()+" s'est déconnecté");
+			console.log(player.toString()+" s'est déconnecté");
 		}	
 	}
 };

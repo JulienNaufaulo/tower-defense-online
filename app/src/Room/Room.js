@@ -71,6 +71,10 @@ Room.prototype.getPlayerById = function(client) {
     }
 };
 
+Room.prototype.isEmpty = function() {
+	return this.numberOfConnectedPlayers() == 0;
+};
+
 Room.prototype.isFull = function() {
 	return this.numberOfConnectedPlayers() == this.maximumNumberOfPlayers();
 };

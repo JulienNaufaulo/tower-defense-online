@@ -36,11 +36,12 @@ function onConnectedToServer() {
 }
 
 function onDisconnectedToServer() {
-    
+    clearInterval(interval);
 }
 
 function onReceivePlayerId(data) {
-    $('#chat > h2').append("Room "+(data.room._id+1));
+    $('#chat > h2').empty().append("Room "+(data.room._id+1));
+    $('#content').empty();
 
 	var text = phaser.add.text(phaser.world.centerX, phaser.world.centerY-50, "Vous êtes");
     text.anchor.set(0.5);
@@ -109,6 +110,7 @@ function onReceiveGoToPlay() {
 }
 
 function onReceiveGoToMenu() {
+    clearInterval(interval);
     serverSocket.disconnect(true);
     $('#chat').fadeOut( "slow" );
     phaser.state.start('menu');
