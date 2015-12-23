@@ -91,9 +91,7 @@ function onReceiveClickToStart() {
 
         if(count == 0) {
             clearInterval(interval);
-            if(!readyToStart) {
-                serverSocket.emit('CLIENT_IS_NOT_READY');
-            }
+            serverSocket.emit('END_OF_READY_TIME');
         }
         count--;
     },1000);

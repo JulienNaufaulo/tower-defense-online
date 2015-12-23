@@ -40,7 +40,8 @@ ListRooms.prototype.getRoomOfPlayer = function(client) {
 				}	
 			}
 		}
-	}	
+	}
+	return false;	
 };
 
 ListRooms.prototype.getRoom = function(idRoom) {
