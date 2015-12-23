@@ -20,7 +20,7 @@ ListRooms.prototype.addPlayer = function(client) {
 	} else {
 		var idRoom = 0;
 		for(var count=this._rooms.length; idRoom < count; idRoom++) {
-			if(this._rooms[idRoom].numberOfConnectedPlayers() < this._rooms[idRoom].maximumNumberOfPlayers()) {
+			if(!this._rooms[idRoom].isFull()) {
 				this._rooms[idRoom].addPlayer(client, idRoom);
 				return;
 			}

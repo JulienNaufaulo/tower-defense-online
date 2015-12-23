@@ -2,7 +2,7 @@ $default-bg: white;
 $default-text: black;
 
 body {
-  font-family: Georgia, serif;
+  font-family: Arial, sans-serif;
   font-size: 16px;
   background: $default-bg;
   color: $default-text;
@@ -13,12 +13,11 @@ h1 {
   margin: 0.5em 0 1em;
 }
 section{
-  width: 1240px;
+  width: 1110px;
   margin:0 auto;
 }
 #app{
-  display: table;
-  width: 1240px;
+  width: 1110px;
 }
 #game {
   display: inline-block;
@@ -28,7 +27,8 @@ section{
   vertical-align: top;
 }
 #chat {
-    display: inline-block;
+    display:none;
+    /*display: inline-block;*/
     width:300px;
     height:600px;
     border:solid 1px #000;
@@ -43,9 +43,21 @@ section{
 
     #content{
         background:#eee;
-        height: 540px;
+        height: 500px;
         padding:5px 0;
         overflow:auto;
+    }
+
+    #inputchat {
+      display:block;
+      width:290px;
+      background:#fff;
+      padding:5px;
+      height:30px;
+      border-top:solid 1px #000;
+      border-left:0;
+      border-right:0;
+      border-bottom:0;
     }
 
     p{

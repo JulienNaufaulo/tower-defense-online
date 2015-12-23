@@ -11,6 +11,11 @@ Room.prototype = {
         this.displayLoadingText();
         NetworkManager.connect(this.game);
 
+        window.setInterval(function() {
+          var elem = document.getElementById('content');
+          elem.scrollTop = elem.scrollHeight;
+        }, 500);
+
     },
     displayLoadingText: function() {
         var loadingText = "En attente des autres joueurs...";

@@ -2,8 +2,9 @@
 
 var Player = require('../Player/Player');
 
-function Room(number){
-	this._name = "room"+number;
+function Room(id){
+	this._id = id;
+	this._name = "room"+id;
 	this._players = {
 		"Bleu" : null,
 		"Rouge" : null
@@ -68,6 +69,30 @@ Room.prototype.getPlayerById = function(client) {
         	return this._players[color];
         }
     }
+};
+
+Room.prototype.isFull = function() {
+	return this.numberOfConnectedPlayers() == this.maximumNumberOfPlayers();
+};
+
+Room.prototype.isReady = function() {
+	var countReadyPlayers = 0;
+	for (var color in this._players) 
+    {
+        if ( this._players[color] != null && this._players[color]._ready == true ) {
+        	countReadyPlayers++
+        }
+    }
+
+    return countReadyPlayers == this.maximumNumberOfPlayers();
+};
+
+Room.prototype.resetReady = function() {
+	for(var color in this._players) {
+		if( this._players[color] != null ) {
+			this._players[color]._ready = false;
+		}
+	}
 };
 
 module.exports = Room;
