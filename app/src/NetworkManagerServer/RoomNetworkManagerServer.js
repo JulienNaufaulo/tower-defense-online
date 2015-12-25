@@ -1,6 +1,6 @@
 'use strict';
 
-function NetworkManagerServer(client, rooms){
+function RoomNetworkManagerServer(client, rooms){
 
 	// Action quand le client connecté veut récupérer la liste des joueurs connectés dans sa room
     client.on('CLIENT_REQUEST_LIST_PLAYERS', onRequestListPlayers);
@@ -50,11 +50,11 @@ function NetworkManagerServer(client, rooms){
 	};
 
 	function onDisconnected() {
-		if (client.id != undefined){
+		// if (client.id != undefined){
 		    // On récupère la room du client
 			var room = rooms.getRoomOfPlayer(client);
 
-			if(room) {
+			// if(room) {
 				// On récupère les infos sur le joueur
 				var playerDisconnected = room.getPlayerById(client);
 
@@ -68,9 +68,9 @@ function NetworkManagerServer(client, rooms){
 				room.resetReady();
 
 				console.log(playerDisconnected.toString()+" s'est déconnecté");
-			}
+			// }
 			
-		}
+		// }
 	};
 
 	function onRequestClientReady() {
@@ -106,4 +106,4 @@ function NetworkManagerServer(client, rooms){
 	}
 };
 
-module.exports = NetworkManagerServer;
+module.exports = RoomNetworkManagerServer;

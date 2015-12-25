@@ -4,17 +4,27 @@ var Player = require('../Player/Player');
 
 function Room(id){
 	this._id = id;
-	this._name = "room"+id;
+	this._name = this.generateName();
 	this._players = {
 		"Bleu" : null,
 		"Rouge" : null
 	};
 }
 
-Room.prototype.addPlayer = function(client, idRoom) {
+Room.prototype.generateName = function() {
+	var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 10; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+};
+
+Room.prototype.addPlayer = function(client) {
 	for(var color in this._players) {
 		if( this._players[color] == null ) {
-			var player = new Player(client.id, color, idRoom);
+			var player = new Player(client.id, color, this._id);
 			client.join(this._name);
 			this._players[color] = player;
 			return;

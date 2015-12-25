@@ -1,20 +1,21 @@
 'use strict';
 
-var NetworkManager = require('utils/NetworkManager');
+var NetworkManagerClient = require('../src/NetworkManagerClient/NetworkManagerClient');
+var Chat = require('../src/Chat/Chat');
 
 function Room(){}
 
 Room.prototype = {
 
     create: function() {
+        // Initialisation du chat
+        var chat = new Chat("#chat", "content");
 
+        // Création de l'objet qui va gérer la communication avec le serveur
+        var networkManagerClient = new NetworkManagerClient(this.game, chat);
+
+        // Affichage du texte de chargement
         this.displayLoadingText();
-        NetworkManager.connect(this.game);
-
-        window.setInterval(function() {
-          var elem = document.getElementById('content');
-          elem.scrollTop = elem.scrollHeight;
-        }, 500);
 
     },
     displayLoadingText: function() {

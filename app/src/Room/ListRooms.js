@@ -8,7 +8,7 @@ function ListRooms(){
 
 ListRooms.prototype.addPlayer = function(client) {
 	if(this._rooms.length == 0) {
-		var idRoom = 0;
+		var idRoom = 1;
 		var room = new Room(idRoom);
 
 		// On inscrit le client dans cette room
@@ -18,13 +18,20 @@ ListRooms.prototype.addPlayer = function(client) {
 		this._rooms.push(room);
 
 	} else {
-		var idRoom = 0;
-		for(var count=this._rooms.length; idRoom < count; idRoom++) {
-			if(!this._rooms[idRoom].isFull()) {
-				this._rooms[idRoom].addPlayer(client, idRoom);
+		
+		// On supprime les rooms vides
+		this._rooms = this.removeEmptyRooms();
+
+		// On assigne le joueur à une room de libre
+		var start = 0;
+		for(var count=this._rooms.length; start < count; start++) {
+			if(!this._rooms[start].isFull()) {
+				var idRoom = start+1;
+				this._rooms[start].addPlayer(client, idRoom);
 				return;
 			}
 		}
+		var idRoom = start+1;
 		var room = new Room(idRoom);
 		room.addPlayer(client, idRoom);
 		this._rooms.push(room);
@@ -42,10 +49,6 @@ ListRooms.prototype.getRoomOfPlayer = function(client) {
 		}
 	}
 	return false;	
-};
-
-ListRooms.prototype.getRoom = function(idRoom) {
-	return this._rooms[idRoom];	
 };
 
 ListRooms.prototype.removeEmptyRooms = function() {

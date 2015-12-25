@@ -1,6 +1,6 @@
 var ListRooms = require('../app/src/Room/ListRooms');
 var Room = require('../app/src/Room/Room');
-var NetworkManagerServer = require('./NetworkManagerServer');
+var NetworkManagerServer = require('../app/src/NetworkManagerServer/NetworkManagerServer');
 
 var socketIO, rooms;
 
@@ -17,7 +17,7 @@ var GameServer = function(io){
 function onClientConnected(client){
 
     // Création de l'objet qui va gérer la communication avec le client
-    var networkManager = new NetworkManagerServer(client, rooms);
+    var networkManagerServer = new NetworkManagerServer(client, rooms);
 
 	// On ajoute le nouveau joueur dans une room libre
 	rooms.addPlayer(client);

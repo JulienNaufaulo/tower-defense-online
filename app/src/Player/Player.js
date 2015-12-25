@@ -9,7 +9,7 @@ function Player(id, color, idRoom){
 }
 
 Player.prototype.toString = function() {
-    return "Joueur "+this._color+", Room "+(this.idRoom+1);
+    return "Joueur "+this._color+", Room "+(this.idRoom);
 };
 
 module.exports = Player;
