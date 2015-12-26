@@ -9,7 +9,7 @@ Room.prototype = {
 
     create: function() {
         // Initialisation du chat
-        var chat = new Chat("#chat", "content");
+        var chat = new Chat("#chat", "content", "#inputchat");
 
         // Création de l'objet qui va gérer la communication avec le serveur
         var networkManagerClient = new NetworkManagerClient(this.game, chat);

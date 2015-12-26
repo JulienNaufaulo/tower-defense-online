@@ -2,21 +2,38 @@
 
 var TimeUtils = require('../../utils/TimeUtils');
 
-function Chat(id, content){
+function Chat(id, content, inputchat){
 	this._id = id;
-	this._txt = content;
+    this._txt = content;
+	this._inputchat = inputchat;
 	this._timeUtils = new TimeUtils();
 };
 
-Chat.prototype.init = function() {
+Chat.prototype.init = function(socket) {
+    // On affiche le chat à l'écran
     $(this._id).fadeIn( "slow" ).css("display","inline-block");
+
+    $(this._inputchat).bind("keypress", onSendMessage);
+
+    // Quand l'utilisateur valide son message avec la touche "Enter", il est envoyé au serveur
+    function onSendMessage(e) {
+        if(e.which == 13) {
+            var message =  $(this).val();
+            $(this).val("");
+            message = message.trim();
+            if(message != "") {
+                socket.emit('SEND_CHAT_MESSAGE_TO_SERVER', message);
+            }    
+        }
+    }
+
 };
 
 Chat.prototype.destroy = function() {
-	clearInterval(this._scrollToBottom);
 	$(this._id+' > h2').empty();
 	$('#'+this._txt).empty();
     $(this._id).fadeOut( "slow" );
+    $(this._inputchat).unbind( "keypress" );
 };
 
 Chat.prototype.displayRoom = function(room) {
@@ -49,6 +66,12 @@ Chat.prototype.displayMessage = function(message) {
     $('#'+this._txt).append("<p><span>"+this._timeUtils.getTime()+"</span>"+message+"</p>");
 	var elem = document.getElementById(this._txt);
 	elem.scrollTop = elem.scrollHeight;
+};
+
+Chat.prototype.displayPlayerMessage = function(player, message) {
+    this.displayMessage("<span class=\"txt-"+player._color+"\">"+message+"</span>");
+    var elem = document.getElementById(this._txt);
+    elem.scrollTop = elem.scrollHeight;
 };
 
 Chat.prototype.displaySimpleMessage = function(message) {

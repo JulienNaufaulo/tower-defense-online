@@ -16,12 +16,13 @@ function RoomNetworkManagerClient(socket, phaser, chat) {
     socket.on('SERVER_THAT_PLAYER_IS_READY', onReceiveThatPlayerIsReady);
     socket.on('GO_TO_PLAY', onReceiveGoToPlay);
     socket.on('GO_TO_MENU', onReceiveGoToMenu);
+    socket.on('MESSAGE_SENT_BY_A_PLAYER', onReceiveMessageByAPlayer);
     socket.on('SERVER_OTHER_PLAYER_DISCONNECTED', onReceiveOtherPlayerDisconnected);
 
     function onConnectedToServer() {
         socket.emit('CLIENT_REQUEST_ID');
         socket.emit('CLIENT_REQUEST_LIST_PLAYERS');
-        chat.init();
+        chat.init(socket); 
     }
 
     function onDisconnectedToServer() {
@@ -107,6 +108,10 @@ function RoomNetworkManagerClient(socket, phaser, chat) {
 
     function onReceiveThatPlayerIsReady(player) {
         chat.displayReadyPlayer(player);
+    }
+
+    function onReceiveMessageByAPlayer(data) {
+        chat.displayPlayerMessage(data.player, data.message);
     }
 };
 

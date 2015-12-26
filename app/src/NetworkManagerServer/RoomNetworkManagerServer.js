@@ -8,9 +8,14 @@ function RoomNetworkManagerServer(client, rooms){
 	// Action quand le client connecté veut récupérer son identité auprès du serveur
     client.on('CLIENT_REQUEST_ID', onRequestId);
 
+    // Action quand le client a cliqué sur "Prêt"
     client.on('CLIENT_IS_READY', onRequestClientReady);
 
+    // Action quand le compte à rebours a atteint 0
     client.on('END_OF_READY_TIME', onRequestEndOfReadyTime);
+
+    // Action quand le client a envoyé un message
+    client.on('SEND_CHAT_MESSAGE_TO_SERVER', onRequestSendChatMessage);
 
     // Action quand le client se déconnecte
     client.on('disconnect', onDisconnected);
@@ -103,6 +108,14 @@ function RoomNetworkManagerServer(client, rooms){
 			client.emit('GO_TO_MENU');
 			console.log(player.toString()+" s'est déconnecté");
 		}	
+	}
+
+	function onRequestSendChatMessage(message) {
+		var room = rooms.getRoomOfPlayer(client);
+		var player = room.getPlayerById(client);
+		client.emit('MESSAGE_SENT_BY_A_PLAYER', { "player": player, "message": message });
+		client.broadcast.in(room._name).emit('MESSAGE_SENT_BY_A_PLAYER', { "player": player, "message": message });
+		console.log(player.toString()+" a envoyé le message "+message);
 	}
 };
 
