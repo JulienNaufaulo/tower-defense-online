@@ -2,31 +2,35 @@
 
 var HexaColors = require('../../utils/HexaColors');
 
-function RoomNetworkManagerClient(socket, phaser, chat) {
+function RoomNetworkManagerClient(phaser, chat) {
 
+    var that = this;
+
+    this._socket = io.connect('http://localhost:3333', {'force new connection': true});
     this._intervalReadyTime;
     this._btnPlay;
 
-    socket.on('connect', onConnectedToServer);
-    socket.on('disconnect', onDisconnectedToServer);
-    socket.on('SERVER_PLAYER_ID', onReceivePlayerId);
-    socket.on('SERVER_LIST_PLAYERS', onReceiveListPlayers);
-    socket.on('SERVER_OTHER_PLAYER_ID', onReceiveOtherPlayerId);
-    socket.on('CLICK_TO_START_THE_GAME', onReceiveClickToStart);
-    socket.on('SERVER_THAT_PLAYER_IS_READY', onReceiveThatPlayerIsReady);
-    socket.on('GO_TO_PLAY', onReceiveGoToPlay);
-    socket.on('GO_TO_MENU', onReceiveGoToMenu);
-    socket.on('MESSAGE_SENT_BY_A_PLAYER', onReceiveMessageByAPlayer);
-    socket.on('SERVER_OTHER_PLAYER_DISCONNECTED', onReceiveOtherPlayerDisconnected);
+
+    this._socket.on('connect', onConnectedToServer);
+    this._socket.on('disconnect', onDisconnectedToServer);
+    this._socket.on('SERVER_PLAYER_ID', onReceivePlayerId);
+    this._socket.on('SERVER_LIST_PLAYERS', onReceiveListPlayers);
+    this._socket.on('SERVER_OTHER_PLAYER_ID', onReceiveOtherPlayerId);
+    this._socket.on('CLICK_TO_START_THE_GAME', onReceiveClickToStart);
+    this._socket.on('SERVER_THAT_PLAYER_IS_READY', onReceiveThatPlayerIsReady);
+    this._socket.on('GO_TO_PLAY', onReceiveGoToPlay);
+    this._socket.on('GO_TO_MENU', onReceiveGoToMenu);
+    this._socket.on('MESSAGE_SENT_BY_A_PLAYER', onReceiveMessageByAPlayer);
+    this._socket.on('SERVER_OTHER_PLAYER_DISCONNECTED', onReceiveOtherPlayerDisconnected);
 
     function onConnectedToServer() {
-        socket.emit('CLIENT_REQUEST_ID');
-        socket.emit('CLIENT_REQUEST_LIST_PLAYERS');
-        chat.init(socket); 
+        that._socket.emit('CLIENT_REQUEST_ID');
+        that._socket.emit('CLIENT_REQUEST_LIST_PLAYERS');
+        chat.init(that._socket); 
     }
 
     function onDisconnectedToServer() {
-        clearInterval(this._intervalReadyTime);
+        clearInterval(that._intervalReadyTime);
     }
 
     function onReceivePlayerId(data) {
@@ -60,19 +64,19 @@ function RoomNetworkManagerClient(socket, phaser, chat) {
     }
 
     function onReceiveOtherPlayerDisconnected(player) {
-        clearInterval(this._intervalReadyTime);
-        this._btnPlay.destroy();
+        clearInterval(that._intervalReadyTime);
+        that._btnPlay.destroy();
         chat.displayDisconnectedPlayer(player);
     }
 
     function onReceiveClickToStart() {
-        this._btnPlay = phaser.add.button(phaser.world.centerX-110, phaser.world.centerY+50, 'btnReady', actionOnClick, this, 2, 1, 0);
+        that._btnPlay = phaser.add.button(phaser.world.centerX-110, phaser.world.centerY+50, 'btnReady', actionOnClick, this, 2, 1, 0);
 
         chat.displayAllPlayersConnected();
 
         // Compte à rebours
         var count = 10;
-        this._intervalReadyTime = setInterval(function(){
+        that._intervalReadyTime = setInterval(function(){
             if(count==10) {
                 var message = count+" secondes restantes";
             } else {
@@ -82,26 +86,28 @@ function RoomNetworkManagerClient(socket, phaser, chat) {
             chat.displaySimpleMessage(message);
 
             if(count == 0) {
-                clearInterval(this._intervalReadyTime);
-                socket.emit('END_OF_READY_TIME');
+                clearInterval(that._intervalReadyTime);
+                that._socket.emit('END_OF_READY_TIME');
             }
             count--;
         }, 1000);
     }
 
     function actionOnClick() {
-        this._btnPlay.destroy();
-        socket.emit('CLIENT_IS_READY');
+        that._btnPlay.destroy();
+        that._socket.emit('CLIENT_IS_READY');
     }
 
     function onReceiveGoToPlay() {
-        clearInterval(this._intervalReadyTime);
-        phaser.state.start('play');
+        clearInterval(that._intervalReadyTime);
+        // phaser.state.start('play');
+        phaser.state.start('play', true, false, that._socket);
+
     }
 
     function onReceiveGoToMenu() {
-        clearInterval(this._intervalReadyTime);
-        socket.disconnect(true);
+        clearInterval(that._intervalReadyTime);
+        that._socket.disconnect(true);
         chat.destroy();
         phaser.state.start('menu');
     }

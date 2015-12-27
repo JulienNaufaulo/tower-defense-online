@@ -1,6 +1,7 @@
 'use strict';
 
-var NetworkManagerClient = require('../src/NetworkManagerClient/NetworkManagerClient');
+// var NetworkManagerClient = require('../src/NetworkManagerClient/NetworkManagerClient');
+var RoomNetworkManagerClient = require('../src/NetworkManagerClient/RoomNetworkManagerClient');
 var Chat = require('../src/Chat/Chat');
 
 function Room(){}
@@ -12,7 +13,9 @@ Room.prototype = {
         var chat = new Chat("#chat", "content", "#inputchat");
 
         // Création de l'objet qui va gérer la communication avec le serveur
-        var networkManagerClient = new NetworkManagerClient(this.game, chat);
+        // var networkManagerClient = new NetworkManagerClient(this.game, chat);
+
+        var roomNetworkManagerClient = new RoomNetworkManagerClient(this.game, chat);
 
         // Affichage du texte de chargement
         this.displayLoadingText();

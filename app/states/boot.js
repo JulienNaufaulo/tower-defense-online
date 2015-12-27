@@ -16,15 +16,15 @@ Boot.prototype = {
     },
 
     onLoadComplete: function(){
-        // this.game.state.start('menu');
-        this.game.state.start('play');
+        this.game.state.start('menu');
+        // this.game.state.start('play');
     },
 
     loadAssets: function(){
         this.game.load.image('bgmenu', 'images/bg-menu.jpg');
         this.game.load.spritesheet('btnPlay', 'images/btn_play.jpg', 213, 52);
         this.game.load.spritesheet('btnReady', 'images/btn_ready.jpg', 213, 52);
-        this.game.load.spritesheet('character', 'images/sprites-character.png', 26.5, 35);
+        this.game.load.spritesheet('character', 'images/sprites-character.png', 27, 35);
         this.game.load.image('grille', 'images/grille.jpg');
     },
 

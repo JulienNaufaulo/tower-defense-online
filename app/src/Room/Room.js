@@ -101,6 +101,18 @@ Room.prototype.isReady = function() {
     return countReadyPlayers == this.maximumNumberOfPlayers();
 };
 
+Room.prototype.isPlaying = function() {
+	var countReadyPlayers = 0;
+	for (var color in this._players) 
+    {
+        if ( this._players[color] != null && this._players[color]._playing == true ) {
+        	countReadyPlayers++
+        }
+    }
+
+    return countReadyPlayers == this.maximumNumberOfPlayers();
+};
+
 Room.prototype.resetReady = function() {
 	for(var color in this._players) {
 		if( this._players[color] != null ) {

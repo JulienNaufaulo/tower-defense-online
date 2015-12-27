@@ -12,9 +12,11 @@ function Wave(game, nbMonsters, moveSpeed){
 	this._path = [ {"x":63, "y":-50}, {"x":63, "y":200}, {"x":263, "y":200}, {"x":263, "y":50}, {"x":500, "y":50}, {"x":500, "y":500}, {"x":850, "y":500} ];
 	console.log(this._path[1]);
 	this._currentIndex = 1;
+	this._started = false;
 };
 
 Wave.prototype.create = function() { 
+	console.log("creation de la wave");
 	var posY=this._path[0].y;
 	for(var i=1; i <= this._nbMonsters; i++) {
 		var monster = new Monster(this._game, this._moveSpeed, this._path);

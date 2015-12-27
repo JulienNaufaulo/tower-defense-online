@@ -66,7 +66,6 @@ Monster.prototype.getDistanceBetweenPoints = function(x, y, newX, newY) {
         distance += newY-y;
     }
 
-    console.log("distance : "+distance);
     return distance;
 };
 
@@ -77,7 +76,6 @@ Monster.prototype.getDuree = function(x, y, newX, newY) {
 };
 
 Monster.prototype.playAnimation = function(newX, newY) {
-    console.log("this._y : "+this._y+" || newY : "+newY);
     if(this._x < newX)
         this._sprite.animations.play('right');
     else if(this._x > newX)
