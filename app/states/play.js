@@ -17,7 +17,7 @@ Play.prototype = {
 
     create: function() {
     	var grille = this.game.add.tileSprite(0, 0, 800, 600, 'grille');
-    	this._wave = new Wave(this.game, 2, 5);
+    	this._wave = new Wave(this.game, 10, 5);
     	this._wave.create();
     	this._socket.emit('READY_TO_START');
     	var playNetworkManagerClient = new PlayNetworkManagerClient(this._socket, this.game, this._wave);

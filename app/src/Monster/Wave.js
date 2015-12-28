@@ -9,7 +9,7 @@ function Wave(game, nbMonsters, moveSpeed){
 	this._moveSpeed = moveSpeed;
 	this._monsters = [];
 
-	this._path = [ {"x":63, "y":-50}, {"x":63, "y":200}, {"x":263, "y":200}, {"x":263, "y":50}, {"x":500, "y":50}, {"x":500, "y":500}, {"x":850, "y":500} ];
+	this._path = [ {"x":63, "y":-50}, {"x":63, "y":100}, {"x":263, "y":100}, {"x":263, "y":200}, {"x":20, "y":200}, {"x":20, "y":350}, {"x":265, "y":350}, {"x":265, "y":-50} ];
 	console.log(this._path[1]);
 	this._currentIndex = 1;
 	this._started = false;
@@ -28,9 +28,7 @@ Wave.prototype.create = function() {
 
 Wave.prototype.move = function() { 
 	for(var i=0; i < this._monsters.length; i++) {
-		if( this._monsters[i]._tween == null || !this._monsters[i]._tween.isRunning) {
-			this._monsters[i].move();
-		}
+		this._monsters[i].move();
 	}
 };
 

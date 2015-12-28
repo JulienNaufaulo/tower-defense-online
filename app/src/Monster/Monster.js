@@ -27,29 +27,29 @@ Monster.prototype.create = function(posX, posY) {
 };
 
 Monster.prototype.move = function() {
-    // this._game.physics.arcade.moveToXY(this._sprite, newX, newY);
-    var that = this;
+    if( this._tween == null || !this._tween.isRunning) {
+        var that = this;
 
-    var newX = this._path[this._currentIndex].x;
-    var newY = this._path[this._currentIndex].y;
+        var newX = this._path[this._currentIndex].x;
+        var newY = this._path[this._currentIndex].y;
 
-    var duree = this.getDuree(this._x, this._y, newX, newY);
+        var duree = this.getDuree(this._x, this._y, newX, newY);
 
-    this.playAnimation(newX, newY);
+        this.playAnimation(newX, newY);
 
-    this._tween = this._game.add.tween(this._sprite).to({x:newX,y:newY}, duree);
-    this._tween.onComplete.add(function(){
-        that._x = newX; 
-        that._y = newY;
+        this._tween = this._game.add.tween(this._sprite).to({x:newX,y:newY}, duree);
+        this._tween.onComplete.add(function(){
+            that._x = newX; 
+            that._y = newY;
+            if( that._currentIndex+1 == that._path.length) {
+                that._currentIndex=0;
+            }
+            else 
+                that._currentIndex++;
+        });
 
-        if( that._currentIndex+1 == that._path.length) {
-            that._currentIndex=0;
-        }
-        else 
-            that._currentIndex++;
-    });
-
-    this._tween.start();
+        this._tween.start();
+    }
     
 };
 
