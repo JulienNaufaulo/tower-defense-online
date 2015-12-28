@@ -9,3 +9,9 @@ module.exports = config:
         path: './server/httpServer.js'
         run: yes
         port: 3333
+    plugins:
+        uglify:
+            mangle: false
+            compress:
+                global_defs: 
+                    DEBUG: false

@@ -18,10 +18,11 @@ function PlayNetworkManagerClient(socket, phaser, wave) {
             text.fontSize = 30;
             text.fill = "#000000";
             if( count == 0 ) {
-                clearInterval(countdown);
-                text.destroy();
                 wave.move();
                 wave._started = true;
+                clearInterval(countdown);
+                text.destroy();
+                
             }
             count--;
 
