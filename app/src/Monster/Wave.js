@@ -19,16 +19,16 @@ Wave.prototype.create = function() {
 	console.log("creation de la wave");
 	var posY=this._path[0].y;
 	for(var i=1; i <= this._nbMonsters; i++) {
-		var monster = new Monster(this._game, this._moveSpeed, this._path);
+		var monster = new Monster(i, this._game, this._moveSpeed, this._path);
 		posY -= 40;
 		monster.create(this._path[0].x, posY);
 		this._monsters.push(monster);
 	}
 };
 
-Wave.prototype.move = function() { 
+Wave.prototype.move = function(socket) { 
 	for(var i=0; i < this._monsters.length; i++) {
-		this._monsters[i].move();
+		this._monsters[i].move(socket);
 	}
 };
 
@@ -44,6 +44,13 @@ Wave.prototype.isWaveMoving = function() {
 		return true;
 	else 
 		return false;
+};
+
+Wave.prototype.getMonsterById = function(id) { 
+	for(var i=0; i < this._monsters.length; i++) {
+		if(this._monsters[i]._id == id)
+			return this._monsters[i];
+	}
 };
 
 module.exports = Wave;

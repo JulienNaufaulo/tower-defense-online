@@ -14,4 +14,23 @@ TimeUtils.prototype.getTime = function() {
     return jour+"/"+mois+"/"+annee+", "+heure+":"+minute+":"+seconde;
 };
 
+TimeUtils.prototype.updateTimer = function(game, timer) {
+    var hours = Math.floor(game.time.totalElapsedSeconds() / 3600) % 24;
+    var minutes = Math.floor(game.time.totalElapsedSeconds()/60) % 60;
+    var seconds = Math.floor(game.time.totalElapsedSeconds()) % 60;
+    // var milliseconds = Math.floor(game.time.time) % 100;
+
+    //If any of the digits becomes a single digit number, pad it with a zero
+    if (hours < 10)
+        hours = '0' + hours;
+
+    if (seconds < 10)
+        seconds = '0' + seconds;
+
+    if (minutes < 10)
+        minutes = '0' + minutes;
+
+    timer.setText(hours+':'+ minutes + ':'+ seconds); 
+};
+
 module.exports = TimeUtils;

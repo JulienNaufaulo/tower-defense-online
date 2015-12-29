@@ -1,6 +1,7 @@
 'use strict';
 
-function Monster(game, moveSpeed, path){
+function Monster(id, game, moveSpeed, path){
+    this._id = id; 
     this._x = null;
     this._y = null;
     this._moveSpeed = moveSpeed;
@@ -17,8 +18,9 @@ Monster.prototype.create = function(posX, posY) {
 
     this._sprite = this._game.add.sprite(posX, posY, 'character');
 
-    //  We need to enable physics on the player
-    this._game.physics.arcade.enable(this._sprite);
+    this._game.physics.arcade.enable(this._sprite, Phaser.Physics.ARCADE);
+
+    this._sprite.body.moves = false;
 
     this._sprite.animations.add('top', [12, 13, 14, 15], 10, true);
     this._sprite.animations.add('right', [4, 5, 6, 7], 10, true);
@@ -26,7 +28,7 @@ Monster.prototype.create = function(posX, posY) {
     this._sprite.animations.add('left', [8, 9, 10, 11], 10, true);
 };
 
-Monster.prototype.move = function() {
+Monster.prototype.move = function(socket) {
     if( this._tween == null || !this._tween.isRunning) {
         var that = this;
 
@@ -39,6 +41,9 @@ Monster.prototype.move = function() {
 
         this._tween = this._game.add.tween(this._sprite).to({x:newX,y:newY}, duree);
         this._tween.onComplete.add(function(){
+
+            socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "posX" : that._sprite.x, "posY" : that._sprite.y});
+            
             that._x = newX; 
             that._y = newY;
             if( that._currentIndex+1 == that._path.length) {

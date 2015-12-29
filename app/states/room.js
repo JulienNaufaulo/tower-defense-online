@@ -1,6 +1,5 @@
 'use strict';
 
-// var NetworkManagerClient = require('../src/NetworkManagerClient/NetworkManagerClient');
 var RoomNetworkManagerClient = require('../src/NetworkManagerClient/RoomNetworkManagerClient');
 var Chat = require('../src/Chat/Chat');
 
