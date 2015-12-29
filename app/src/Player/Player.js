@@ -6,6 +6,7 @@ function Player(id, color, idRoom){
     this.idRoom = idRoom;
     this._ready = false;
     this._playing = false;
+    this._life = 10;
 }
 
 Player.prototype.toString = function() {

@@ -9,7 +9,8 @@ function Play(){
 	this._wave;
     this._timer;
     this._timeUtils = new TimeUtils();
-    this._test = 0;
+    this._lifeCount = null;
+    this._lifeText = null;
 }
 
 Play.prototype = {
@@ -29,8 +30,16 @@ Play.prototype = {
             fill: "#000000"
         });
 
+        this._lifeText = this.game.add.text(25, 25, "");
+        this._lifeText.anchor.set(0.5);
+        this._lifeText.align = 'center';
+        this._lifeText.font = 'Arial';
+        this._lifeText.fontWeight = 'bold';
+        this._lifeText.fontSize = 20;
+        this._lifeText.fill = "#000000";
+
     	this._socket.emit('READY_TO_START');
-    	var playNetworkManagerClient = new PlayNetworkManagerClient(this._socket, this.game, this._wave);
+    	var playNetworkManagerClient = new PlayNetworkManagerClient(this._socket, this.game, this._wave, this._lifeText);
     },
 
     update: function() {

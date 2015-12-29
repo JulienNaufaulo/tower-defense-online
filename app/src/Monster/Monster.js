@@ -48,6 +48,7 @@ Monster.prototype.move = function(socket) {
             that._y = newY;
             if( that._currentIndex+1 == that._path.length) {
                 that._currentIndex=0;
+                socket.emit('LIFE_LOST');
             }
             else 
                 that._currentIndex++;
