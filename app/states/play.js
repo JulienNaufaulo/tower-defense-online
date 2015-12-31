@@ -17,6 +17,7 @@ Play.prototype = {
 
 	init: function(socket) {
 		this._socket = socket;
+        this.game.forceSingleUpdate = true;
 	},
 
     create: function() {
