@@ -1,6 +1,6 @@
 'use strict';
 
-function Monster(id, game, moveSpeed, path){
+function Monster(id, game, moveSpeed, path, socket, idWave){
     this._id = id; 
     this._x = null;
     this._y = null;
@@ -10,6 +10,8 @@ function Monster(id, game, moveSpeed, path){
     this._game = game;
     this._sprite = null;
     this._tween = null;
+    this._socket = socket;
+    this._idWave = idWave;
 };
 
 Monster.prototype.create = function(posX, posY) {
@@ -19,7 +21,6 @@ Monster.prototype.create = function(posX, posY) {
     this._sprite = this._game.add.sprite(posX, posY, 'character');
 
     this._game.physics.arcade.enable(this._sprite, Phaser.Physics.ARCADE);
-
     this._sprite.body.moves = false;
 
     this._sprite.animations.add('top', [12, 13, 14, 15], 10, true);
@@ -28,8 +29,9 @@ Monster.prototype.create = function(posX, posY) {
     this._sprite.animations.add('left', [8, 9, 10, 11], 10, true);
 };
 
-Monster.prototype.move = function(socket) {
+Monster.prototype.move = function() {
     if( this._tween == null || !this._tween.isRunning) {
+
         var that = this;
 
         var newX = this._path[this._currentIndex].x;
@@ -42,13 +44,14 @@ Monster.prototype.move = function(socket) {
         this._tween = this._game.add.tween(this._sprite).to({x:newX,y:newY}, duree);
         this._tween.onComplete.add(function(){
 
-            socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "posX" : that._sprite.x, "posY" : that._sprite.y});
+            that._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "posX" : that._sprite.x, "posY" : that._sprite.y, "idWave" : that._idWave});
             
             that._x = newX; 
             that._y = newY;
+
             if( that._currentIndex+1 == that._path.length) {
                 that._currentIndex=0;
-                socket.emit('LIFE_LOST');
+                that._socket.emit('LIFE_LOST', that._idWave);
             }
             else 
                 that._currentIndex++;

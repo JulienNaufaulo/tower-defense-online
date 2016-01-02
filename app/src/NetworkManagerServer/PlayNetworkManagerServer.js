@@ -17,7 +17,11 @@ function PlayNetworkManagerServer(client, rooms){
 
 		player._playing = true;
 
-		client.emit('GET_MY_LIFE', player._life);
+		client.emit('INIT_DATAS_GAME', {
+										"ready" : false,
+										"color" : player._color,
+										"life" : player._life
+									});
 
 		if(room.isPlaying()) {
 			client.broadcast.in(room._name).emit('START_GAME');
@@ -32,19 +36,20 @@ function PlayNetworkManagerServer(client, rooms){
 		// On récupère les infos du joueur
 		var player = room.getPlayerById(client);
 
-		client.broadcast.in(room._name).emit('CHECK_SPRITE_POSITION', {"idMonster" : data.idMonster, "currentIndex" : data.currentIndex, "posX" : data.posX, "posY" : data.posY});
+		client.broadcast.in(room._name).emit('CHECK_SPRITE_POSITION', {"idMonster" : data.idMonster, "currentIndex" : data.currentIndex, "posX" : data.posX, "posY" : data.posY, "idWave": data.idWave});
 	}
 
-	function onRequestLifeLost() {
+	function onRequestLifeLost(idWave) {
 		// On récupère la room du client
 		var room = rooms.getRoomOfPlayer(client);
 
 		// On récupère les infos du joueur
 		var player = room.getPlayerById(client);
 
-		player._life--;
-
-		client.emit('GET_MY_LIFE', player._life);
+		if( idWave == player._color ) {
+			player._life--;
+			client.emit('GET_MY_LIFE', player._life);
+		}
 	}
 
 };

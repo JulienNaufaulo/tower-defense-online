@@ -6,11 +6,18 @@ var TimeUtils = require('../../utils/TimeUtils');
 
 function Play(){
 	this._socket;
-	this._wave;
+    this._waves = [];
     this._timer;
     this._timeUtils = new TimeUtils();
-    this._lifeCount = null;
-    this._lifeText = null;
+    this._playerDatas = {
+        "ready" : false,
+        "color" : null,
+        "life" : null
+    }
+
+    var playNetworkManagerClient;
+
+    console.log(this._playerDatas.ready);
 }
 
 Play.prototype = {
@@ -23,30 +30,43 @@ Play.prototype = {
     create: function() {
     	var grille = this.game.add.tileSprite(0, 0, 800, 600, 'grille');
 
-    	this._wave = new Wave(this.game, 10, 5);
-    	this._wave.create();
+        // Création de la 1ère vague de creeps
+        var path1 = [ {"x":63, "y":-50}, {"x":63, "y":100}, {"x":263, "y":100}, {"x":263, "y":200}, {"x":20, "y":200}, {"x":20, "y":350}, {"x":305, "y":350}, {"x":305, "y":-50} ];
+    	var wave1 = new Wave("Bleu", path1, this.game, 10, 5, this._socket);
+    	wave1.create();
+        this._waves.push(wave1);
+
+        // Création de la 2ème vague de creeps
+        var path2 = [ {"x":707, "y":-50}, {"x":707, "y":100}, {"x":507, "y":100}, {"x":507, "y":200}, {"x":750, "y":200}, {"x":750, "y":350}, {"x":465, "y":350}, {"x":465, "y":-50} ];
+        var wave2 = new Wave("Rouge", path2, this.game, 10, 5, this._socket);
+        wave2.create();
+        this._waves.push(wave2);
 
         this._timer = this.game.add.text(this.game.world.centerX-43, 0, "00:00:00", {
             font: "22px Arial",
             fill: "#000000"
         });
 
-        this._lifeText = this.game.add.text(25, 25, "");
-        this._lifeText.anchor.set(0.5);
-        this._lifeText.align = 'center';
-        this._lifeText.font = 'Arial';
-        this._lifeText.fontWeight = 'bold';
-        this._lifeText.fontSize = 20;
-        this._lifeText.fill = "#000000";
+        this._playerDatas.life = this.game.add.text(25, 25, "");
+        this._playerDatas.life.anchor.set(0.5);
+        this._playerDatas.life.align = 'center';
+        this._playerDatas.life.font = 'Arial';
+        this._playerDatas.life.fontWeight = 'bold';
+        this._playerDatas.life.fontSize = 20;
+        this._playerDatas.life.fill = "#000000";
+
+        this.playNetworkManagerClient = new PlayNetworkManagerClient(this._socket, this.game, this._waves, this._playerDatas);
 
     	this._socket.emit('READY_TO_START');
-    	var playNetworkManagerClient = new PlayNetworkManagerClient(this._socket, this.game, this._wave, this._lifeText);
+    	
     },
 
     update: function() {
-    	if( this._wave._started ) {
+        if( this._playerDatas.ready ) {
             this._timeUtils.updateTimer(this.game, this._timer);
-    		this._wave.move(this._socket);
+            for(var i=0, count=this._waves.length; i < count; i++) {
+                this._waves[i].move();
+            }
         }
     }
 

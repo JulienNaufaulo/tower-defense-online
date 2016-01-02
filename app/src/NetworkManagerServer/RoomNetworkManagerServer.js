@@ -55,27 +55,23 @@ function RoomNetworkManagerServer(client, rooms){
 	};
 
 	function onDisconnected() {
-		// if (client.id != undefined){
-		    // On récupère la room du client
-			var room = rooms.getRoomOfPlayer(client);
+		
+	    // On récupère la room du client
+		var room = rooms.getRoomOfPlayer(client);
 
-			// if(room) {
-				// On récupère les infos sur le joueur
-				var playerDisconnected = room.getPlayerById(client);
+		// On récupère les infos sur le joueur
+		var playerDisconnected = room.getPlayerById(client);
 
-				// On signale à tous les autres joueurs de la room que le joueur s'est déconnecté
-				client.broadcast.in(room._name).emit('SERVER_OTHER_PLAYER_DISCONNECTED', playerDisconnected);
+		// On signale à tous les autres joueurs de la room que le joueur s'est déconnecté
+		client.broadcast.in(room._name).emit('SERVER_OTHER_PLAYER_DISCONNECTED', playerDisconnected);
 
-				// On enlève le joueur de la room
-				room.removePlayer(client);
+		// On enlève le joueur de la room
+		room.removePlayer(client);
 
-				// On réinitialise à false l'attribut "Ready" des joueurs de la room
-				room.resetReady();
+		// On réinitialise à false l'attribut "Ready" des joueurs de la room
+		room.resetReady();
 
-				console.log(playerDisconnected.toString()+" s'est déconnecté");
-			// }
-			
-		// }
+		console.log(playerDisconnected.toString()+" s'est déconnecté");
 	};
 
 	function onRequestClientReady() {
