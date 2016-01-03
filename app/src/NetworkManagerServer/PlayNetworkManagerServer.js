@@ -20,7 +20,8 @@ function PlayNetworkManagerServer(client, rooms){
 		client.emit('INIT_DATAS_GAME', {
 										"ready" : false,
 										"color" : player._color,
-										"life" : player._life
+										"life" : player._life,
+										"gold" : player._gold
 									});
 
 		if(room.isPlaying()) {

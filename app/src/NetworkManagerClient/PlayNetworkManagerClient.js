@@ -11,10 +11,15 @@ function PlayNetworkManagerClient(socket, phaser, waves, gameDatas) {
         onRequestGetMyLife(data.life);
         gameDatas.ready = data.ready;
         gameDatas.color = data.color;
+        onRequestGetMyGold(data.gold);
     }
 
     function onRequestGetMyLife(life) {
-        gameDatas.life.setText(life);
+        gameDatas.life.setText(life+" vies restantes");
+    }
+
+    function onRequestGetMyGold(gold) {
+        gameDatas.gold.setText(gold+" gold restant");
     }
 
     function onRequestStartGame() {

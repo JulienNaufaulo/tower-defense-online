@@ -7,6 +7,7 @@ function Player(id, color, idRoom){
     this._ready = false;
     this._playing = false;
     this._life = 10;
+    this._gold = 100;
 }
 
 Player.prototype.toString = function() {

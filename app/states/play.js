@@ -12,7 +12,8 @@ function Play(){
     this._playerDatas = {
         "ready" : false,
         "color" : null,
-        "life" : null
+        "life" : null,
+        "gold" : null
     }
 
     var playNetworkManagerClient;
@@ -47,13 +48,23 @@ Play.prototype = {
             fill: "#000000"
         });
 
-        this._playerDatas.life = this.game.add.text(25, 25, "");
+        // Affichage du texte des vies restantes
+        this._playerDatas.life = this.game.add.text(100, 25, "");
         this._playerDatas.life.anchor.set(0.5);
-        this._playerDatas.life.align = 'center';
+        // this._playerDatas.life.align = 'left';
         this._playerDatas.life.font = 'Arial';
         this._playerDatas.life.fontWeight = 'bold';
         this._playerDatas.life.fontSize = 20;
         this._playerDatas.life.fill = "#000000";
+
+        // Affichage du texte du gold restant
+        this._playerDatas.gold = this.game.add.text(100, 65, "");
+        this._playerDatas.gold.anchor.set(0.5);
+        // this._playerDatas.gold.align = 'left';
+        this._playerDatas.gold.font = 'Arial';
+        this._playerDatas.gold.fontWeight = 'bold';
+        this._playerDatas.gold.fontSize = 20;
+        this._playerDatas.gold.fill = "#000000";
 
         this.playNetworkManagerClient = new PlayNetworkManagerClient(this._socket, this.game, this._waves, this._playerDatas);
 
