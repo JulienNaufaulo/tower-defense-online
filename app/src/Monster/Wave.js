@@ -25,6 +25,20 @@ Wave.prototype.create = function() {
 Wave.prototype.move = function() { 
 	for(var i=0; i < this._monsters.length; i++) {
 		this._monsters[i].move();
+		if( this._monsters[i]._currentIndex == (this._monsters[i]._path.length-1) ) {
+			if( this._monsters[i]._sprite.y <= 83 ) {
+				this._monsters[i].hide();
+			} else {
+				this._monsters[i].reveal();
+			}
+		}
+		if( this._monsters[i]._currentIndex == 1 ) {
+			if( this._monsters[i]._sprite.y < 53 ) {
+				this._monsters[i].hide();
+			} else {
+				this._monsters[i].reveal();
+			}
+		}
 	}
 };
 

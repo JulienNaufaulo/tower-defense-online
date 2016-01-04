@@ -4,7 +4,7 @@ var App = {
 
 	init: function(gameContainerElementId){
 
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+        var game = new Phaser.Game(768, 576, Phaser.AUTO, 'game');
         game.state.add('boot', require('./states/boot'));
         game.state.add('menu', require('./states/menu'));
         game.state.add('room', require('./states/room'));

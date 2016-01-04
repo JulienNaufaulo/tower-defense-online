@@ -95,5 +95,13 @@ Monster.prototype.playAnimation = function(newX, newY) {
         this._sprite.animations.play('top');
 };
 
+Monster.prototype.hide = function() {
+    this._sprite.alpha = 0;
+}
+
+Monster.prototype.reveal = function() {
+    this._sprite.alpha = 1;
+}
+
 
 module.exports = Monster;

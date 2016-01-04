@@ -12,12 +12,20 @@ Boot.prototype = {
         this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
 
         this.showLoadingText();
+        this.loadMap();
         this.loadAssets();
     },
 
     onLoadComplete: function(){
         this.game.state.start('menu');
         // this.game.state.start('play');
+    },
+
+    loadMap: function() {
+        this.game.load.tilemap('map', 'images/map/level-castle.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.image('castle2', 'images/map/Castle2.png');
+        this.game.load.image('castle3', 'images/map/castle3.png');
+        this.game.load.image('metaTiles', 'images/map/meta_tiles.png');
     },
 
     loadAssets: function(){
