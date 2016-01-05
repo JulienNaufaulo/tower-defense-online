@@ -2,7 +2,7 @@
 
 var express    = require('express');
 var http       = require('http');
-var Path       = require('path');
+var path       = require('path');
 var GameServer = require('./gameServer');
 
 exports.startServer = function startServer(port, path, callback) {
