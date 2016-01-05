@@ -21,5 +21,7 @@ exports.startServer = function startServer(port, path, callback) {
 
     gameServer.start();
 
-    httpServer.listen(port, callback);
+    var p = process.env.PORT || port;
+
+    httpServer.listen(p, callback);
 };
