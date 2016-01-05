@@ -5,12 +5,6 @@ var http       = require('http');
 var path       = require('path');
 var GameServer = require('./gameServer');
 
-
-var walk = require('walk')
-    , fs = require('fs')
-    , walker
-    ;
-
 exports.startServer = function startServer(port, path, callback) {
 
     var app = express();
@@ -33,29 +27,6 @@ exports.startServer = function startServer(port, path, callback) {
         res.sendFile(process.env.PWD+'/public/index.html');
         // res.sendFile('index.html', { root: __dirname+"/" });
     });
-
-
-
-
-
-    var files   = [];
-
-    // Walker options
-    var walker  = walk.walk('./public', { followLinks: false });
-
-    walker.on('file', function(root, stat, next) {
-        // Add this file to the list of files
-        files.push(root + '/' + stat.name);
-        next();
-    });
-
-    walker.on('end', function() {
-        console.log(files);
-    });
-
-
-
-
 
     gameServer.start();
 
