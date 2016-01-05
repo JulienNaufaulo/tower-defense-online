@@ -16,7 +16,7 @@ exports.startServer = function startServer(port, path, callback) {
     app.use(express.static(Path.join(__dirname + "/../" + path)));
 
     app.get('/', function(req, res){
-        res.sendFile('index.html', { root: "/" });
+        res.sendFile('index.html', { root: "../" });
     });
 
     gameServer.start();
