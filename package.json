@@ -14,7 +14,8 @@
     "express": "^4.13.3",
     "morgan": "^1.6.1",
     "path": "^0.12.7",
-    "socket.io": "^1.3.7"
+    "socket.io": "^1.3.7",
+    "walk": "^2.3.9"
   },
   "scripts": {
     "postinstall": "bower install && brunch build -P",
