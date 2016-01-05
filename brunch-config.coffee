@@ -7,6 +7,7 @@ module.exports = config:
         templates: joinTo: 'js/app.js'
     server:
         path: './server/httpServer.js'
+        base: '/'
         run: yes
         port: 5000
     plugins:
