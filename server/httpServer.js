@@ -16,8 +16,8 @@ exports.startServer = function startServer(port, path, callback) {
     //app.use(express.static(Path.join(__dirname + "/" + path)));
     app.use(express.static(__dirname + '/../public'));
 
-    app.set('css', __dirname + '/css');
-    app.set('js', __dirname + '/js');
+    // app.set('css', __dirname + '/css');
+    // app.set('js', __dirname + '/js');
 
     app.get('/', function(req, res){
         res.sendFile('index.html', { root: __dirname+"/" });

@@ -8,7 +8,7 @@ module.exports = config:
     server:
         path: './server/httpServer.js'
         run: yes
-        port: 3333
+        port: 5000
     plugins:
         uglify:
             mangle: false

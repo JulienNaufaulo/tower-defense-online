@@ -5,10 +5,15 @@ var HexaColors = require('../../utils/HexaColors');
 function RoomNetworkManagerClient(phaser, chat) {
 
     var that = this;
-    // var server_port = process.env.PORT || 3333;
-    var server_port = 3333;
-    this._socket = io.connect(window.location.hostname, {'force new connection': true});
-    // this._socket = io.connect('http://localhost:'+server_port, {'force new connection': true});
+
+    var server = window.location.hostname;
+    var server_port = 5000;
+
+    if(server == "localhost")
+        server += ":"+server_port;
+
+    this._socket = io.connect(server, {'force new connection': true});
+
     this._intervalReadyTime;
     this._btnPlay;
 
