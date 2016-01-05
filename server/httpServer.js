@@ -13,11 +13,12 @@ exports.startServer = function startServer(port, path, callback) {
     var io = require('socket.io')(httpServer);
     var gameServer = GameServer(io);
 
-    //app.use(express.static(Path.join(__dirname + "/" + path)));
-    app.use(express.static(__dirname + '/../public'));
+    process.env.PWD = process.cwd();
 
-    // app.set('css', __dirname + '/css');
-    // app.set('js', __dirname + '/js');
+    // app.use(express.static(__dirname + '/../public'));
+    app.use(express.static(path.join(process.env.PWD, '../public')));
+
+    // app.set('views', path.join(process.env.PWD, 'public'));
 
     app.get('/', function(req, res){
         res.sendFile('index.html', { root: __dirname+"/" });
