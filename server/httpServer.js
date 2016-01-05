@@ -13,7 +13,7 @@ exports.startServer = function startServer(port, path, callback) {
     var io = require('socket.io')(httpServer);
     var gameServer = GameServer(io);
 
-    app.use(express.static(Path.join(__dirname + "/" + path)));
+    app.use(express.static(Path.join(__dirname + "./public/" + path)));
 
     app.get('/', function(req, res){
         res.sendFile('index.html');
