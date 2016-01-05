@@ -45,13 +45,13 @@ Play.prototype = {
         this.createMap();
 
         // Création de la 1ère vague de creeps
-        var path1 = [ {"x":67, "y":-50}, {"x":67, "y":150}, {"x":195, "y":150}, {"x":195, "y":245}, {"x":35, "y":245}, {"x":35, "y":432}, {"x":260, "y":432}, {"x":260, "y":338}, {"x":356, "y":338}, {"x":356, "y":80} ];
+        var path1 = [ {"x":67, "y":-50}, {"x":67, "y":150}, {"x":195, "y":150}, {"x":195, "y":245}, {"x":35, "y":245}, {"x":35, "y":432}, {"x":260, "y":432}, {"x":260, "y":338}, {"x":356, "y":338}, {"x":356, "y":-50} ];
     	var wave1 = new Wave("Bleu", path1, this.game, 10, 5, this._socket);
     	wave1.create();
         this._waves.push(wave1);
 
         // Création de la 2ème vague de creeps
-        var path2 = [ {"x":675, "y":-50}, {"x":675, "y":150}, {"x":547, "y":150}, {"x":547, "y":245}, {"x":707, "y":245}, {"x":707, "y":432}, {"x":482, "y":432}, {"x":482, "y":338}, {"x":386, "y":338}, {"x":386, "y":80} ];
+        var path2 = [ {"x":675, "y":-50}, {"x":675, "y":150}, {"x":547, "y":150}, {"x":547, "y":245}, {"x":707, "y":245}, {"x":707, "y":432}, {"x":482, "y":432}, {"x":482, "y":338}, {"x":386, "y":338}, {"x":386, "y":-50} ];
         var wave2 = new Wave("Rouge", path2, this.game, 10, 5, this._socket);
         wave2.create();
         this._waves.push(wave2);
