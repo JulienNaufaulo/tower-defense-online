@@ -21,7 +21,7 @@ exports.startServer = function startServer(port, path, callback) {
     // app.set('views', path.join(process.env.PWD, 'public'));
 
     app.get('/', function(req, res){
-        res.sendFile('index.html', { root: __dirname + "/" });
+        res.sendFile('./public/index.html');
         // res.sendFile('index.html', { root: __dirname+"/" });
     });
 
