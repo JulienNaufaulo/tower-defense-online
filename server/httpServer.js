@@ -16,6 +16,8 @@ exports.startServer = function startServer(port, path, callback) {
     process.env.PWD = process.cwd();
 
     app.set('css', __dirname, '/../public/css/');
+    console.log(__dirname);
+    console.log(process.env.PWD);
     app.use(express.static(__dirname + '/../public/'));
     // app.use(express.static(process.env.PWD + '../public/'));
 
