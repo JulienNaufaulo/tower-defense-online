@@ -15,3 +15,5 @@ module.exports = config:
             compress:
                 global_defs: 
                     DEBUG: false
+    paths:
+        public: 'public'
