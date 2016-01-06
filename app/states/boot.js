@@ -7,6 +7,7 @@ Boot.prototype = {
     preload: function(){
         this.game.stage.disableVisibilityChange = true;
         this.game.stage.backgroundColor = '#FFFFFF';
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
         // This event is dispatched when the final file in the load queue has been loaded
         this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
@@ -33,7 +34,9 @@ Boot.prototype = {
         this.game.load.spritesheet('btnPlay', 'images/btn_play.jpg', 213, 52);
         this.game.load.spritesheet('btnReady', 'images/btn_ready.jpg', 213, 52);
         this.game.load.spritesheet('character', 'images/sprites-character.png', 27, 35);
-        this.game.load.image('grille', 'images/grille.jpg');
+        this.game.load.spritesheet('skeleton', 'images/sprites-squelette.png', 31, 48);
+        this.game.load.spritesheet('peasant-naked-stick', 'images/towers/peasant/sprite-peasant-naked-stick.png', 45, 49);
+        // this.game.load.image('grille', 'images/grille.jpg');
     },
 
     showLoadingText: function(){

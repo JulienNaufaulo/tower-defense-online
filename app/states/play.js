@@ -2,6 +2,7 @@
 
 var PlayNetworkManagerClient = require('../src/NetworkManagerClient/PlayNetworkManagerClient');
 var Wave = require('../src/Monster/Wave');
+var Tower = require('../src/Tower/Tower');
 var TimeUtils = require('../../utils/TimeUtils');
 
 function Play(){
@@ -21,6 +22,8 @@ function Play(){
     this._forbiddenTiles;
 
     this._waves = [];
+    this._towers = [];
+    this._groupTowers;
 
     this._timer;
     this._timeUtils = new TimeUtils();
@@ -32,6 +35,8 @@ function Play(){
     };
 
     this._marker;
+    this._tileWidth = 32;
+    this._tileHeight = 32;
 }
 
 Play.prototype = {
@@ -42,16 +47,19 @@ Play.prototype = {
 	},
 
     create: function() {
+
         this.createMap();
 
+        this._groupTowers = this.game.add.group();
+
         // Création de la 1ère vague de creeps
-        var path1 = [ {"x":67, "y":-50}, {"x":67, "y":150}, {"x":195, "y":150}, {"x":195, "y":245}, {"x":35, "y":245}, {"x":35, "y":432}, {"x":260, "y":432}, {"x":260, "y":338}, {"x":356, "y":338}, {"x":356, "y":-50} ];
+        var path1 = [ {"x":67, "y":-50}, {"x":67, "y":150}, {"x":195, "y":150}, {"x":195, "y":245}, {"x":35, "y":245}, {"x":35, "y":432}, {"x":260, "y":432}, {"x":260, "y":338}, {"x":356, "y":338}, {"x":356, "y":70} ];
     	var wave1 = new Wave("Bleu", path1, this.game, 10, 5, this._socket);
     	wave1.create();
         this._waves.push(wave1);
 
         // Création de la 2ème vague de creeps
-        var path2 = [ {"x":675, "y":-50}, {"x":675, "y":150}, {"x":547, "y":150}, {"x":547, "y":245}, {"x":707, "y":245}, {"x":707, "y":432}, {"x":482, "y":432}, {"x":482, "y":338}, {"x":386, "y":338}, {"x":386, "y":-50} ];
+        var path2 = [ {"x":675, "y":-50}, {"x":675, "y":150}, {"x":547, "y":150}, {"x":547, "y":245}, {"x":707, "y":245}, {"x":707, "y":432}, {"x":482, "y":432}, {"x":482, "y":338}, {"x":386, "y":338}, {"x":386, "y":70} ];
         var wave2 = new Wave("Rouge", path2, this.game, 10, 5, this._socket);
         wave2.create();
         this._waves.push(wave2);
@@ -106,7 +114,7 @@ Play.prototype = {
 
         this._marker = this.game.add.graphics();
         this._marker.lineStyle(2, 0x000000, 1);
-        this._marker.drawRect(0, 0, 32, 32);
+        this._marker.drawRect(0, 0, this._tileWidth, this._tileHeight);
     },
 
     update: function() {
@@ -117,8 +125,41 @@ Play.prototype = {
 
             }
         }
-        this._marker.x = this._floor.getTileX(this.game.input.activePointer.worldX) * 32;
-        this._marker.y = this._floor.getTileY(this.game.input.activePointer.worldY) * 32;
+        this._marker.x = this._floor.getTileX(this.game.input.activePointer.worldX) * this._tileWidth;
+        this._marker.y = this._floor.getTileY(this.game.input.activePointer.worldY) * this._tileHeight;
+
+        this.game.input.onDown.add(this.buildTower, this);
+
+    },
+
+    buildTower: function() {
+
+        // Au clic de la souris
+        if (this.game.input.mousePointer.isDown) {
+
+            // on récupère la position de la souris
+            var pos = this.game.input.activePointer.position;
+
+            // on récupère la case cliquée sur le calque des cases interdites
+            var tileForbidden = this._map.getTileWorldXY(pos.x, pos.y, this._tileWidth, this._tileHeight, this._forbiddenTiles, false);
+            
+            // Si la case n'est pas interdite
+            if( tileForbidden == null ) {
+                
+                // on récupère la case cliquée sur le calque de la map
+                var tileTower = this._map.getTileWorldXY(pos.x, pos.y, this._tileWidth, this._tileHeight, this._floor, false);
+
+                var tower = new Tower(this._towers.length+1, this._playerDatas.color, this.game, "peasant", "naked", "stick", this._socket, this._groupTowers);
+                this._towers.push(tower);
+
+                var TowerposX = (tileTower.x*this._tileWidth)-(this._tileWidth/2)+(tower._sprite.width/4);
+                var TowerposY = (tileTower.y*this._tileHeight)-(this._tileHeight/2);
+
+                tower.create(TowerposX, TowerposY);
+                
+            }
+            
+        }
     },
 
     render: function()

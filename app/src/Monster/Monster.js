@@ -1,6 +1,6 @@
 'use strict';
 
-function Monster(id, game, moveSpeed, path, socket, idWave){
+function Monster(id, game, moveSpeed, path, socket, idWave, type){
     this._id = id; 
     this._x = null;
     this._y = null;
@@ -12,21 +12,24 @@ function Monster(id, game, moveSpeed, path, socket, idWave){
     this._tween = null;
     this._socket = socket;
     this._idWave = idWave;
+    this._type = type;
 };
 
 Monster.prototype.create = function(posX, posY) {
     this._x = posX;
     this._y = posY;
 
-    this._sprite = this._game.add.sprite(posX, posY, 'character');
+    this._sprite = this._game.add.sprite(posX, posY, this._type);
+    this._sprite.scale.x = 0.8;
+    this._sprite.scale.y = 0.8;
 
     this._game.physics.arcade.enable(this._sprite, Phaser.Physics.ARCADE);
     this._sprite.body.moves = false;
 
-    this._sprite.animations.add('top', [12, 13, 14, 15], 10, true);
-    this._sprite.animations.add('right', [4, 5, 6, 7], 10, true);
-    this._sprite.animations.add('bottom', [0, 1, 2, 3], 10, true);
-    this._sprite.animations.add('left', [8, 9, 10, 11], 10, true);
+    // this._sprite.animations.add('top', [12, 13, 14, 15], 10, true);
+    // this._sprite.animations.add('right', [4, 5, 6, 7], 10, true);
+    // this._sprite.animations.add('bottom', [0, 1, 2, 3], 10, true);
+    // this._sprite.animations.add('left', [8, 9, 10, 11], 10, true);
 };
 
 Monster.prototype.move = function() {
@@ -70,9 +73,9 @@ Monster.prototype.getDistanceBetweenPoints = function(x, y, newX, newY) {
         distance += newX-x;
     }
     if(y > newY) {
-        distance += y-newY;
+        distance += 1.1*(y-newY);
     } else if(y < newY) {
-        distance += newY-y;
+        distance += 1.1*(newY-y);
     }
 
     return distance;
