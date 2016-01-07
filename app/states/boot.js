@@ -8,13 +8,13 @@ Boot.prototype = {
         this.game.stage.disableVisibilityChange = true;
         this.game.stage.backgroundColor = '#FFFFFF';
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        
-        // This event is dispatched when the final file in the load queue has been loaded
-        this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
 
         this.showLoadingText();
         this.loadMap();
         this.loadAssets();
+
+        // This event is dispatched when the final file in the load queue has been loaded
+        this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     },
 
     onLoadComplete: function(){
@@ -30,6 +30,7 @@ Boot.prototype = {
     },
 
     loadAssets: function(){
+        this.game.load.image('bgshop', 'images/bg-shop.jpg');
         this.game.load.image('bgmenu', 'images/bg-menu.jpg');
         this.game.load.spritesheet('btnPlay', 'images/btn_play.jpg', 213, 52);
         this.game.load.spritesheet('btnReady', 'images/btn_ready.jpg', 213, 52);
