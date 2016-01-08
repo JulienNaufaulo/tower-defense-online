@@ -1,35 +1,60 @@
 'use strict';
 
-function Shop(game, groupTowers){
+var Tower = require('../Tower/Tower');
+
+function Shop(game, listTowers, playerDatas, socket){
     var that = this;
     this._game = game;
-    this._groupTowers = groupTowers;
+    this._listTowers = listTowers;
+    this._tower = null;
     this._isATowerSelected = false;
-    this._sprite = null;
+    this._typeOfTowerSelected = null;
+    this._playerDatas = playerDatas;
+    this._socket = socket;
 
     $('#app').append('<div id="shop"></div>');
+
     $.get("shop.html", function(data){
         $('#shop').html(data);
         $('.tower').click(function(){
-            var type = $(this).attr("id");
-            var pos = that._game.input.activePointer.position;
-
-            if( that._sprite != null ) {
-                that._sprite.destroy();
-            }
-            
-            that._sprite = that._groupTowers.create(pos.x, pos.y, type);
-            that._sprite.scale.x = 0.8;
-            that._sprite.scale.y = 0.8;
-            that._sprite.anchor.x = 0.3;
-            that._sprite.anchor.y = 0.4;
-            that._sprite.alpha = 0.5;
-            that._isATowerSelected = true;
+            that.deleteGhostTower();
+            that._typeOfTowerSelected = $(this).attr("id");
+            that.createGhostTower();
         });
     });
     $('#shop').slideDown();
 
-
+    // Si l'utilisateur clique sur ESC, il déselectionne l'unité choisie.
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27){
+            that.deleteGhostTower();
+        }
+    });
 };
+
+Shop.prototype.createGhostTower = function() {
+    // this.deleteGhostTower();
+    var pos = this._game.input.activePointer.position;
+
+    this._tower = new Tower(this._listTowers.count()+1, this._playerDatas.color, this._game, this._typeOfTowerSelected, "stick", this._socket, this._listTowers);
+    this._tower._sprite.alpha = 0.5;
+
+    this._isATowerSelected = true;
+};
+
+Shop.prototype.deleteGhostTower = function() {
+    this._isATowerSelected = false;
+    if( this._tower != null ) {
+        this._tower._sprite.destroy();
+        this._tower._graphicRange.destroy();
+        this._tower = null;
+    }
+}
+
+Shop.prototype.buyTower = function() {
+    var tower = new Tower(this._listTowers.count()+1, this._playerDatas.color, this._game, this._typeOfTowerSelected, "stick", this._socket, this._listTowers);;
+    tower.create(this._tower._sprite.x, this._tower._sprite.y);
+    //this.deleteGhostTower();
+}
 
 module.exports = Shop;

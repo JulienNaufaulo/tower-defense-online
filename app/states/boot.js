@@ -36,7 +36,7 @@ Boot.prototype = {
         this.game.load.spritesheet('btnReady', 'images/btn_ready.jpg', 213, 52);
         this.game.load.spritesheet('character', 'images/sprites-character.png', 27, 35);
         this.game.load.spritesheet('skeleton', 'images/sprites-squelette.png', 31, 48);
-        this.game.load.spritesheet('peasant-naked-stick', 'images/towers/peasant/sprite-peasant-naked-stick.png', 45, 49);
+        this.game.load.spritesheet('peasant-stick', 'images/towers/peasant/sprite-peasant-stick.png', 45, 49);
         // this.game.load.image('grille', 'images/grille.jpg');
     },
 

@@ -25,7 +25,7 @@ function Play(){
     this._monstersLayer;
 
     this._waves = [];
-    this._towers;
+    this._listTowers;
 
     this._timer;
     this._timeUtils = new TimeUtils();
@@ -53,8 +53,8 @@ Play.prototype = {
     create: function() {
 
         this.createMap();
-        this._towers = new ListTowers(this.game);
-        this._shop = new Shop(this.game, this._towers._groupTowers);
+        this._listTowers = new ListTowers(this.game);
+        this._shop = new Shop(this.game, this._listTowers, this._playerDatas, this._socket);
         
 
 
@@ -120,11 +120,15 @@ Play.prototype = {
         this._marker = this.game.add.graphics();
         this._marker.lineStyle(2, 0x000000, 1);
         this._marker.drawRect(0, 0, this._tileWidth, this._tileHeight);
+        this._marker.endFill();
     },
 
     update: function() {
 
         if( this._playerDatas.ready ) {
+
+            this._marker.x = this._floor.getTileX(this.game.input.activePointer.worldX) * this._tileWidth;
+            this._marker.y = this._floor.getTileY(this.game.input.activePointer.worldY) * this._tileHeight;
 
             this._timeUtils.updateTimer(this.game, this._timer);
 
@@ -133,15 +137,14 @@ Play.prototype = {
             }
 
             if( this._shop._isATowerSelected ) {
-                console.log("selected");
                 var pos = this.game.input.activePointer.position;
-                this._shop._sprite.x = this._floor.getTileX(this.game.input.activePointer.worldX) * this._tileWidth;
-                this._shop._sprite.y = this._floor.getTileY(this.game.input.activePointer.worldY) * this._tileHeight;
+                this._shop._tower._sprite.x = this._floor.getTileX(this.game.input.activePointer.worldX) * this._tileWidth;
+                this._shop._tower._sprite.y = this._floor.getTileY(this.game.input.activePointer.worldY) * this._tileHeight;
+                this._shop._tower.drawRange(this._marker, this._tileWidth, this._tileHeight, this._floor);
                 this.game.input.onDown.add(this.buildTower, this);
-            }
-
-            this._marker.x = this._floor.getTileX(this.game.input.activePointer.worldX) * this._tileWidth;
-            this._marker.y = this._floor.getTileY(this.game.input.activePointer.worldY) * this._tileHeight;
+            } else {
+                this.game.input.onDown.remove(this.buildTower, this);
+            }   
         }
     },
 
@@ -160,13 +163,11 @@ Play.prototype = {
             var TowerposY = tileTower.y*this._tileHeight;
 
             // S'il n'y a pas déjà de tour construite dessus
-            if( this._towers.isEmptyTile(TowerposX, TowerposY) ) {
-                var tower = new Tower(this._towers.count()+1, this._playerDatas.color, this.game, "peasant", "naked", "stick", this._socket, this._towers._groupTowers);
-                tower.create(TowerposX, TowerposY);
-                this._towers.add(tower);
+            if( this._listTowers.isEmptyTile(TowerposX, TowerposY) ) {
+                this._shop.buyTower();
             }
         }
-        console.log("nombre de tours : "+this._towers._towers.length);
+        console.log("nombre de tours : "+this._listTowers._towers.length);
     },
 
     render: function()
