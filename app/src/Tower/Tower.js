@@ -11,9 +11,7 @@ function Tower(id, owner, game, type, weapon, socket, listTowers){
     this._sprite.alpha = 0;
     this._sprite.scale.x = 0.8;
     this._sprite.scale.y = 0.8;
-    // this._sprite.anchor.x = 0.5;
-    // this._sprite.anchor.y = 0.4;
-    this._sprite.anchor.setTo(0.5, 0.5);
+    this._sprite.anchor.setTo(0.2, 0.5);
     this._game.physics.arcade.enable(this._sprite, Phaser.Physics.ARCADE);
     this._sprite.body.moves = false;
     this._isActive = false;
