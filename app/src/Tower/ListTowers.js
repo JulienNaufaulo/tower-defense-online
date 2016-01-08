@@ -24,4 +24,10 @@ ListTowers.prototype.count = function() {
     return this._towers.length;
 };
 
+ListTowers.prototype.assault = function(waves) {
+    for(var i=0, count=this._towers.length; i < count; i++) {
+        this._towers[i].assault(waves);
+    }
+};
+
 module.exports = ListTowers;

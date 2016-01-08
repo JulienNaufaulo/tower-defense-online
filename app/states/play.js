@@ -59,7 +59,7 @@ Play.prototype = {
 
 
         // Création de la 1ère vague de creeps
-        var path1 = [ {"x":67, "y":-50}, {"x":67, "y":150}, {"x":195, "y":150}, {"x":195, "y":245}, {"x":35, "y":245}, {"x":35, "y":432}, {"x":260, "y":432}, {"x":260, "y":338}, {"x":356, "y":338}, {"x":356, "y":70} ];
+        var path1 = [ {"x":79, "y":-50}, {"x":79, "y":165}, {"x":208, "y":165}, {"x":208, "y":261}, {"x":48, "y":261}, {"x":48, "y":453}, {"x":272, "y":453}, {"x":272, "y":355}, {"x":368, "y":355}, {"x":368, "y":80} ];
     	var wave1 = new Wave("Bleu", path1, this.game, 10, 5, this._socket);
     	wave1.create();
         this._waves.push(wave1);
@@ -137,14 +137,13 @@ Play.prototype = {
             }
 
             if( this._shop._isATowerSelected ) {
-                var pos = this.game.input.activePointer.position;
-                this._shop._tower._sprite.x = this._floor.getTileX(this.game.input.activePointer.worldX) * this._tileWidth;
-                this._shop._tower._sprite.y = this._floor.getTileY(this.game.input.activePointer.worldY) * this._tileHeight;
-                this._shop._tower.drawRange(this._marker, this._tileWidth, this._tileHeight, this._floor);
+                this._shop.updateGhostTower(this._marker, this._floor, this._tileWidth, this._tileHeight);
                 this.game.input.onDown.add(this.buildTower, this);
             } else {
                 this.game.input.onDown.remove(this.buildTower, this);
-            }   
+            }  
+
+            this._listTowers.assault(this._waves);
         }
     },
 
@@ -172,9 +171,9 @@ Play.prototype = {
 
     render: function()
     {        
-        // this.game.debug.text(Phaser.VERSION, this.game.world.width - 55, 14, "#ffff00");
-        // var pos = this.game.input.activePointer.position;
-        // this.game.debug.text("x:" + pos.x + " y:" + pos.y, 180, 200);
+        this.game.debug.text(Phaser.VERSION, this.game.world.width - 55, 14, "#ffff00");
+        var pos = this.game.input.activePointer.position;
+        this.game.debug.text("x:" + pos.x + " y:" + pos.y, 180, 200);
     }
 
 };

@@ -22,6 +22,7 @@ Monster.prototype.create = function(posX, posY) {
     this._sprite = this._game.add.sprite(posX, posY, this._type);
     this._sprite.scale.x = 0.8;
     this._sprite.scale.y = 0.8;
+    this._sprite.anchor.setTo(0.5, 0.5);
 
     this._game.physics.arcade.enable(this._sprite, Phaser.Physics.ARCADE);
     this._sprite.body.moves = false;
