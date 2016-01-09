@@ -57,9 +57,9 @@ Shop.prototype.updateGhostTower = function(marker, floorLayer, tileWidth, tileHe
     this._tower.drawRange(marker, tileWidth, tileHeight, floorLayer);
 }
 
-Shop.prototype.buyTower = function() {
+Shop.prototype.buyTower = function(tileTower) {
     var tower = this.getInstance();
-    tower.create(this._tower._sprite.x, this._tower._sprite.y);
+    tower.create(tileTower.x, tileTower.y);
 }
 
 Shop.prototype.getInstance = function() {

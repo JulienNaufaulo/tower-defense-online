@@ -59,16 +59,17 @@ Play.prototype = {
 
 
         // Création de la 1ère vague de creeps
-        var path1 = [ {"x":79, "y":-50}, {"x":79, "y":165}, {"x":208, "y":165}, {"x":208, "y":261}, {"x":48, "y":261}, {"x":48, "y":453}, {"x":272, "y":453}, {"x":272, "y":355}, {"x":368, "y":355}, {"x":368, "y":80} ];
-    	var wave1 = new Wave("Bleu", path1, this.game, 10, 5, this._socket);
+        var path1 = [ {"x":2, "y":0}, {"x":2, "y":5}, {"x":6, "y":5}, {"x":6, "y":8}, {"x":1, "y":8}, {"x":1, "y":14}, {"x":8, "y":14}, {"x":8, "y":11}, {"x":11, "y":11}, {"x":11, "y":2} ];
+        // var path1 = [ {"x":79, "y":-50}, {"x":79, "y":165}, {"x":208, "y":165}, {"x":208, "y":261}, {"x":48, "y":261}, {"x":48, "y":453}, {"x":272, "y":453}, {"x":272, "y":355}, {"x":368, "y":355}, {"x":368, "y":80} ];
+    	var wave1 = new Wave("Bleu", this._floor, path1, this.game, 10, 2, this._socket);
     	wave1.create();
         this._waves.push(wave1);
 
         // Création de la 2ème vague de creeps
-        var path2 = [ {"x":675, "y":-50}, {"x":675, "y":150}, {"x":547, "y":150}, {"x":547, "y":245}, {"x":707, "y":245}, {"x":707, "y":432}, {"x":482, "y":432}, {"x":482, "y":338}, {"x":386, "y":338}, {"x":386, "y":70} ];
-        var wave2 = new Wave("Rouge", path2, this.game, 10, 5, this._socket);
-        wave2.create();
-        this._waves.push(wave2);
+        // var path2 = [ {"x":675, "y":-50}, {"x":675, "y":150}, {"x":547, "y":150}, {"x":547, "y":245}, {"x":707, "y":245}, {"x":707, "y":432}, {"x":482, "y":432}, {"x":482, "y":338}, {"x":386, "y":338}, {"x":386, "y":70} ];
+        // var wave2 = new Wave("Rouge", this._floor, path2, this.game, 10, 5, this._socket);
+        // wave2.create();
+        // this._waves.push(wave2);
 
         this._timer = this.game.add.text(this.game.world.centerX-43, 0, "00:00:00", {
             font: "22px Arial",
@@ -143,7 +144,7 @@ Play.prototype = {
                 this.game.input.onDown.remove(this.buildTower, this);
             }  
 
-            this._listTowers.assault(this._waves);
+            this._listTowers.waitForEnemies(this._waves);
         }
     },
 
@@ -163,7 +164,7 @@ Play.prototype = {
 
             // S'il n'y a pas déjà de tour construite dessus
             if( this._listTowers.isEmptyTile(TowerposX, TowerposY) ) {
-                this._shop.buyTower();
+                this._shop.buyTower(tileTower);
             }
         }
         console.log("nombre de tours : "+this._listTowers._towers.length);

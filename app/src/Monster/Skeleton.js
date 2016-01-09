@@ -2,9 +2,9 @@
 
 var Monster = require('./Monster');
 
-function Skeleton(id, game, moveSpeed, path, socket, idWave, type){
+function Skeleton(id, layer, game, moveSpeed, path, socket, idWave, type){
     /* Appel du constructeur de la Monster */
-    Monster.call(this, id, game, moveSpeed, path, socket, idWave, type); 
+    Monster.call(this, id, layer, game, moveSpeed, path, socket, idWave, type); 
 };
 
 Skeleton.prototype = new Monster();

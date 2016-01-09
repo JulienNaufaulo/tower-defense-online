@@ -55,12 +55,14 @@ function PlayNetworkManagerClient(socket, phaser, waves, gameDatas) {
             if( waves[i]._id == data.idWave ){
                 var monster = waves[i].getMonsterById(data.idMonster);
                 if( monster._currentIndex == data.currentIndex ) {
-                    if( monster._sprite.x != data.posX || monster._sprite.y != data.posY ) {
+                    if( monster._tileX != data.tileX || monster._tileY != data.tileY ) {
                         monster._tween.stop();
-                        monster._tween = phaser.add.tween(monster._sprite).to({x:data.posX,y:data.posY}, 0.1);
+                        monster._tween = phaser.add.tween(monster._sprite).to({x:data.tileX*32,y:data.tileY*32}, 0.1);
                         monster._tween.onComplete.add(function(){                            
-                            monster._x = data.posX;
-                            monster._y = data.posY;
+                            monster._tileX = data.tileX;
+                            monster._tileY = data.tileY;
+                            monster._sprite.x = data.tileX*32;
+                            monster._sprite.y = data.tileY*32;
                         });
 
                         if( monster._currentIndex+1 == monster._path.length) {

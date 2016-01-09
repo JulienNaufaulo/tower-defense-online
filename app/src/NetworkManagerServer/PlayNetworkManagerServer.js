@@ -37,7 +37,7 @@ function PlayNetworkManagerServer(client, rooms){
 		// On récupère les infos du joueur
 		var player = room.getPlayerById(client);
 
-		client.broadcast.in(room._name).emit('CHECK_SPRITE_POSITION', {"idMonster" : data.idMonster, "currentIndex" : data.currentIndex, "posX" : data.posX, "posY" : data.posY, "idWave": data.idWave});
+		client.broadcast.in(room._name).emit('CHECK_SPRITE_POSITION', {"idMonster" : data.idMonster, "currentIndex" : data.currentIndex, "tileX" : data.tileX, "tileY" : data.tileY, "idWave": data.idWave});
 	}
 
 	function onRequestLifeLost(idWave) {
