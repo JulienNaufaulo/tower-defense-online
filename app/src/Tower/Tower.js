@@ -77,10 +77,10 @@ Tower.prototype.isMonsterInRange = function(monster) {
 Tower.prototype.shoot = function(monster, wave) {
     if (this._game.time.now > this._nextFire) {
         this._nextFire = this._game.time.now + this._fireRate;
-        console.log("ATTACK");
+        console.log("ATTACK "+monster._id+" !");
         // monster._sprite.kill();
         // wave.removeAMonster(wave._id, monster._id);
-        this._monsterFocused = null;
+        // this._monsterFocused = null;
     }
     // console.log("tour "+this._id+" SHOOT !");
 };

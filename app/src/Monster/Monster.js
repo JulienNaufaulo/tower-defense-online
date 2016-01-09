@@ -48,7 +48,7 @@ Monster.prototype.move = function() {
             that._tileY = newTileY;
 
             that._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id});
-
+            
             if( that._currentIndex+1 == that._path.length) {
                 that._currentIndex=0;
                 that._socket.emit('LIFE_LOST', that._wave._id);

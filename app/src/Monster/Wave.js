@@ -18,8 +18,7 @@ function Wave(id, layer, path, game, nbMonsters, moveSpeed, socket){
 Wave.prototype.create = function() { 
 	var posY=this._path[0].y;
 	for(var i=1; i <= this._nbMonsters; i++) {
-		var monster = new Skeleton(i, this._layer, this._game, this._moveSpeed, this._path, this._socket, this._id, "skeleton");
-		// var monster = new Monster(i, this._game, this._moveSpeed, this._path, this._socket, this._id);
+		var monster = new Skeleton(i, this._layer, this._game, this._moveSpeed, this._path, this._socket, this, "skeleton");
 		posY -= 2;
 		monster.create(this._path[0].x, posY);
 		this._monsters.push(monster);
@@ -30,7 +29,7 @@ Wave.prototype.move = function() {
 	for(var i=0; i < this._monsters.length; i++) {
 		this._monsters[i].move();
 		if( this._monsters[i]._currentIndex == (this._monsters[i]._path.length-1) ) {
-			if( this._monsters[i]._sprite.y <= 90 ) {
+			if( this._monsters[i]._sprite.y <= 100 ) {
 				this._monsters[i].hide();
 			} else {
 				this._monsters[i].reveal();
