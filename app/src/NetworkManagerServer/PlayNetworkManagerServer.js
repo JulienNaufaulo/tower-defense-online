@@ -40,17 +40,20 @@ function PlayNetworkManagerServer(client, rooms){
 		client.broadcast.in(room._name).emit('CHECK_SPRITE_POSITION', {"idMonster" : data.idMonster, "currentIndex" : data.currentIndex, "tileX" : data.tileX, "tileY" : data.tileY, "idWave": data.idWave});
 	}
 
-	function onRequestLifeLost(idWave) {
+	function onRequestLifeLost(waveOwner) {
+
+		console.log("vie perdu !");
 		// On récupère la room du client
 		var room = rooms.getRoomOfPlayer(client);
 
 		// On récupère les infos du joueur
 		var player = room.getPlayerById(client);
 
-		if( idWave == player._color ) {
+		if(waveOwner == player._color){
 			player._life--;
 			client.emit('GET_MY_LIFE', player._life);
 		}
+		
 	}
 
 };

@@ -7,16 +7,17 @@ function ListTowers(game){
 
 ListTowers.prototype.add = function(tower) {
     this._towers.push(tower);
+    this._groupTowers.sort('y', Phaser.Group.SORT_ASCENDING);
 };
 
-ListTowers.prototype.isEmptyTile = function(posX, posY) {
+ListTowers.prototype.isEmptyTile = function(tileTower) {
     for(var i=0, count=this._towers.length; i < count; i++) {
-        if(this._towers[i]._sprite.x == posX && this._towers[i]._sprite.y == posY) {
+        if(this._towers[i]._tileX == tileTower.x && this._towers[i]._tileY == tileTower.y) {
             console.log("Il y a déjà une tour construite ici !");
             return false;
         }
     }
-    console.log("Aucune tour n'est construite ici ! OK");
+    console.log("Construction OK");
     return true;
 };
 

@@ -3,15 +3,14 @@
 var Tower = require('../Tower/Tower');
 var Peasant = require('../Tower/Peasant');
 
-function Shop(game, listTowers, playerDatas, socket){
+function Shop(listTowers, playerDatas, map){
     var that = this;
-    this._game = game;
     this._listTowers = listTowers;
+    this._playerDatas = playerDatas;
+    this._map = map;
     this._tower = null;
     this._isATowerSelected = false;
     this._typeOfTowerSelected = null;
-    this._playerDatas = playerDatas;
-    this._socket = socket;
 
     $('#app').append('<div id="shop"></div>');
 
@@ -34,8 +33,9 @@ function Shop(game, listTowers, playerDatas, socket){
 };
 
 Shop.prototype.createGhostTower = function() {
-    var pos = this._game.input.activePointer.position;
-    this._tower = this.getInstance();
+    var pos = this._map._game.input.activePointer.position;
+    var tile = this._map._map.getTileWorldXY(pos.x, pos.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
+    this._tower = this.getInstance(tile);
     this._tower._sprite.alpha = 0.5;
     this._isATowerSelected = true;
 };
@@ -50,22 +50,27 @@ Shop.prototype.deleteGhostTower = function() {
     }
 }
 
-Shop.prototype.updateGhostTower = function(marker, floorLayer, tileWidth, tileHeight) {
-    var pos = this._game.input.activePointer.position;
-    this._tower._sprite.x = floorLayer.getTileX(this._game.input.activePointer.worldX) * tileWidth;
-    this._tower._sprite.y = floorLayer.getTileY(this._game.input.activePointer.worldY) * tileHeight;
-    this._tower.drawRange(marker, tileWidth, tileHeight, floorLayer);
+Shop.prototype.updateGhostTower = function(marker) {
+    var pos = this._map._game.input.activePointer.position;
+    var tile = this._map._map.getTileWorldXY(pos.x, pos.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
+    this._tower._tileX = tile.x;
+    this._tower._tileY = tile.y;
+    this._tower._sprite.x = tile.x*this._map._tileWidth;
+    this._tower._sprite.y = tile.y*this._map._tileHeight;
+    this._tower.drawRange(marker, this._map);
 }
 
 Shop.prototype.buyTower = function(tileTower) {
-    var tower = this.getInstance();
-    tower.create(tileTower.x, tileTower.y);
+    var tower = this.getInstance(tileTower);
+    this._listTowers.add(tower);
+    tower._isActive = true;
+    // tower.create(tileTower.x, tileTower.y);
 }
 
-Shop.prototype.getInstance = function() {
+Shop.prototype.getInstance = function(tile) {
     switch(this._typeOfTowerSelected) {
         case "peasant":
-            return new Peasant(this._listTowers.count()+1, this._playerDatas.color, this._game, this._typeOfTowerSelected, "stick", this._socket, this._listTowers);
+            return new Peasant(this._playerDatas.color, this._typeOfTowerSelected, "stick", this._map, this._listTowers, tile);
             break;
     }
 }

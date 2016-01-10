@@ -23,14 +23,14 @@ Boot.prototype = {
     },
 
     loadMap: function() {
-        this.game.load.tilemap('map', 'images/map/level-castle.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('map-castle', 'images/map/level-castle.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('castle2', 'images/map/Castle2.png');
         this.game.load.image('castle3', 'images/map/castle3.png');
         this.game.load.image('metaTiles', 'images/map/meta_tiles.png');
     },
 
     loadAssets: function(){
-        this.game.load.image('bgshop', 'images/bg-shop.jpg');
+        this.game.load.image('healthbar', 'images/monsters/hp.jpg');
         this.game.load.image('bgmenu', 'images/bg-menu.jpg');
         this.game.load.spritesheet('btnPlay', 'images/btn_play.jpg', 213, 52);
         this.game.load.spritesheet('btnReady', 'images/btn_ready.jpg', 213, 52);
