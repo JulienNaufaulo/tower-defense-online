@@ -23,6 +23,7 @@ function Tower(owner, type, weapon, map, listTowers, tile){
     this._graphicRange = map._game.add.graphics();
     this._graphicRange.lineStyle(1, 0xFFCCCC, 1);
 
+    this._isShooting = false;
     this._monsterFocused = null;
     this._nextFire = 0;
 };
@@ -40,62 +41,51 @@ Tower.prototype.delete = function() {
 };
 
 Tower.prototype.waitForEnemies = function(waves) {
-
-    if(this._monsterFocused != null) {
-        if(this.isMonsterInRange(this._monsterFocused)) {
-            this.shoot(this._monsterFocused);
-        } else {
-            this._sprite.animations.stop('attack', true);
-            this._monsterFocused = null;
-        }
-    } else {
-        for(var i=0, count=waves.length; i < count; i++) {
-            for(var j=0, nbMonsters=waves[i]._monsters.length; j < nbMonsters; j++) {
-                var monster = waves[i]._monsters[j];
-                if(this.isMonsterInRange(monster)) {
-                    this._monsterFocused = monster;
-                    this.shoot(monster, waves[i]);
-                }   
+    for(var i=0, count=waves.length; i < count; i++) {
+        for(var j=0, nbMonsters=waves[i]._monsters.length; j < nbMonsters; j++) {
+            if(!waves[i]._monsters[j]._isDead && waves[i]._monsters[j]._sprite.alpha == 1) {
+                if(this.isMonsterInRange(waves[i]._monsters[j])) {
+                    this.shoot(waves[i]._monsters[j]);
+                }
             }
+               
         }
     }
-
 };
 
 Tower.prototype.isMonsterInRange = function(monster) {
-    if(monster._sprite.alpha == 1 && !monster._isDead) {
-        var tile = this._map._map.getTileWorldXY(monster._sprite.x, monster._sprite.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
-        var distance = Math.round(Phaser.Math.distance(this._tileX, this._tileY, tile.x, tile.y));
-        return distance <= this._range;
-    }
-    return false;
-
+    var tile = this._map._map.getTileWorldXY(monster._sprite.x, monster._sprite.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
+    var distance = Math.round(Phaser.Math.distance(this._tileX, this._tileY, tile.x, tile.y));
+    return distance <= this._range;
 };
 
-Tower.prototype.shoot = function(monster, wave) {
+Tower.prototype.shoot = function(monster) {
 
     if (this._map._game.time.now > this._nextFire) {
 
+        var that = this;
+        this._isShooting = true;
         this._nextFire = this._map._game.time.now + this._fireRate;
+        this._anim.play('attack');
 
-        this._sprite.animations.play('attack');
+        this._anim.onComplete.add(function() {
 
-        monster._currentHP -= this._damage;
+            monster._currentHP -= that._damage;
 
-        if(monster._currentHP <= 0 ) {
-            monster._healthBar.width = 0;
-            monster._healthBar.alpha = 0;
-            monster._sprite.alpha = 0;
-            monster._isDead = true;
-        } else {
-            monster._healthBar.width = monster._currentHP*monster._healthBar.width/monster._maxHP;
-        }
-        
-        // monster._healthBar.alpha -= 0.1;
-        // monster._sprite.kill();
-        // wave.removeAMonster(wave._id, monster._id);
-        // this._monsterFocused = null;
-        // this._monsterFocused = null;
+            if(monster._currentHP <= 0 ) {
+                monster._healthBar.width = 0;
+                monster._healthBar.alpha = 0;
+                monster._sprite.alpha = 0;
+                monster._isDead = true;
+                that._monsterFocused = null;
+                
+            } else {
+                monster._healthBar.width = monster._currentHP*monster._healthBar.width/monster._maxHP;
+            }
+            console.log("attaque contre le monstre "+monster._id+" terminé !");
+            that._anim.stop(1);
+            that._isShooting = false;
+        });
     }
 };
 

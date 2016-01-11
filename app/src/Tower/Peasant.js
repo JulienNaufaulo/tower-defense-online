@@ -11,7 +11,7 @@ function Peasant(id, owner, game, type, weapon, socket, listTowers){
     this._fireRate = 1000;
     this._damage = 5;
 
-    this._sprite.animations.add('attack', [0, 1, 2, 3, 4, 5], this._fireRate/100, true);
+    this._anim = this._sprite.animations.add('attack', [0, 1, 2, 3, 4, 5], this._fireRate/100, false);
 };
 
 Peasant.prototype = Object.create(Tower.prototype);
