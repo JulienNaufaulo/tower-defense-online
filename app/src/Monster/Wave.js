@@ -35,17 +35,16 @@ Wave.prototype.getMonsterById = function(id) {
 	}
 };
 
-Wave.prototype.removeAMonster = function(idWave, idMonster) {
-	if(this._id == idWave) {
-		for(var i=0; i < this._monsters.length; i++) {
-			if(this._monsters[i]._id == idMonster) {
-				this._monsters[i].die();
-				// this._monsters[i] = null;
-				this._monsters.splice(i, 1);
-			}
-			    
+Wave.prototype.removeAMonster = function(idMonster) {
+	for(var i=0; i < this._monsters.length; i++) {
+		if(this._monsters[i]._id == idMonster) {
+			// this._monsters[i].die();
+			// this._monsters[i] = null;
+			this._monsters.splice(i, 1);
+			console.log("Nbre de monstres : "+this._monsters.length);
 		}
-	}
+		    
+	}	
 };
 
 module.exports = Wave;

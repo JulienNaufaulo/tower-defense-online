@@ -100,6 +100,9 @@ Play.prototype = {
 
             // Tours en attente d'ennemis
             this._listTowers.waitForEnemies(this._map._waves);
+
+            // Tours tirs sur les ennemies en focus
+            this._listTowers.shootEnemies();
         }
     },
 

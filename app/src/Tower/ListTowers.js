@@ -31,4 +31,11 @@ ListTowers.prototype.waitForEnemies = function(waves) {
     }
 };
 
+ListTowers.prototype.shootEnemies = function() {
+    for(var i=0, count=this._towers.length; i < count; i++) {
+        if(this._towers[i]._monsterFocused != null)
+            this._towers[i].shoot();
+    }
+};
+
 module.exports = ListTowers;

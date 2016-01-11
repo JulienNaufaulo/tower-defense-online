@@ -24,7 +24,6 @@ function Monster(id, type, tileX, tileY, path, map, wave){
 
     this._cropRect = new Phaser.Rectangle(0, 0, 0, this._healthBar.height);
     this._healthBar.alpha = 0;
-    this._isDead = false;
 };
 
 Monster.prototype.move = function() {
@@ -46,7 +45,7 @@ Monster.prototype.move = function() {
             that._tileX = newTileX;
             that._tileY = newTileY;
 
-            that._map._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id});
+            //that._map._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id});
             
             if( that._currentIndex+1 == that._path.length) {
                 that._currentIndex=0;
