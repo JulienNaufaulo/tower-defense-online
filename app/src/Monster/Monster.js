@@ -19,6 +19,7 @@ function Monster(id, type, tileX, tileY, path, map, wave){
     this._currentIndex = 1;
 
     this._healthBar = this._map._game.add.sprite(tileX*this._map._tileWidth, tileY*this._map._tileHeight, "healthbar");
+    this._healthBar.width = 30;
     // this._map._game.physics.arcade.enable(this._healthBar);
 
     this._cropRect = new Phaser.Rectangle(0, 0, 0, this._healthBar.height);

@@ -80,13 +80,15 @@ Tower.prototype.shoot = function(monster, wave) {
 
         this._sprite.animations.play('attack');
 
-        if(monster._healthBar.width-this._damage <= 0 ) {
+        monster._currentHP -= this._damage;
+
+        if(monster._currentHP <= 0 ) {
             monster._healthBar.width = 0;
             monster._healthBar.alpha = 0;
             monster._sprite.alpha = 0;
             monster._isDead = true;
         } else {
-            monster._healthBar.width -= this._damage;
+            monster._healthBar.width = monster._currentHP*monster._healthBar.width/monster._maxHP;
         }
         
         // monster._healthBar.alpha -= 0.1;
