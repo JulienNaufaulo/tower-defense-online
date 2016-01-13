@@ -28,7 +28,7 @@ Player.prototype.init = function(game) {
 
 Player.prototype.buy = function(tower) {
     this._gold -= tower._cost;
-    this._lifeTxt.setText(this._gold+" gold restant");
+    this._goldTxt.setText(this._gold+" gold restant");
 };
 
 Player.prototype.toString = function() {
