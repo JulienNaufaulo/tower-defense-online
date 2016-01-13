@@ -82,8 +82,12 @@ section{
   border-right: solid 1px #000;
   border-bottom: solid 1px #000;
   border-left: solid 1px #000;
-  height:150px;
   background:#eee;
+
+    h1{
+      margin:0;
+      padding:0;
+    }
 
     ul {
         margin:0;
@@ -100,6 +104,10 @@ section{
     }
     li:hover{
         background:#bbb;
+        cursor:pointer;
+    }
+    .clear{
+      clear:both;
     }
 
 }

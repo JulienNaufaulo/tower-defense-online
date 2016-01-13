@@ -1,6 +1,7 @@
 'use strict';
 
 var PlayNetworkManagerClient = require('../src/NetworkManagerClient/PlayNetworkManagerClient');
+var Player = require('../src/Player/Player');
 var Shop = require('../src/Shop/Shop');
 var Tower = require('../src/Tower/Tower');
 var ListTowers = require('../src/Tower/ListTowers');
@@ -11,16 +12,10 @@ function Play(){
 	this._socket;
     this._playNetworkManagerClient;
     this._map;
-    // this._waves = [];
     this._listTowers;
     this._timer;
     this._timeUtils = new TimeUtils();
-    this._playerDatas = {
-        "ready" : false,
-        "color" : null,
-        "life" : null,
-        "gold" : null
-    };
+    this._player = new Player();
     this._marker;
     this._shop;
 }
@@ -40,8 +35,11 @@ Play.prototype = {
         this._map.init();
         this._map.createWaves();
 
+        // Initialisation du joueur
+        this._player.init(this.game);
+
         this._listTowers = new ListTowers(this.game);
-        this._shop = new Shop(this._listTowers, this._playerDatas, this._map);
+        this._shop = new Shop(this._listTowers, this._player, this._map);
 
         // Création du marker
         this._marker = this.game.add.graphics();
@@ -51,26 +49,10 @@ Play.prototype = {
 
         this._timer = this.game.add.text(this.game.world.centerX-43, 0, "00:00:00", {
             font: "22px Arial",
-            fill: "#000000"
+            fill: "#ffffff"
         });
 
-        // Affichage du texte des vies restantes
-        this._playerDatas.life = this.game.add.text(100, 25, "");
-        this._playerDatas.life.anchor.set(0.5);
-        this._playerDatas.life.font = 'Arial';
-        this._playerDatas.life.fontWeight = 'bold';
-        this._playerDatas.life.fontSize = 20;
-        this._playerDatas.life.fill = "#000000";
-
-        // Affichage du texte du gold restant
-        this._playerDatas.gold = this.game.add.text(100, 65, "");
-        this._playerDatas.gold.anchor.set(0.5);
-        this._playerDatas.gold.font = 'Arial';
-        this._playerDatas.gold.fontWeight = 'bold';
-        this._playerDatas.gold.fontSize = 20;
-        this._playerDatas.gold.fill = "#000000";
-
-        this._playNetworkManagerClient = new PlayNetworkManagerClient(this._map, this._playerDatas);
+        this._playNetworkManagerClient = new PlayNetworkManagerClient(this._map, this._player, this._listTowers);
 
     	this._socket.emit('READY_TO_START');
     	
@@ -78,7 +60,7 @@ Play.prototype = {
 
     update: function() {
 
-        if( this._playerDatas.ready ) {
+        if( this._player.ready ) {
 
             // Update de la position du curseur
             this._marker.x = this._map.getLayerByName("sol").getTileX(this.game.input.activePointer.worldX) * this._map._tileWidth;
@@ -101,7 +83,7 @@ Play.prototype = {
             // Tours en attente d'ennemis
             this._listTowers.waitForEnemies(this._map._waves);
 
-            // Tours tirs sur les ennemies en focus
+            // Tours tirent sur les ennemis en focus
             this._listTowers.shootEnemies();
         }
     },
@@ -119,9 +101,6 @@ Play.prototype = {
             // on récupère la case cliquée sur le calque de la map
             var tileTower = this._map._map.getTileWorldXY(pos.x, pos.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
 
-            // var TowerposX = tileTower.x*this._map._tileWidth;
-            // var TowerposY = tileTower.y*this._map._tileHeight;
-
             // S'il n'y a pas déjà de tour construite dessus
             if( this._listTowers.isEmptyTile(tileTower) ) {
                 this._shop.buyTower(tileTower);
@@ -132,9 +111,9 @@ Play.prototype = {
 
     render: function()
     {        
-        // this.game.debug.text(Phaser.VERSION, this.game.world.width - 55, 14, "#ffff00");
         // var pos = this.game.input.activePointer.position;
-        // this.game.debug.text("x:" + pos.x + " y:" + pos.y, 180, 200);
+        // var tileTower = this._map._map.getTileWorldXY(pos.x, pos.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
+        // this.game.debug.text("x:" + tileTower.x + " y:" + tileTower.y, 180, 200);
     }
 
 };

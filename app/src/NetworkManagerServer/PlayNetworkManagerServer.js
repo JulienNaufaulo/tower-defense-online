@@ -6,6 +6,8 @@ function PlayNetworkManagerServer(client, rooms){
     client.on('READY_TO_START', onRequestReadyToStart);
     client.on('SPRITE_TWEEN_FINISHED', onRequestSpriteTweenFinished);
     client.on('LIFE_LOST', onRequestLifeLost);
+    client.on('MONSTER_DEAD', onRequestMonsterDead);
+    client.on('BUILD_TOWER', onRequestBuildTower);
 
     function onRequestReadyToStart() {
 
@@ -37,7 +39,7 @@ function PlayNetworkManagerServer(client, rooms){
 		// On récupère les infos du joueur
 		var player = room.getPlayerById(client);
 
-		client.broadcast.in(room._name).emit('CHECK_SPRITE_POSITION', {"idMonster" : data.idMonster, "currentIndex" : data.currentIndex, "tileX" : data.tileX, "tileY" : data.tileY, "idWave": data.idWave});
+		client.broadcast.in(room._name).emit('CHECK_SPRITE_POSITION', {"idMonster" : data.idMonster, "currentIndex" : data.currentIndex, "tileX" : data.tileX, "tileY" : data.tileY, "idWave": data.idWave, "owner" : data.owner});
 	}
 
 	function onRequestLifeLost(waveOwner) {
@@ -54,6 +56,32 @@ function PlayNetworkManagerServer(client, rooms){
 			client.emit('GET_MY_LIFE', player._life);
 		}
 		
+	}
+
+	function onRequestMonsterDead(data) {
+
+		// On récupère la room du client
+		var room = rooms.getRoomOfPlayer(client);
+
+		// On récupère les infos du joueur
+		var player = room.getPlayerById(client);
+
+		if(data.owner == player._color) {
+			client.broadcast.in(room._name).emit('A_MONSTER_IS_DEAD', { "idMonster" : data.idMonster, "idWave" : data.idWave, "owner" : data.owner });
+		}
+		
+	}
+
+	function onRequestBuildTower(data) {
+
+		// On récupère la room du client
+		var room = rooms.getRoomOfPlayer(client);
+
+		// On récupère les infos du joueur
+		var player = room.getPlayerById(client);
+
+		client.broadcast.in(room._name).emit('A_TOWER_HAS_BEEN_BUILT', {"towerType" : data.towerType, "owner" : player._color, "tileX" : data.tileX, "tileY" : data.tileY});
+
 	}
 
 };

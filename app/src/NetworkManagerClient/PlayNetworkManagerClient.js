@@ -1,25 +1,29 @@
 'use strict';
 
-function PlayNetworkManagerClient(map, gameDatas) {
+var TowerFactory = require('../Tower/TowerFactory');
+
+function PlayNetworkManagerClient(map, player, listTowers) {
 
     map._socket.on('INIT_DATAS_GAME', onRequestInitDatasGame);
     map._socket.on('GET_MY_LIFE', onRequestGetMyLife);
     map._socket.on('START_GAME', onRequestStartGame);
     map._socket.on('CHECK_SPRITE_POSITION', onRequestCheckSpritePosition);
+    map._socket.on('A_MONSTER_IS_DEAD', onRequestAMonsterIsDead);
+    map._socket.on('A_TOWER_HAS_BEEN_BUILT', onRequestATowerHasBeenBuilt);
 
     function onRequestInitDatasGame(data) {
         onRequestGetMyLife(data.life);
-        gameDatas.ready = data.ready;
-        gameDatas.color = data.color;
+        player.ready = data.ready;
+        player.color = data.color;
         onRequestGetMyGold(data.gold);
     }
 
     function onRequestGetMyLife(life) {
-        gameDatas.life.setText(life+" vies restantes");
+        player._lifeTxt.setText(life+" vies restantes");
     }
 
     function onRequestGetMyGold(gold) {
-        gameDatas.gold.setText(gold+" gold restant");
+        player._goldTxt.setText(gold+" gold restant");
     }
 
     function onRequestStartGame() {
@@ -43,7 +47,7 @@ function PlayNetworkManagerClient(map, gameDatas) {
                 map._game.time.reset();
                 clearInterval(countdown);
                 text.destroy();
-                gameDatas.ready = true;
+                player.ready = true;
             }
             count--;
 
@@ -51,33 +55,49 @@ function PlayNetworkManagerClient(map, gameDatas) {
     }
 
     function onRequestCheckSpritePosition(data) {
-        for(var i=0, count=map._waves.length; i < count; i++) {
-            if( map._waves[i]._id == data.idWave ){
-                var monster = map._waves[i].getMonsterById(data.idMonster);
-                if( monster._currentIndex == data.currentIndex ) {
-                    if( monster._tileX != data.tileX || monster._tileY != data.tileY ) {
-                        monster._tween.stop();
-                        monster._tween = map._game.add.tween(monster._sprite).to({x:data.tileX*map._tileWidth,y:data.tileY*map._tileHeight}, 0.1);
-                        monster._tween.onComplete.add(function(){                            
-                            monster._tileX = data.tileX;
-                            monster._tileY = data.tileY;
-                            monster._sprite.x = data.tileX*map._tileWidth;
-                            monster._sprite.y = data.tileY*map._tileHeight;
-                        });
+        var wave = map.getWaveByIdAndOwner(data.idWave, data.owner);
+        var monster = wave.getMonsterById(data.idMonster);
+        if( monster != undefined ) {
+            if( monster._currentIndex == data.currentIndex ) {
+                if( monster._tileX != data.tileX || monster._tileY != data.tileY ) {
+                    monster._tween.stop();
+                    monster._tween = map._game.add.tween(monster._sprite).to({x:data.tileX*map._tileWidth,y:data.tileY*map._tileHeight}, 0.1);
+                    monster._tween.onComplete.add(function(){                            
+                        monster._tileX = data.tileX;
+                        monster._tileY = data.tileY;
+                        monster._sprite.x = data.tileX*map._tileWidth;
+                        monster._sprite.y = data.tileY*map._tileHeight;
+                    });
 
-                        if( monster._currentIndex+1 == monster._path.length) {
-                            monster._currentIndex=0;
-                            monster.hide();
-                            map._socket.emit('LIFE_LOST', map._waves[i]._owner);
+                    if( monster._currentIndex+1 == monster._path.length) {
+                        monster._currentIndex=0;
+                        monster.hide();
+                        if(!monster._isDead) {
+                            map._socket.emit('LIFE_LOST', wave._owner);
                         }
-                        else 
-                            monster._currentIndex++;
-
-                        monster._tween.start();
                     }
+                    else 
+                        monster._currentIndex++;
+
+                    monster._tween.start();
                 }
-            }
+            }   
         }
+    }
+
+    function onRequestAMonsterIsDead(data) {
+        var wave = map.getWaveByIdAndOwner(data.idWave, data.owner);
+        var monster = wave.getMonsterById(data.idMonster);
+        if( monster != undefined ) {
+            wave.removeAMonster(monster._id);
+        } 
+    }
+
+    function onRequestATowerHasBeenBuilt(data) {
+        var tile = {"x" : data.tileX, "y" : data.tileY};
+        var tower = TowerFactory.getInstance(data.towerType, data.owner, map, listTowers, tile);
+        listTowers.add(tower);
+        tower._isActive = true;
     }
 
 };

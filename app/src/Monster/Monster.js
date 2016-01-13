@@ -24,6 +24,7 @@ function Monster(id, type, tileX, tileY, path, map, wave){
 
     this._cropRect = new Phaser.Rectangle(0, 0, 0, this._healthBar.height);
     this._healthBar.alpha = 0;
+    this._isDead = false;
 };
 
 Monster.prototype.move = function() {
@@ -45,22 +46,23 @@ Monster.prototype.move = function() {
             that._tileX = newTileX;
             that._tileY = newTileY;
 
-            //that._map._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id});
+            that._map._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id, "owner" : that._wave._owner});
             
             if( that._currentIndex+1 == that._path.length) {
                 that._currentIndex=0;
                 that.hide();
-                that._map._socket.emit('LIFE_LOST', that._wave._owner);
+                if(!that._isDead) {
+                    that._map._socket.emit('LIFE_LOST', that._wave._owner);
+                }
             }
             else 
                 that._currentIndex++;
-
         });
 
         this._tween.start();
     }
 
-    this._healthBar.x = this._sprite.x+5;
+    this._healthBar.x = this._sprite.x+2;
     this._healthBar.y = this._sprite.y-25;
 };
 
@@ -94,7 +96,8 @@ Monster.prototype.reveal = function() {
 }
 
 Monster.prototype.die = function() {
-    this.hide();
+    this._isDead = true;
+    this._wave.removeAMonster(this._id);
 }
 
 module.exports = Monster;

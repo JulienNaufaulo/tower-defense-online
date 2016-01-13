@@ -34,10 +34,9 @@ Boot.prototype = {
         this.game.load.image('bgmenu', 'images/bg-menu.jpg');
         this.game.load.spritesheet('btnPlay', 'images/btn_play.jpg', 213, 52);
         this.game.load.spritesheet('btnReady', 'images/btn_ready.jpg', 213, 52);
-        this.game.load.spritesheet('character', 'images/sprites-character.png', 27, 35);
-        this.game.load.spritesheet('skeleton', 'images/sprites-squelette.png', 31, 48);
-        this.game.load.spritesheet('peasant-stick', 'images/towers/peasant/sprite-peasant-stick.png', 45, 49);
-        // this.game.load.image('grille', 'images/grille.jpg');
+        this.game.load.spritesheet('skeleton', 'images/monsters/sprites-squelette.png', 31, 48);
+        this.game.load.spritesheet('Peasant-Fists', 'images/towers/peasant/sprite-peasant-fists.png', 45, 49);
+        this.game.load.spritesheet('Peasant-Stick', 'images/towers/peasant/sprite-peasant-stick.png', 45, 49);
     },
 
     showLoadingText: function(){

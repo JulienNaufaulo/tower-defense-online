@@ -3,10 +3,10 @@
 var Tower = require('../Tower/Tower');
 var Peasant = require('../Tower/Peasant');
 
-function Shop(listTowers, playerDatas, map){
+function Shop(listTowers, player, map){
     var that = this;
     this._listTowers = listTowers;
-    this._playerDatas = playerDatas;
+    this._player = player;
     this._map = map;
     this._tower = null;
     this._isATowerSelected = false;
@@ -16,15 +16,15 @@ function Shop(listTowers, playerDatas, map){
 
     $.get("shop.html", function(data){
         $('#shop').html(data);
-        $('.tower').click(function(){
+        $('#towers > li').click(function(){
             that.deleteGhostTower(); 
-            that._typeOfTowerSelected = $(this).attr("id");
+            that._typeOfTowerSelected = $(this).children("figure").children("img").attr("id");
             that.createGhostTower();
         });
     });
     $('#shop').slideDown();
 
-    // Si l'utilisateur clique sur ESC, il déselectionne l'unité choisie.
+    // Si l'utilisateur clique sur ESC, il désélectionne l'unité choisie.
     $(document).keyup(function(e) {
         if (e.keyCode == 27){
             that.deleteGhostTower();
@@ -64,13 +64,15 @@ Shop.prototype.buyTower = function(tileTower) {
     var tower = this.getInstance(tileTower);
     this._listTowers.add(tower);
     tower._isActive = true;
-    // tower.create(tileTower.x, tileTower.y);
+    this._player.buy(tower);
+    // On affiche la tour sur l'écran des autres joueurs
+    this._map._socket.emit('BUILD_TOWER', {"towerType" : tower._type, "tileX" : tileTower.x, "tileY" : tileTower.y});
 }
 
 Shop.prototype.getInstance = function(tile) {
     switch(this._typeOfTowerSelected) {
-        case "peasant":
-            return new Peasant(this._playerDatas.color, this._typeOfTowerSelected, "stick", this._map, this._listTowers, tile);
+        case "Peasant":
+            return new Peasant(this._typeOfTowerSelected, this._player.color, this._map, this._listTowers, tile);
             break;
     }
 }

@@ -1,17 +1,19 @@
 'use strict';
 
-function Tower(owner, type, weapon, map, listTowers, tile){
+var WeaponFactory = require('../Weapon/WeaponFactory');
+
+function Tower(type, owner, map, listTowers, tile){
     this._id = listTowers.count()+1;
+    this._type = type;
     this._owner = owner;
     this._map = map;
-    this._type = type;
-    this._weapon = weapon;
+    this._weapon = WeaponFactory.getInstance("Fists");
     this._listTowers = listTowers;
 
     this._tileX = tile.x;
     this._tileY = tile.y;
 
-    this._sprite = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, this._type+"-"+this._weapon);
+    this._sprite = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, this._type+"-"+this._weapon._name);
     this._sprite.alpha = 1;
     this._sprite.scale.x = 0.8;
     this._sprite.scale.y = 0.8;
@@ -34,12 +36,6 @@ Tower.prototype.drawRange = function(marker, map) {
     this._graphicRange.y = marker.y-(this._range*map._tileHeight);
 };
 
-Tower.prototype.delete = function() {
-    this._graphicRange.drawRect(0, 0, (this._range*2*tileWidth)+tileWidth, (this._range*2*tileHeight)+tileHeight);
-    this._graphicRange.x = marker.x-(this._range*tileWidth);
-    this._graphicRange.y = marker.y-(this._range*tileHeight);
-};
-
 Tower.prototype.waitForEnemies = function(waves) {
     if(this._monsterFocused != null) {
         if(!this.isMonsterInRange(this._monsterFocused)) {
@@ -51,8 +47,6 @@ Tower.prototype.waitForEnemies = function(waves) {
                 if(this._monsterFocused == null && waves[i]._monsters[j]._sprite.alpha == 1) {
                     if(this.isMonsterInRange(waves[i]._monsters[j])) {
                         this._monsterFocused = waves[i]._monsters[j];
-                        console.log(this._monsterFocused._id);
-                        console.log(waves[i]._monsters.length);
                     }
                 }
             }
@@ -70,19 +64,17 @@ Tower.prototype.shoot = function() {
     if (this._map._game.time.now > this._nextFire && !this._isShooting && this._monsterFocused != null) {
         var that = this;
         this._isShooting = true;
-        this._nextFire = this._map._game.time.now + this._fireRate;
+        this._nextFire = this._map._game.time.now + (this._fireRate+(this._weapon._weight*50));
         this._anim.play('attack');
     }
 };
 
 Tower.prototype.hitEnemy = function() {
     if(this._monsterFocused != null) {
-        this._monsterFocused._currentHP -= this._damage;
+        this._monsterFocused._currentHP -= this._weapon._damage+this._strengh;
         if(this._monsterFocused._currentHP <= 0 ) {
-            this._monsterFocused._healthBar.width = 0;
-            this._monsterFocused._healthBar.alpha = 0;
-            this._monsterFocused._sprite.alpha = 0;
-            this._monsterFocused._wave.removeAMonster(this._monsterFocused._id);
+            this._map._socket.emit('MONSTER_DEAD', {"idMonster" : this._monsterFocused._id, "idWave" : this._monsterFocused._wave._id});
+            this._monsterFocused.die();
             this._monsterFocused = null;
         } else {
             this._monsterFocused._healthBar.width = this._monsterFocused._currentHP*this._monsterFocused._healthBar.width/this._monsterFocused._maxHP;

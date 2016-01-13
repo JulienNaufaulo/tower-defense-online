@@ -70,7 +70,13 @@ Map.prototype.createWaves = function() {
             }
         }
     }
+}
 
+Map.prototype.getWaveByIdAndOwner = function(idWave, owner) {
+    for(var i=0, count=this._waves.length; i < count; i++) {
+        if(this._waves[i]._id == idWave && this._waves[i]._owner == owner)
+            return this._waves[i];
+    }
 }
 
 Map.prototype.moveWaves = function() {
