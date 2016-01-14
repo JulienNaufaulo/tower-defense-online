@@ -30,7 +30,7 @@ function PlayNetworkManagerClient(map, player, listTowers) {
 
     function onRequestStartGame() {
         // Compte à rebours
-        var count = 1;
+        var count = 5;
         var text = "";
         var countdown = setInterval(function(){
 
