@@ -4,6 +4,7 @@ var PlayNetworkManagerClient = require('../src/NetworkManagerClient/PlayNetworkM
 var Player = require('../src/Player/Player');
 var Menu = require('../src/Menu/Menu');
 var Tower = require('../src/Tower/Tower');
+var WeaponFactory = require('../src/Weapon/WeaponFactory');
 var ListTowers = require('../src/Tower/ListTowers');
 var MapFactory = require('../src/Map/MapFactory');
 var TimeUtils = require('../../utils/TimeUtils');
@@ -156,6 +157,20 @@ Play.prototype = {
                         });
                     }
 
+                    if( tower._owner == that._player._color ) {
+                        $('#infoTower').append('<div id="equipment"></div>');
+
+                        $.get("infoTower/"+tower._type+"/equipment.html", function(data) {
+                            $('#equipment').html(data);
+
+                            $('#list-equipment > td').click(function() {
+                                var weaponName = $(this).attr("id");
+                                var weapon = WeaponFactory.getInstance(weaponName);
+                                tower.setWeapon(weapon);
+                            });
+                        });
+                    }
+                    
                     document.getSelection().removeAllRanges();
 
                 });

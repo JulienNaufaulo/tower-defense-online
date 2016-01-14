@@ -101,4 +101,9 @@ Tower.prototype.hitEnemy = function() {
     this._isShooting = false;
 }
 
+Tower.prototype.setWeapon = function(weapon) {
+    this._weapon = weapon;
+    this._sprite.loadTexture(this._type+"-"+this._weapon._name, 0, true);
+};
+
 module.exports = Tower;
