@@ -5,7 +5,7 @@ var Weapon = require('./Weapon');
 function Stick(){
 	Weapon.call();
 	this._name = "Stick";
-	this._damage = 8;
+	this._damage = 5;
 	this._weight = 2;
 };
 

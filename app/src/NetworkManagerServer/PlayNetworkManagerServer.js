@@ -46,8 +46,6 @@ function PlayNetworkManagerServer(client, rooms){
 	}
 
 	function onRequestLifeLost(waveOwner) {
-
-		console.log("vie perdu !");
 		// On récupère la room du client
 		var room = rooms.getRoomOfPlayer(client);
 

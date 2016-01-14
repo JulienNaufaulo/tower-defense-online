@@ -56,6 +56,8 @@ Play.prototype = {
 
         // Création du menu de jeu
         this._menu = new Menu(this._listTowers, this._player, this._map);
+
+        this.game.input.onDown.add(this.checkTower, this);
     	
     },
 
@@ -79,7 +81,7 @@ Play.prototype = {
                 this.game.input.onDown.add(this.buildTower, this);
             } else {
                 this.game.input.onDown.remove(this.buildTower, this);
-            }  
+            }
 
             // Tours en attente d'ennemis
             this._listTowers.waitForEnemies(this._map._waves);
@@ -107,7 +109,60 @@ Play.prototype = {
                 this._menu._shop.buyTower(tileTower);
             }
         }
-        console.log("nombre de tours : "+this._listTowers._towers.length);
+    },
+
+    checkTower: function() {
+        var that = this;
+        // on récupère la position de la souris
+        var pos = this.game.input.activePointer.position;
+
+        // on récupère la case cliquée sur le calque de la map
+        var tileTower = this._map._map.getTileWorldXY(pos.x, pos.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
+
+        if( !this._menu._shop._isATowerSelected ) {
+
+            if(!this._listTowers.isEmptyTile(tileTower)) {
+
+                if (($("#infoTower").length == 0))
+                    $('#game').append('<div id="infoTower" style="position:absolute;"></div>');
+
+                var tower = this._listTowers.getTowerTile(tileTower);
+
+                $.get("infoTower.html", function(data){
+
+                    $('#infoTower').html(data);
+                    $('#typeInfoTower').empty().append(tower._type);
+                    $('#imgInfoTower').empty().append('<img src="images/shop/'+tower._imgShop+'" title="'+tower._type+'" />');
+                    $('#ownerInfoTower').empty().append(tower._owner);
+                    $('#ownerInfoTower').css("color",that._map._hexa.getHexa(tower._owner));
+                    $('#positionXInfoTower').append(tower._tileX);
+                    $('#positionYInfoTower').append(tower._tileY);
+                    $('#strenghInfoTower').append(tower._strengh +" (+"+tower._weapon._damage+")");
+                    $('#weaponInfoTower').append(tower._weapon._name);
+                    $('#attackSpeedInfoTower').append(tower._fireRate/1000+" (-"+tower._weapon._weight/100+")");
+                    $('#rangeInfoTower').append(tower._range);
+                    $('#costInfoTower').append(tower._cost);
+
+                    if( !$('#infoTower').is(":visible") ) {
+                        $('#infoTower').show("slide", {
+                            direction: "right" 
+                        }, 800);
+                        $(document).keyup(function(e) {
+                            if (e.keyCode == 27){
+                                $('#infoTower').hide("slide", {
+                                    direction: "right" 
+                                }, 800);
+                            }
+                        });
+                    }
+
+                    document.getSelection().removeAllRanges();
+
+                });
+
+                
+            }
+        }      
     },
 
     render: function()

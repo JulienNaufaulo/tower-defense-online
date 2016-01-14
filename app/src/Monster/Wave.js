@@ -45,7 +45,14 @@ Wave.prototype.removeAMonster = function(idMonster) {
 	        this._monsters[i]._sprite.alpha = 0;
 			this._monsters.splice(i, 1);
 		}    
-	}	
+	}
+	this._map.goToNextRound();
+};
+
+Wave.prototype.isEmpty = function() { 
+	if(this._monsters.length == 0)
+		return true;
+	return false;
 };
 
 module.exports = Wave;

@@ -13,12 +13,18 @@ ListTowers.prototype.add = function(tower) {
 ListTowers.prototype.isEmptyTile = function(tileTower) {
     for(var i=0, count=this._towers.length; i < count; i++) {
         if(this._towers[i]._tileX == tileTower.x && this._towers[i]._tileY == tileTower.y) {
-            console.log("Il y a déjà une tour construite ici !");
             return false;
         }
     }
-    console.log("Construction OK");
     return true;
+};
+
+ListTowers.prototype.getTowerTile = function(tileTower) {
+    for(var i=0, count=this._towers.length; i < count; i++) {
+        if(this._towers[i]._tileX == tileTower.x && this._towers[i]._tileY == tileTower.y) {
+            return this._towers[i];
+        }
+    }
 };
 
 ListTowers.prototype.count = function() {

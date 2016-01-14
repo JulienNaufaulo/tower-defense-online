@@ -23,6 +23,7 @@ section{
   width: 1110px;
 }
 #game {
+  position:relative;
   display: inline-block;
   width:768px;
   height:576px;
@@ -126,6 +127,58 @@ section{
             background:url('../images/heart.png') 5px center no-repeat;
         }
     }    
+}
+
+#infoTower{
+    position: absolute;
+    display:none;
+    top:0;
+    right:0;
+    z-index:9;
+    background: #eee;
+    padding:10px;
+    width: 200px;
+
+    table{
+        width: 100%;
+        td{
+            width:50%;
+        }
+        figure{
+            margin:0;
+            padding:0;
+        }
+    }
+
+    #stats{
+        border:solid 2px #ccc;
+        
+        td {
+            border:solid 2px #ccc;
+        }
+    }
+    #equipment{
+        #list-equipment{
+            td{
+                text-align: center;
+                font-size: 0.8em;
+            }
+            td:hover{
+                cursor: pointer;
+                background: #aaa;
+            }
+            .damage{
+                font-style: italic;
+            }
+            .gold{
+                display:block;
+                margin:0 auto;
+                width: 50px;
+                padding:10px 0 10px 15px;
+                background:url('../images/gold.png') 11px center no-repeat;
+            }
+        } 
+    }
 }
 
 #shop{

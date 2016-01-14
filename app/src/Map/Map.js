@@ -88,4 +88,45 @@ Map.prototype.moveWaves = function() {
     }
 }
 
+Map.prototype.goToNextRound = function() {
+    if(this.areAllWavesEmpty()) {
+        this._round++;
+        // Compte à rebours
+        var that = this;
+        var count = 5;
+        var text = "";
+        var countdown = setInterval(function(){
+
+            if(text != "")
+                text.destroy();
+
+            text = that._game.add.text(that._game.world.centerX, that._game.world.centerY, "Round "+that._round+" \n"+count);
+            text.anchor.set(0.5);
+            text.align = 'center';
+            text.font = 'Arial';
+            text.fontWeight = 'bold';
+            text.fontSize = 30;
+            text.fill = "#000000";
+
+            if( count == 0 ) {
+                clearInterval(countdown);
+                text.destroy();
+                $('#round').empty().append("Round "+that._round);
+                that.createWaves();
+            }
+            count--;
+
+        }, 1000);
+    }
+}
+
+Map.prototype.areAllWavesEmpty = function() {
+    var nbEmptywaves = 0;
+    for(var i=0, count=this._waves.length; i < count; i++) {
+        if( this._waves[i].isEmpty() )
+            nbEmptywaves++;
+    }
+    return nbEmptywaves == this._waves.length;
+}
+
 module.exports = Map;
