@@ -16,7 +16,7 @@
   },
   "scripts": {
     "postinstall": "bower install && brunch build -P",
-    "start": "brunch w"
+    "start": "brunch w -P"
   },
   "engines": {
     "node": "4.2.4",

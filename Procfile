@@ -1,1 +1,1 @@
-web: brunch w
+web: brunch w -P
