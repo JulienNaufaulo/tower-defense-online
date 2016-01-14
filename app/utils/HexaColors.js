@@ -2,8 +2,8 @@
 
 function HexaColors(){
 	this._hexaColors = {
-	    Bleu: "#3498DB",
-	    Rouge: "#E74C3C"
+	    "Bleu" : "#3498DB",
+	    "Rouge" : "#E74C3C"
 	};
 }
 

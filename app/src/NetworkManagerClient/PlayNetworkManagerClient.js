@@ -10,20 +10,22 @@ function PlayNetworkManagerClient(map, player, listTowers) {
     map._socket.on('CHECK_SPRITE_POSITION', onRequestCheckSpritePosition);
     map._socket.on('A_MONSTER_IS_DEAD', onRequestAMonsterIsDead);
     map._socket.on('A_TOWER_HAS_BEEN_BUILT', onRequestATowerHasBeenBuilt);
+    map._socket.on('GOLD_EARN', onRequestGoldEarn);
 
     function onRequestInitDatasGame(data) {
+        player._ready = data.ready;
+        player._color = data.color;
+        player._idRoom = data.idRoom;
         onRequestGetMyLife(data.life);
-        player.ready = data.ready;
-        player.color = data.color;
         onRequestGetMyGold(data.gold);
     }
 
     function onRequestGetMyLife(life) {
-        player._lifeTxt.setText(life+" vies restantes");
+        $('#life').empty().append(life);
     }
 
     function onRequestGetMyGold(gold) {
-        player._goldTxt.setText(gold+" gold restant");
+        $('#gold').empty().append(player._gold);
     }
 
     function onRequestStartGame() {
@@ -47,7 +49,8 @@ function PlayNetworkManagerClient(map, player, listTowers) {
                 map._game.time.reset();
                 clearInterval(countdown);
                 text.destroy();
-                player.ready = true;
+                player._ready = true;
+                player._playing = true;
             }
             count--;
 
@@ -93,11 +96,21 @@ function PlayNetworkManagerClient(map, player, listTowers) {
         } 
     }
 
-    function onRequestATowerHasBeenBuilt(data) {
+    function onRequestATowerHasBeenBuilt(data) {        
         var tile = {"x" : data.tileX, "y" : data.tileY};
         var tower = TowerFactory.getInstance(data.towerType, data.owner, map, listTowers, tile);
         listTowers.add(tower);
         tower._isActive = true;
+
+        if( data.owner == player._color ) {
+            player._gold = data.gold;
+            onRequestGetMyGold(data.gold);
+        }
+    }
+
+    function onRequestGoldEarn(gold) {
+        player._gold += gold;
+        onRequestGetMyGold(player._gold);
     }
 
 };

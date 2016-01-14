@@ -2,9 +2,9 @@
 
 var Map = require('./Map');
 
-function MapCastle(name, tileWidth, tileHeight, game, socket){
+function MapCastle(name, tileWidth, tileHeight, game, socket, player){
 
-    Map.call(this, name, tileWidth, tileHeight, game, socket);
+    Map.call(this, name, tileWidth, tileHeight, game, socket, player);
 
     this._paths = [
         {
@@ -45,6 +45,7 @@ MapCastle.prototype.init = function() {
     this.addLayer("bg porte");
     this.addLayer("cotes portes depart");
     this.addLayer("portes départ");
+    this.addLayer("drapeaux");
     this.addLayer("portes fin");
     this.addLayer("objets decoratifs");
     this.addLayer("meta");

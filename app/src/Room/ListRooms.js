@@ -12,7 +12,7 @@ ListRooms.prototype.addPlayer = function(client) {
 		var room = new Room(idRoom);
 
 		// On inscrit le client dans cette room
-		room.addPlayer(client, idRoom);
+		room.addPlayer(client);
 
 		// On ajoute la nouvelle room à la liste des rooms
 		this._rooms.push(room);

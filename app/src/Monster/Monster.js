@@ -68,7 +68,7 @@ Monster.prototype.move = function() {
 
 Monster.prototype.getDuree = function(newTileX , newTileY) {
     var distance = Phaser.Math.distance(this._tileX , this._tileY , newTileX , newTileY);
-    var duree = Math.round((350*distance)-(10*this._moveSpeed));
+    var duree = Math.round((500*distance)-(150*this._moveSpeed));
     return duree;
 };
 
@@ -96,7 +96,6 @@ Monster.prototype.reveal = function() {
 }
 
 Monster.prototype.die = function() {
-    this._isDead = true;
     this._wave.removeAMonster(this._id);
 }
 

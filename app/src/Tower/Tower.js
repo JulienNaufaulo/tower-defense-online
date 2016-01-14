@@ -13,6 +13,15 @@ function Tower(type, owner, map, listTowers, tile){
     this._tileX = tile.x;
     this._tileY = tile.y;
 
+    var bmd = this._map._game.add.bitmapData(map._tileWidth, map._tileHeight);
+    
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, map._tileWidth, map._tileHeight);
+    bmd.ctx.fillStyle = map._hexa.getHexa(this._owner);
+    bmd.ctx.fill();
+    this._socle = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, bmd);
+    this._socle.alpha = 0.5;
+
     this._sprite = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, this._type+"-"+this._weapon._name);
     this._sprite.alpha = 1;
     this._sprite.scale.x = 0.8;
@@ -38,7 +47,7 @@ Tower.prototype.drawRange = function(marker, map) {
 
 Tower.prototype.waitForEnemies = function(waves) {
     if(this._monsterFocused != null) {
-        if(!this.isMonsterInRange(this._monsterFocused)) {
+        if(!this.isMonsterInRange(this._monsterFocused) || this._monsterFocused._isDead) {
             this._monsterFocused = null;
         }
     } else {
@@ -70,10 +79,18 @@ Tower.prototype.shoot = function() {
 };
 
 Tower.prototype.hitEnemy = function() {
-    if(this._monsterFocused != null) {
+    if(this._monsterFocused != null && !this._monsterFocused._isDead) {
         this._monsterFocused._currentHP -= this._weapon._damage+this._strengh;
         if(this._monsterFocused._currentHP <= 0 ) {
-            this._map._socket.emit('MONSTER_DEAD', {"idMonster" : this._monsterFocused._id, "idWave" : this._monsterFocused._wave._id});
+            if(this._map._player._color == this._owner) {
+                this._map._socket.emit('MONSTER_DEAD', {
+                    "idMonster" : this._monsterFocused._id, 
+                    "idWave" : this._monsterFocused._wave._id, 
+                    "idTower" : this._id, 
+                    "ownerWave" : this._monsterFocused._wave._owner, 
+                    "price" : this._monsterFocused._price
+                });
+            }
             this._monsterFocused.die();
             this._monsterFocused = null;
         } else {

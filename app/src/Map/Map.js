@@ -2,8 +2,9 @@
 
 var Wave = require('../Monster/Wave');
 var MonsterFactory = require('../Monster/MonsterFactory');
+var HexaColors = require('../../utils/HexaColors');
 
-function Map(name, tileWidth, tileHeight, game, socket){
+function Map(name, tileWidth, tileHeight, game, socket, player){
     this._name = name;
     this._tileWidth = tileWidth;
     this._tileHeight = tileHeight;
@@ -13,7 +14,9 @@ function Map(name, tileWidth, tileHeight, game, socket){
     this._waves = [];
     this._round = 1;
     this._socket = socket;
+    this._player = player;
     this._monsterFactory = new MonsterFactory(this);
+    this._hexa = new HexaColors();
 };
 
 Map.prototype.init = function() {

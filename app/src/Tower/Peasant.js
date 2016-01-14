@@ -13,7 +13,6 @@ function Peasant(type, owner, map, listTowers, tile){
     this._cost = 5;
 
     this._anim = this._sprite.animations.add('attack', [0, 1, 2, 3, 4, 5], (this._fireRate/100)-this._weapon._weight/10, false);
-    // this._anim = this._sprite.animations.add('attack', [0, 1, 2, 3, 4, 5], (this._fireRate+(this._weapon._weight*50))/100, false);
     this._anim.onComplete.add(this.hitEnemy, this);
 };
 

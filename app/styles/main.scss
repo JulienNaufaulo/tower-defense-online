@@ -7,7 +7,10 @@ body {
   background: $default-bg;
   color: $default-text;
 }
-
+p{
+  padding:0;
+  margin:0;
+}
 h1 {
   font-size: 2em;
   margin: 0.5em 0 1em;
@@ -76,13 +79,59 @@ section{
     }
 }
 
-#shop{
+#menu {
+  position:relative;
   display:none;
   width:768px;
   border-right: solid 1px #000;
   border-bottom: solid 1px #000;
   border-left: solid 1px #000;
   background:#eee;
+}
+#infos {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin:0 auto;
+  text-align: center;
+  color:#fff;
+
+    #circle{
+        position:absolute;
+        border-radius: 50%;
+        top:-30px;
+        width: 150px;
+        height: 120px;
+        padding-top:30px;
+        border:solid 1px #fff;
+
+        #round {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 1.6em;
+        }
+
+        #gold {
+            display:block;
+            margin:0 auto;
+            width: 50px;
+            padding:10px 0 10px 15px;
+            background:url('../images/gold.png') 5px center no-repeat;
+        }
+        #life {
+            display:block;
+            margin:0 auto;
+            width: 50px;
+            padding:0 0 0 15px;
+            background:url('../images/heart.png') 5px center no-repeat;
+        }
+    }    
+}
+
+#shop{
+    display:block;
+    position: absolute;
+    top: 0;
 
     h1{
       margin:0;
@@ -99,8 +148,14 @@ section{
         float:left;
         margin:5px;
         padding: 7px 15px;
-        background:#777;
+        background:#ccc;
         text-align:center;
+        border:solid 1px #000;
+
+        figure{
+            margin:0;
+            padding:0;
+        }
     }
     li:hover{
         background:#bbb;
@@ -108,6 +163,11 @@ section{
     }
     .clear{
       clear:both;
+    }
+
+    .cost{
+        background:url('../images/gold.png') 10px center no-repeat;
+        padding: 0 0 0 18px;
     }
 
 }

@@ -2,6 +2,7 @@
 
 var Tower = require('../Tower/Tower');
 var Peasant = require('../Tower/Peasant');
+var TowerFactory = require('../Tower/TowerFactory');
 
 function Shop(listTowers, player, map){
     var that = this;
@@ -12,7 +13,7 @@ function Shop(listTowers, player, map){
     this._isATowerSelected = false;
     this._typeOfTowerSelected = null;
 
-    $('#app').append('<div id="shop"></div>');
+    $('#menu').append('<div id="shop"></div>');
 
     $.get("shop.html", function(data){
         $('#shop').html(data);
@@ -22,7 +23,6 @@ function Shop(listTowers, player, map){
             that.createGhostTower();
         });
     });
-    $('#shop').slideDown();
 
     // Si l'utilisateur clique sur ESC, il désélectionne l'unité choisie.
     $(document).keyup(function(e) {
@@ -35,7 +35,7 @@ function Shop(listTowers, player, map){
 Shop.prototype.createGhostTower = function() {
     var pos = this._map._game.input.activePointer.position;
     var tile = this._map._map.getTileWorldXY(pos.x, pos.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
-    this._tower = this.getInstance(tile);
+    this._tower = TowerFactory.getInstance(this._typeOfTowerSelected, this._player._color, this._map, this._listTowers, tile);
     this._tower._sprite.alpha = 0.5;
     this._isATowerSelected = true;
 };
@@ -44,7 +44,9 @@ Shop.prototype.deleteGhostTower = function() {
     this._isATowerSelected = false;
     if( this._tower != null ) {
         this._listTowers._groupTowers.remove(this._tower._sprite);
+        this._listTowers._groupTowers.remove(this._tower._socle);
         this._tower._sprite.destroy();
+        this._tower._socle.destroy();
         this._tower._graphicRange.destroy();
         this._tower = null;
     }
@@ -57,24 +59,13 @@ Shop.prototype.updateGhostTower = function(marker) {
     this._tower._tileY = tile.y;
     this._tower._sprite.x = tile.x*this._map._tileWidth;
     this._tower._sprite.y = tile.y*this._map._tileHeight;
+    this._tower._socle.x = tile.x*this._map._tileWidth;
+    this._tower._socle.y = tile.y*this._map._tileHeight;
     this._tower.drawRange(marker, this._map);
 }
 
 Shop.prototype.buyTower = function(tileTower) {
-    var tower = this.getInstance(tileTower);
-    this._listTowers.add(tower);
-    tower._isActive = true;
-    this._player.buy(tower);
-    // On affiche la tour sur l'écran des autres joueurs
-    this._map._socket.emit('BUILD_TOWER', {"towerType" : tower._type, "tileX" : tileTower.x, "tileY" : tileTower.y});
-}
-
-Shop.prototype.getInstance = function(tile) {
-    switch(this._typeOfTowerSelected) {
-        case "Peasant":
-            return new Peasant(this._typeOfTowerSelected, this._player.color, this._map, this._listTowers, tile);
-            break;
-    }
+    this._map._socket.emit('I_WANT_TO_BUY_A_TOWER', {"towerType" : this._typeOfTowerSelected, "cost" : this._tower._cost, "tileX" : tileTower.x, "tileY" : tileTower.y});
 }
 
 module.exports = Shop;

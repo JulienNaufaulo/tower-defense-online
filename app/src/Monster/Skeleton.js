@@ -13,8 +13,8 @@ function Skeleton(id, type, tileX, tileY, path, map, wave){
 
     this._maxHP = 10;
     this._currentHP = 10;
-
     this._moveSpeed = 1;
+    this._price = 3;
 };
 
 Skeleton.prototype = Object.create(Monster.prototype);

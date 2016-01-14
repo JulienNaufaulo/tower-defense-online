@@ -38,6 +38,8 @@ Wave.prototype.getMonsterById = function(id) {
 Wave.prototype.removeAMonster = function(idMonster) {
 	for(var i=0; i < this._monsters.length; i++) {
 		if(this._monsters[i]._id == idMonster) {
+			this._monsters[i]._isDead = true;
+    		this._monsters[i]._tween.stop();
 			this._monsters[i]._healthBar.width = 0;
 	        this._monsters[i]._healthBar.alpha = 0;
 	        this._monsters[i]._sprite.alpha = 0;

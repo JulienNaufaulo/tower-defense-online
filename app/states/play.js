@@ -2,7 +2,7 @@
 
 var PlayNetworkManagerClient = require('../src/NetworkManagerClient/PlayNetworkManagerClient');
 var Player = require('../src/Player/Player');
-var Shop = require('../src/Shop/Shop');
+var Menu = require('../src/Menu/Menu');
 var Tower = require('../src/Tower/Tower');
 var ListTowers = require('../src/Tower/ListTowers');
 var MapFactory = require('../src/Map/MapFactory');
@@ -17,7 +17,7 @@ function Play(){
     this._timeUtils = new TimeUtils();
     this._player = new Player();
     this._marker;
-    this._shop;
+    this._menu;
 }
 
 Play.prototype = {
@@ -30,37 +30,38 @@ Play.prototype = {
     create: function() {
 
         // Création de la map
-        var mapFactory = new MapFactory("castle", 32, 32, this.game, this._socket);
+        var mapFactory = new MapFactory("castle", 32, 32, this.game, this._socket, this._player);
         this._map = mapFactory.getInstance();
         this._map.init();
-        this._map.createWaves();
+        this._map.createWaves(); 
 
-        // Initialisation du joueur
-        this._player.init(this.game);
-
+        // Initialisation du groupe de tours
         this._listTowers = new ListTowers(this.game);
-        this._shop = new Shop(this._listTowers, this._player, this._map);
-
+        
         // Création du marker
         this._marker = this.game.add.graphics();
         this._marker.lineStyle(2, 0x000000, 1);
         this._marker.drawRect(0, 0, this._map._tileWidth, this._map._tileHeight);
         this._marker.endFill();
 
-        this._timer = this.game.add.text(this.game.world.centerX-43, 0, "00:00:00", {
-            font: "22px Arial",
+        // Création du timer de jeu
+        this._timer = this.game.add.text(this.game.world.centerX-28, 55, "00:00:00", {
+            font: "15px Arial",
             fill: "#ffffff"
         });
 
         this._playNetworkManagerClient = new PlayNetworkManagerClient(this._map, this._player, this._listTowers);
 
     	this._socket.emit('READY_TO_START');
+
+        // Création du menu de jeu
+        this._menu = new Menu(this._listTowers, this._player, this._map);
     	
     },
 
     update: function() {
 
-        if( this._player.ready ) {
+        if( this._player._ready ) {
 
             // Update de la position du curseur
             this._marker.x = this._map.getLayerByName("sol").getTileX(this.game.input.activePointer.worldX) * this._map._tileWidth;
@@ -69,12 +70,12 @@ Play.prototype = {
             // Update du timer de jeu
             this._timeUtils.updateTimer(this.game, this._timer);
 
-            // Lancement des vagues de creeps
+            // Update de la position des creeps
             this._map.moveWaves();
 
             // Action dans le Shop
-            if( this._shop._isATowerSelected ) {
-                this._shop.updateGhostTower(this._marker);
+            if( this._menu._shop._isATowerSelected ) {
+                this._menu._shop.updateGhostTower(this._marker);
                 this.game.input.onDown.add(this.buildTower, this);
             } else {
                 this.game.input.onDown.remove(this.buildTower, this);
@@ -103,7 +104,7 @@ Play.prototype = {
 
             // S'il n'y a pas déjà de tour construite dessus
             if( this._listTowers.isEmptyTile(tileTower) ) {
-                this._shop.buyTower(tileTower);
+                this._menu._shop.buyTower(tileTower);
             }
         }
         console.log("nombre de tours : "+this._listTowers._towers.length);
