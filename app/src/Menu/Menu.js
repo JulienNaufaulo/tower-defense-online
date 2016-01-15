@@ -5,7 +5,6 @@ var Infos = require('./Infos');
 var WeaponFactory = require('../Weapon/WeaponFactory');
 
 function Menu(listTowers, player, map){
-    var that = this;
     this._listTowers = listTowers;
     this._player = player;
     this._map = map;
@@ -15,21 +14,21 @@ function Menu(listTowers, player, map){
     $('#menu').slideDown();
 };
 
-Menu.prototype.displayInfoPanel = function() {
+Menu.prototype.sendDataTowerToPanel = function(tower) {
+    $('#typeInfoTower').empty().append(tower._type);
+    $('#imgInfoTower').empty().append('<img src="images/shop/'+tower._type+'-'+tower._weapon._name+'.png" title="'+tower._type+'" />');
+    $('#ownerInfoTower').empty().append(tower._owner);
+    $('#ownerInfoTower').css("color",this._map._hexa.getHexa(tower._owner));
+    $('#positionXInfoTower').empty().append(tower._tileX);
+    $('#positionYInfoTower').empty().append(tower._tileY);
+    $('#strenghInfoTower').empty().append(tower._strengh +" (+"+tower._weapon._damage+")");
+    $('#weaponInfoTower').empty().append(tower._weapon._name);
+    $('#attackSpeedInfoTower').empty().append(tower._fireRate/1000+' (-'+tower._weapon._weight/10+')');
+    $('#rangeInfoTower').empty().append(tower._range);
+    $('#costInfoTower').empty().append(tower._cost);
+};
 
-	function sendDataTowerToPanel(tower) {
-    	$('#typeInfoTower').empty().append(tower._type);
-	    $('#imgInfoTower').empty().append('<img src="images/shop/'+tower._type+'-'+tower._weapon._name+'.png" title="'+tower._type+'" />');
-	    $('#ownerInfoTower').empty().append(tower._owner);
-	    $('#ownerInfoTower').css("color",that._map._hexa.getHexa(tower._owner));
-	    $('#positionXInfoTower').empty().append(tower._tileX);
-	    $('#positionYInfoTower').empty().append(tower._tileY);
-	    $('#strenghInfoTower').empty().append(tower._strengh +" (+"+tower._weapon._damage+")");
-	    $('#weaponInfoTower').empty().append(tower._weapon._name);
-	    $('#attackSpeedInfoTower').empty().append(tower._fireRate/1000+" (-"+tower._weapon._weight/100+")");
-	    $('#rangeInfoTower').empty().append(tower._range);
-	    $('#costInfoTower').empty().append(tower._cost);
-    };
+Menu.prototype.displayInfoPanel = function() {
 
 	var that = this;
 
@@ -52,7 +51,7 @@ Menu.prototype.displayInfoPanel = function() {
 
                 $('#infoTower').html(data);
 
-                sendDataTowerToPanel(tower);
+                that.sendDataTowerToPanel(tower);
 
                 if( tower._owner == that._player._color ) {
                     $('#infoTower').append('<div id="equipment"></div>');
@@ -62,9 +61,12 @@ Menu.prototype.displayInfoPanel = function() {
 
                         $('#list-equipment > td').click(function() {
                             var weaponName = $(this).attr("id");
-                            var weapon = WeaponFactory.getInstance(weaponName);
-                            tower.setWeapon(weapon);
-                            sendDataTowerToPanel(tower);
+
+                            that._map._socket.emit('I_WANT_TO_BUY_A_WEAPON', {
+                                "tileX" : tower._tileX,
+                                "tileY" : tower._tileY,
+                                "weaponName" : weaponName
+                            });
                         });
                     });
                 }

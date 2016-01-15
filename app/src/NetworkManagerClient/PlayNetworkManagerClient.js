@@ -1,8 +1,9 @@
 'use strict';
 
 var TowerFactory = require('../Tower/TowerFactory');
+var WeaponFactory = require('../Weapon/WeaponFactory');
 
-function PlayNetworkManagerClient(map, player, listTowers) {
+function PlayNetworkManagerClient(map, player, listTowers, menu) {
 
     map._socket.on('INIT_DATAS_GAME', onRequestInitDatasGame);
     map._socket.on('GET_MY_LIFE', onRequestGetMyLife);
@@ -11,6 +12,7 @@ function PlayNetworkManagerClient(map, player, listTowers) {
     map._socket.on('A_MONSTER_IS_DEAD', onRequestAMonsterIsDead);
     map._socket.on('A_TOWER_HAS_BEEN_BUILT', onRequestATowerHasBeenBuilt);
     map._socket.on('GOLD_EARN', onRequestGoldEarn);
+    map._socket.on('A_WEAPON_HAS_BEEN_BOUGHT', onRequestAWeaponHasBeenBought);
 
     function onRequestInitDatasGame(data) {
         player._ready = data.ready;
@@ -111,6 +113,24 @@ function PlayNetworkManagerClient(map, player, listTowers) {
     function onRequestGoldEarn(gold) {
         player._gold += gold;
         onRequestGetMyGold(player._gold);
+    }
+
+    function onRequestAWeaponHasBeenBought(data) {
+
+        var tileTower = {"x" : data.tileX, "y" : data.tileY};
+        var tower = listTowers.getTowerTile(tileTower);
+        var weapon = WeaponFactory.getInstance(data.weaponName);
+
+        tower._anim.stop(1);
+        tower._isShooting = false;
+        tower._monsterFocused = null;
+        tower.setWeapon(weapon);
+        menu.sendDataTowerToPanel(tower);
+
+        if( data.owner == player._color ) {
+            player._gold = data.gold;
+            onRequestGetMyGold(data.gold);
+        }
     }
 
 };

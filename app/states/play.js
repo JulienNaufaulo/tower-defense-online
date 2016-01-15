@@ -50,12 +50,12 @@ Play.prototype = {
             fill: "#ffffff"
         });
 
-        this._playNetworkManagerClient = new PlayNetworkManagerClient(this._map, this._player, this._listTowers);
-
-    	this._socket.emit('READY_TO_START');
+        this._socket.emit('READY_TO_START');
 
         // Création du menu de jeu
         this._menu = new Menu(this._listTowers, this._player, this._map);
+
+        this._playNetworkManagerClient = new PlayNetworkManagerClient(this._map, this._player, this._listTowers, this._menu);
 
         this.game.input.onDown.add(this.getInfoTower, this);
     	

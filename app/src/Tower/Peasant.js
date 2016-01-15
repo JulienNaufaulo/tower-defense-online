@@ -9,7 +9,7 @@ function Peasant(type, owner, map, listTowers, tile){
     
     // this._range = 1;
     this._range = this._weapon._range;
-    this._fireRate = 800;
+    this._fireRate = 1000;
     this._strengh = 5;
     this._cost = 5;
 

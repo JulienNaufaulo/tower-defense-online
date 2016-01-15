@@ -1,6 +1,6 @@
 'use strict';
 
-var TowerFactory = require('../Tower/TowerFactory');
+var WeaponFactory = require('../Weapon/WeaponFactory');
 
 function PlayNetworkManagerServer(client, rooms){
 
@@ -10,6 +10,7 @@ function PlayNetworkManagerServer(client, rooms){
     client.on('LIFE_LOST', onRequestLifeLost);
     client.on('MONSTER_DEAD', onRequestMonsterDead);
     client.on('I_WANT_TO_BUY_A_TOWER', onRequestBuyATower);
+    client.on('I_WANT_TO_BUY_A_WEAPON', onRequestBuyAWeapon);
 
     function onRequestReadyToStart() {
 
@@ -83,6 +84,22 @@ function PlayNetworkManagerServer(client, rooms){
 			player._gold -= data.cost;
 			client.emit('A_TOWER_HAS_BEEN_BUILT', {"towerType" : data.towerType, "owner" : player._color, "tileX" : data.tileX, "tileY" : data.tileY, "gold" : player._gold});
 			client.broadcast.in(room._name).emit('A_TOWER_HAS_BEEN_BUILT', {"towerType" : data.towerType, "owner" : player._color, "tileX" : data.tileX, "tileY" : data.tileY});
+		}
+	}
+
+	function onRequestBuyAWeapon(data) {
+		// On récupère la room du client
+		var room = rooms.getRoomOfPlayer(client);
+
+		// On récupère les infos du joueur
+		var player = room.getPlayerById(client);
+
+		var weapon = WeaponFactory.getInstance(data.weaponName);
+
+		if(player._gold - weapon._cost >= 0) {
+			player._gold -= weapon._cost;
+			client.emit('A_WEAPON_HAS_BEEN_BOUGHT', {"tileX" : data.tileX, "tileY" : data.tileY, "owner" : player._color, "gold" : player._gold, "weaponName" : data.weaponName});
+			client.broadcast.in(room._name).emit('A_WEAPON_HAS_BEEN_BOUGHT', {"tileX" : data.tileX, "tileY" : data.tileY, "owner" : player._color, "gold" : player._gold, "weaponName" : data.weaponName});
 		}
 	}
 };
