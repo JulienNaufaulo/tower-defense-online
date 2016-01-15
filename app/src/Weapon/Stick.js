@@ -7,6 +7,7 @@ function Stick(){
 	this._name = "Stick";
 	this._damage = 5;
 	this._weight = 2;
+	this._range = 1;
 };
 
 Stick.prototype = Object.create(Weapon.prototype);

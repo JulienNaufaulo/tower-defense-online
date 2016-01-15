@@ -73,7 +73,7 @@ Tower.prototype.shoot = function() {
     if (this._map._game.time.now > this._nextFire && !this._isShooting && this._monsterFocused != null) {
         var that = this;
         this._isShooting = true;
-        this._nextFire = this._map._game.time.now + (this._fireRate+(this._weapon._weight*50));
+        this._nextFire = this._map._game.time.now + (this._fireRate+(this._weapon._weight*100));
         this._anim.play('attack');
     }
 };
@@ -104,6 +104,7 @@ Tower.prototype.hitEnemy = function() {
 Tower.prototype.setWeapon = function(weapon) {
     this._weapon = weapon;
     this._sprite.loadTexture(this._type+"-"+this._weapon._name, 0, true);
+    this._anim.speed = (this._fireRate/100)-(this._weapon._weight/2);
 };
 
 module.exports = Tower;
