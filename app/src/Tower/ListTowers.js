@@ -31,6 +31,12 @@ ListTowers.prototype.count = function() {
     return this._towers.length;
 };
 
+ListTowers.prototype.hideRange = function() {
+    for(var i=0, count=this._towers.length; i < count; i++) {
+        this._towers[i].hideRange();
+    }
+};
+
 ListTowers.prototype.waitForEnemies = function(waves) {
     for(var i=0, count=this._towers.length; i < count; i++) {
         this._towers[i].waitForEnemies(waves);

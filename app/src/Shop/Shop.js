@@ -61,7 +61,8 @@ Shop.prototype.updateGhostTower = function(marker) {
     this._tower._sprite.y = tile.y*this._map._tileHeight;
     this._tower._socle.x = tile.x*this._map._tileWidth;
     this._tower._socle.y = tile.y*this._map._tileHeight;
-    this._tower.drawRange(marker, this._map);
+    this._tower.displayRange();
+    this._tower.updateRange(marker);
 }
 
 Shop.prototype.buyTower = function(tileTower) {

@@ -31,18 +31,45 @@ function Tower(type, owner, map, listTowers, tile){
     this._sprite.body.moves = false;
     this._isActive = false;
 
-    this._graphicRange = map._game.add.graphics();
-    this._graphicRange.lineStyle(1, 0xFFCCCC, 1);
-
     this._isShooting = false;
     this._monsterFocused = null;
     this._nextFire = 0;
 };
 
-Tower.prototype.drawRange = function(marker, map) {
-    this._graphicRange.drawRect(0, 0, (this._range*2*map._tileWidth)+map._tileWidth, (this._range*2*map._tileHeight)+map._tileHeight);
-    this._graphicRange.x = marker.x-(this._range*map._tileWidth);
-    this._graphicRange.y = marker.y-(this._range*map._tileHeight);
+Tower.prototype.displayRange = function() {
+    if(this._graphicRange == undefined) {
+        this._graphicRange = this._map._game.add.graphics();
+        this._graphicRange.lineStyle(1, 0xFFCCCC, 1);
+        this._graphicRange.drawRect(0, 0, (this._range*2*this._map._tileWidth)+this._map._tileWidth, (this._range*2*this._map._tileHeight)+this._map._tileHeight);
+        this._graphicRange.y = this._tileY*this._map._tileHeight-(this._range*this._map._tileHeight);
+        this._graphicRange.x = this._tileX*this._map._tileWidth-(this._range*this._map._tileWidth);
+    } else {
+        this._graphicRange.alpha = 1;
+    }  
+};
+
+Tower.prototype.hideRange = function() {
+    if(this._graphicRange != undefined) {
+        this._graphicRange.alpha = 0;
+    }
+};
+
+Tower.prototype.resetRange = function() {
+    if(this._graphicRange != undefined) {
+        this._graphicRange.destroy();
+        this._graphicRange = null;
+        this._graphicRange = this._map._game.add.graphics();
+        this._graphicRange.lineStyle(1, 0xFFCCCC, 1);
+        this._graphicRange.drawRect(0, 0, (this._range*2*this._map._tileWidth)+this._map._tileWidth, (this._range*2*this._map._tileHeight)+this._map._tileHeight);
+        this._graphicRange.y = this._tileY*this._map._tileHeight-(this._range*this._map._tileHeight);
+        this._graphicRange.x = this._tileX*this._map._tileWidth-(this._range*this._map._tileWidth);
+    }
+};
+
+Tower.prototype.updateRange = function(marker) {
+    this._graphicRange.drawRect(0, 0, (this._range*2*this._map._tileWidth)+this._map._tileWidth, (this._range*2*this._map._tileHeight)+this._map._tileHeight);
+    this._graphicRange.x = marker.x-(this._range*this._map._tileWidth);
+    this._graphicRange.y = marker.y-(this._range*this._map._tileHeight);
 };
 
 Tower.prototype.waitForEnemies = function(waves) {
@@ -103,6 +130,8 @@ Tower.prototype.hitEnemy = function() {
 
 Tower.prototype.setWeapon = function(weapon) {
     this._weapon = weapon;
+    this._range = this._weapon._range;
+    this.resetRange();
     this._sprite.loadTexture(this._type+"-"+this._weapon._name, 0, true);
     this._anim.speed = (this._fireRate/100)-(this._weapon._weight/2);
 };

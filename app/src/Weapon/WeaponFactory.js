@@ -2,6 +2,7 @@
 
 var Stick = require('./Stick');
 var Fists = require('./Fists');
+var Bow = require('./Bow');
 
 var WeaponFactory = {
 
@@ -12,6 +13,9 @@ var WeaponFactory = {
 	            break;
 	        case "Stick":
 	            return new Stick();
+	            break;
+	        case "Bow":
+	            return new Bow();
 	            break;
 	    }
    	}

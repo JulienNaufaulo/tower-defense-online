@@ -4,10 +4,11 @@ var Shop = require('../Shop/Shop');
 var Infos = require('./Infos');
 var WeaponFactory = require('../Weapon/WeaponFactory');
 
-function Menu(listTowers, player, map){
+function Menu(listTowers, player, map, marker){
     this._listTowers = listTowers;
     this._player = player;
     this._map = map;
+    this._marker = marker;
     $('#app').append('<div id="menu"></div>');
     this._infos = new Infos(player, map); 
     this._shop = new Shop(listTowers, player, map); 
@@ -47,6 +48,9 @@ Menu.prototype.displayInfoPanel = function() {
 
             var tower = this._listTowers.getTowerTile(tileTower);
 
+            this._listTowers.hideRange();
+            tower.displayRange();
+
             $.get("infoTower.html", function(data){
 
                 $('#infoTower').html(data);
@@ -77,6 +81,7 @@ Menu.prototype.displayInfoPanel = function() {
                     }, 800);
                     $(document).keyup(function(e) {
                         if (e.keyCode == 27){
+                            that._listTowers.hideRange();
                             $('#infoTower').hide("slide", {
                                 direction: "right" 
                             }, 800);

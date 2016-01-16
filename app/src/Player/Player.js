@@ -10,11 +10,6 @@ function Player(id, color, idRoom){
     this._gold = 10;
 }
 
-Player.prototype.buy = function(tower) {
-    this._gold -= tower._cost;
-    this._goldTxt.setText(this._gold+" gold restant");
-};
-
 Player.prototype.toString = function() {
     return "Joueur "+this._color+", Room "+(this._idRoom);
 };

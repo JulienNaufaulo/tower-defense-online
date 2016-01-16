@@ -37,6 +37,7 @@ Boot.prototype = {
         this.game.load.spritesheet('skeleton', 'images/monsters/sprites-squelette.png', 31, 48);
         this.game.load.spritesheet('Peasant-Fists', 'images/towers/peasant/sprite-peasant-fists.png', 45, 49);
         this.game.load.spritesheet('Peasant-Stick', 'images/towers/peasant/sprite-peasant-stick.png', 45, 49);
+        this.game.load.spritesheet('Peasant-Bow', 'images/towers/peasant/sprite-peasant-bow.png', 38, 54);
     },
 
     showLoadingText: function(){

@@ -53,7 +53,7 @@ Play.prototype = {
         this._socket.emit('READY_TO_START');
 
         // Création du menu de jeu
-        this._menu = new Menu(this._listTowers, this._player, this._map);
+        this._menu = new Menu(this._listTowers, this._player, this._map, this._marker);
 
         this._playNetworkManagerClient = new PlayNetworkManagerClient(this._map, this._player, this._listTowers, this._menu);
 
