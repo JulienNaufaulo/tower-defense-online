@@ -94,6 +94,13 @@ Menu.prototype.displayInfoPanel = function() {
             });
 
             
+        } else {
+            this._listTowers.hideRange();
+            if( $('#infoTower').is(":visible") ) {
+                $('#infoTower').hide("slide", {
+                    direction: "right" 
+                }, 800);
+            }
         }
     } 
 };
