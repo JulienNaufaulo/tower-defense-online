@@ -3,16 +3,16 @@
 var Tower = require('./Tower');
 var WeaponFactory = require('../Weapon/WeaponFactory');
 
-function Peasant(type, owner, map, listTowers, tile){
+function Wizard(type, owner, map, listTowers, tile){
 
     //  Appel du constructeur de la Tower 
     Tower.call(this, type, owner, map, listTowers, tile);
     
-    this._weapon = WeaponFactory.getInstance("Fists");
+    this._weapon = WeaponFactory.getInstance("MagicStick");
     this._range = this._weapon._range;
     this._fireRate = 1000;
-    this._strengh = 3;
-    this._cost = 5;
+    this._strengh = 1;
+    this._cost = 8;
 
     this._sprite = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, this._type+"-"+this._weapon._name);
     this._sprite.alpha = 1;
@@ -27,7 +27,7 @@ function Peasant(type, owner, map, listTowers, tile){
     this._anim.onComplete.add(this.hitEnemy, this);
 };
 
-Peasant.prototype = Object.create(Tower.prototype);
-Peasant.prototype.constructor = Peasant;
+Wizard.prototype = Object.create(Tower.prototype);
+Wizard.prototype.constructor = Wizard;
 
-module.exports = Peasant;
+module.exports = Wizard;

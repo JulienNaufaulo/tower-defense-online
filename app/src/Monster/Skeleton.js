@@ -13,19 +13,11 @@ function Skeleton(id, type, tileX, tileY, path, map, wave){
 
     this._maxHP = 10;
     this._currentHP = 10;
-    this._moveSpeed = 1;
+    this._moveSpeed = 2;
     this._price = 3;
 };
 
 Skeleton.prototype = Object.create(Monster.prototype);
 Skeleton.prototype.constructor = Skeleton;
-
-// Skeleton.prototype.create = function(posX, posY) {
-
-//     Monster.prototype.create.call(this, posX, posY);
-
-    
-// };
-
 
 module.exports = Skeleton;

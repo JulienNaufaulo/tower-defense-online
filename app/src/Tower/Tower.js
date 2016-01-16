@@ -7,7 +7,7 @@ function Tower(type, owner, map, listTowers, tile){
     this._type = type;
     this._owner = owner;
     this._map = map;
-    this._weapon = WeaponFactory.getInstance("Fists");
+    
     this._listTowers = listTowers;
 
     this._tileX = tile.x;
@@ -22,14 +22,7 @@ function Tower(type, owner, map, listTowers, tile){
     this._socle = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, bmd);
     this._socle.alpha = 0.5;
 
-    this._sprite = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, this._type+"-"+this._weapon._name);
-    this._sprite.alpha = 1;
-    this._sprite.scale.x = 0.8;
-    this._sprite.scale.y = 0.8;
-    this._sprite.anchor.setTo(0.2, 0.5);
-    this._map._game.physics.arcade.enable(this._sprite, Phaser.Physics.ARCADE);
-    this._sprite.body.moves = false;
-    this._isActive = false;
+    
 
     this._isShooting = false;
     this._monsterFocused = null;

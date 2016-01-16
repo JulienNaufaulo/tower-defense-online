@@ -42,7 +42,6 @@ Monster.prototype.move = function() {
         this._tween = this._map._game.add.tween(this._sprite).to({x:newTileX*this._map._tileWidth, y:newTileY*this._map._tileHeight}, duree);
 
         this._tween.onComplete.add(function(){
-
             that._tileX = newTileX;
             that._tileY = newTileY;
 
@@ -68,7 +67,7 @@ Monster.prototype.move = function() {
 
 Monster.prototype.getDuree = function(newTileX , newTileY) {
     var distance = Phaser.Math.distance(this._tileX , this._tileY , newTileX , newTileY);
-    var duree = Math.round((500*distance)-(150*this._moveSpeed));
+    var duree = (750*distance)*(1-(this._moveSpeed/10));
     return duree;
 };
 

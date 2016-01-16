@@ -1,6 +1,7 @@
 'use strict';
 
 var Peasant = require('./Peasant');
+var Wizard = require('./Wizard');
 
 var TowerFactory = {
 
@@ -8,6 +9,9 @@ var TowerFactory = {
    		switch(type) {
 	        case "Peasant":
 	            return new Peasant(type, owner, map, listTowers, tile);
+	            break;
+	        case "Wizard":
+	            return new Wizard(type, owner, map, listTowers, tile);
 	            break;
 	    }
    	}
