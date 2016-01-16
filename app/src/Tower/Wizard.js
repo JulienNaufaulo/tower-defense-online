@@ -12,7 +12,7 @@ function Wizard(type, owner, map, listTowers, tile){
     this._range = this._weapon._range;
     this._fireRate = 1000;
     this._strengh = 1;
-    this._cost = 8;
+    this._cost = 0;
 
     this._sprite = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, this._type+"-"+this._weapon._name);
     this._sprite.alpha = 1;
@@ -29,5 +29,10 @@ function Wizard(type, owner, map, listTowers, tile){
 
 Wizard.prototype = Object.create(Tower.prototype);
 Wizard.prototype.constructor = Wizard;
+
+Wizard.prototype.hitEnemy = function() {
+    console.log("gelé !");
+    Tower.prototype.hitEnemy.call(this);
+}
 
 module.exports = Wizard;

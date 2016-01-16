@@ -22,8 +22,6 @@ function Tower(type, owner, map, listTowers, tile){
     this._socle = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, bmd);
     this._socle.alpha = 0.5;
 
-    
-
     this._isShooting = false;
     this._monsterFocused = null;
     this._nextFire = 0;
