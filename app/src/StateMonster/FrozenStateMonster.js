@@ -5,7 +5,7 @@ function FrozenStateMonster(monster){
 };
 
 FrozenStateMonster.prototype.getDuree = function(distance) {
-    var duree = ((750*distance)*(1-(this._monster._moveSpeed/10))*2);
+    var duree = ((750*distance)*(1-(this._monster._moveSpeed/10))*2.5);
     return duree;
 };
 

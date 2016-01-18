@@ -10,18 +10,18 @@ function MapCastle(name, tileWidth, tileHeight, game, socket, player){
         {
             "player" : "Bleu",
             "path" : [ {"x":2, "y":0}, {"x":2, "y":5}, {"x":6, "y":5}, {"x":6, "y":8}, {"x":1, "y":8}, {"x":1, "y":14}, {"x":8, "y":14}, {"x":8, "y":11}, {"x":11, "y":11}, {"x":11, "y":3} ]
+        },
+        {
+            "player" : "Rouge",
+            "path" : [ {"x":21, "y":0}, {"x":21, "y":5}, {"x":17, "y":5}, {"x":17, "y":8}, {"x":22, "y":8}, {"x":22, "y":14}, {"x":15, "y":14}, {"x":15, "y":11}, {"x":12, "y":11}, {"x":12, "y":3} ]
         }
-        // {
-        //     "player" : "Rouge",
-        //     "path" : [ {"x":21, "y":0}, {"x":21, "y":5}, {"x":17, "y":5}, {"x":17, "y":8}, {"x":22, "y":8}, {"x":22, "y":14}, {"x":15, "y":14}, {"x":15, "y":11}, {"x":12, "y":11}, {"x":12, "y":3} ]
-        // }
     ];
 
     this._configurationWaves = [
     	{ 
     		"round" : 1, 
     		"monsters" : [
-    			{ "type":"skeleton", "nb":1 }
+    			{ "type":"skeleton", "nb":5 }
     		]
     	},
         { 
