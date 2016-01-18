@@ -67,7 +67,8 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
                 if( monster._tileX != data.tileX || monster._tileY != data.tileY ) {
                     monster._tween.stop();
                     monster._tween = map._game.add.tween(monster._sprite).to({x:data.tileX*map._tileWidth,y:data.tileY*map._tileHeight}, 0.1);
-                    monster._tween.onComplete.add(function(){                            
+                    monster._tween.onComplete.add(function(){ 
+                        monster._currentState = monster._states.normal;                           
                         monster._tileX = data.tileX;
                         monster._tileY = data.tileY;
                         monster._sprite.x = data.tileX*map._tileWidth;

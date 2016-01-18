@@ -1,6 +1,9 @@
 'use strict';
 
-function Monster(id, type, tileX, tileY, path, map, wave){
+var NormalStateMonster = require('../StateMonster/NormalStateMonster');
+var FrozenStateMonster = require('../StateMonster/FrozenStateMonster');
+
+function Monster(id, type, tileX, tileY, path, map, wave, maxHp, currentHp, moveSpeed, price){
     this._id = id; 
     this._map = map;
     this._tileX = tileX;
@@ -25,6 +28,18 @@ function Monster(id, type, tileX, tileY, path, map, wave){
     this._cropRect = new Phaser.Rectangle(0, 0, 0, this._healthBar.height);
     this._healthBar.alpha = 0;
     this._isDead = false;
+
+    this._maxHP = maxHp;
+    this._currentHP = currentHp;
+    this._moveSpeed = moveSpeed;
+    this._price = price;
+
+    this._states = {
+        "normal" : new NormalStateMonster(this),
+        "frozen" : new FrozenStateMonster(this)
+    }
+
+    this._currentState = this._states.normal;
 };
 
 Monster.prototype.move = function() {
@@ -42,10 +57,13 @@ Monster.prototype.move = function() {
         this._tween = this._map._game.add.tween(this._sprite).to({x:newTileX*this._map._tileWidth, y:newTileY*this._map._tileHeight}, duree);
 
         this._tween.onComplete.add(function(){
+
+            that._currentState = that._states.normal;
+
             that._tileX = newTileX;
             that._tileY = newTileY;
 
-            that._map._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id, "owner" : that._wave._owner});
+            //that._map._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id, "owner" : that._wave._owner});
             
             if( that._currentIndex+1 == that._path.length) {
                 that._currentIndex=0;
@@ -65,10 +83,18 @@ Monster.prototype.move = function() {
     this._healthBar.y = this._sprite.y-25;
 };
 
+Monster.prototype.getDistance = function(newTileX , newTileY) {
+    var tile = this._map._map.getTileWorldXY(this._sprite.x, this._sprite.y, this._map._tileWidth, this._map._tileHeight, this._map.getLayerByName("sol"), false);
+    if( tile == null) {
+        tile = {x: this._tileX, y: this._tileY};
+    }
+    var distance = Phaser.Math.distance(tile.x, tile.y, newTileX, newTileY);
+    return distance;
+};
+
 Monster.prototype.getDuree = function(newTileX , newTileY) {
-    var distance = Phaser.Math.distance(this._tileX , this._tileY , newTileX , newTileY);
-    var duree = (750*distance)*(1-(this._moveSpeed/10));
-    return duree;
+    var distance = this.getDistance(newTileX , newTileY);
+    return this._currentState.getDuree(distance);
 };
 
 Monster.prototype.playAnimation = function(newX, newY) {
