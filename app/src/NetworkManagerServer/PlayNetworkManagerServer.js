@@ -11,6 +11,7 @@ function PlayNetworkManagerServer(client, rooms){
     client.on('MONSTER_DEAD', onRequestMonsterDead);
     client.on('I_WANT_TO_BUY_A_TOWER', onRequestBuyATower);
     client.on('I_WANT_TO_BUY_A_WEAPON', onRequestBuyAWeapon);
+    client.on('READY_FOR_NEXT_ROUND', onRequestReadyForNextRound);
 
     function onRequestReadyToStart() {
 
@@ -20,19 +21,21 @@ function PlayNetworkManagerServer(client, rooms){
 		// On récupère les infos du joueur
 		var player = room.getPlayerById(client);
 
-		player._playing = true;
+		player._readyForNextRound = true;
 
 		client.emit('INIT_DATAS_GAME', {
-										"ready" : false,
+										"ready" : player._readyForNextRound,
 										"color" : player._color,
 										"life" : player._life,
 										"gold" : player._gold,
 										"idRoom" : room._id
 									});
 
-		if(room.isPlaying()) {
-			client.broadcast.in(room._name).emit('START_GAME');
-			client.emit('START_GAME');
+		if(room.isReadyForNextRound()) {
+			room.setAllPlayersPlaying();
+			room.resetReadyForNextRound();
+			client.broadcast.in(room._name).emit('GO_TO_NEXT_ROUND');
+			client.emit('GO_TO_NEXT_ROUND');
 		}
 	};
 
@@ -101,6 +104,27 @@ function PlayNetworkManagerServer(client, rooms){
 			client.emit('A_WEAPON_HAS_BEEN_BOUGHT', {"tileX" : data.tileX, "tileY" : data.tileY, "owner" : player._color, "gold" : player._gold, "weaponName" : data.weaponName});
 			client.broadcast.in(room._name).emit('A_WEAPON_HAS_BEEN_BOUGHT', {"tileX" : data.tileX, "tileY" : data.tileY, "owner" : player._color, "gold" : player._gold, "weaponName" : data.weaponName});
 		}
+	}
+
+	function onRequestReadyForNextRound() {
+		// On récupère la room du client
+		var room = rooms.getRoomOfPlayer(client);
+
+		// On récupère les infos du joueur
+		var player = room.getPlayerById(client);
+
+		player._readyForNextRound = true;
+
+		console.log("un joueur est prêt pour le prochain round");
+
+		if(room.isReadyForNextRound()) {
+			console.log("tous les joueurs sont prêts pour le prochain round");
+			room.resetReadyForNextRound();
+			client.broadcast.in(room._name).emit('GO_TO_NEXT_ROUND');
+			client.emit('GO_TO_NEXT_ROUND');
+		}
+
+
 	}
 };
 

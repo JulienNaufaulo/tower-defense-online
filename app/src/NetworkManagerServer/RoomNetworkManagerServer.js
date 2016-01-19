@@ -46,8 +46,6 @@ function RoomNetworkManagerServer(client, rooms){
 
 		// Si la room est pleine, on envoie un message invitant les joueurs à lancer la partie
 		if(room.isFull()) {
-			// On réinitialise à false l'attribut "Ready" des joueurs de la room
-			room.resetReady();
 			// On autorise l'affichage du bouton pour démarrer la partie
 			client.emit('CLICK_TO_START_THE_GAME');
 			client.broadcast.in(room._name).emit('CLICK_TO_START_THE_GAME');
@@ -69,7 +67,7 @@ function RoomNetworkManagerServer(client, rooms){
 		room.removePlayer(client);
 
 		// On réinitialise à false l'attribut "Ready" des joueurs de la room
-		room.resetReady();
+		room.resetReadyToPlay();
 
 		console.log(playerDisconnected.toString()+" s'est déconnecté");
 	};
@@ -80,12 +78,12 @@ function RoomNetworkManagerServer(client, rooms){
 
 		// On récupère les infos sur le joueur
 		var player = room.getPlayerById(client);
-		player._ready = true;
+		player._readyToPlay = true;
 
 		client.emit('SERVER_THAT_PLAYER_IS_READY', player);
 		client.broadcast.in(room._name).emit('SERVER_THAT_PLAYER_IS_READY', player);
 
-		if(room.isReady()) {
+		if(room.isReadyToPlay()) {
 			client.emit('GO_TO_PLAY');
 			client.broadcast.in(room._name).emit('GO_TO_PLAY');
 		}
@@ -98,7 +96,7 @@ function RoomNetworkManagerServer(client, rooms){
 		// On récupère les infos sur le joueur
 		var player = room.getPlayerById(client);
 
-		if(!player._ready) {
+		if(!player._readyToPlay) {
 			client.broadcast.in(room._name).emit('SERVER_OTHER_PLAYER_DISCONNECTED', player);
 			room.removePlayer(client);
 			client.emit('GO_TO_MENU');

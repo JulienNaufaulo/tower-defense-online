@@ -63,7 +63,7 @@ Play.prototype = {
 
     update: function() {
 
-        if( this._player._ready ) {
+        if( this._player._playing ) {
 
             // Update de la position du curseur
             this._marker.x = this._map.getLayerByName("sol").getTileX(this.game.input.activePointer.worldX) * this._map._tileWidth;

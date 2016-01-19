@@ -89,11 +89,11 @@ Room.prototype.isFull = function() {
 	return this.numberOfConnectedPlayers() == this.maximumNumberOfPlayers();
 };
 
-Room.prototype.isReady = function() {
+Room.prototype.isReadyToPlay = function() {
 	var countReadyPlayers = 0;
 	for (var color in this._players) 
     {
-        if ( this._players[color] != null && this._players[color]._ready == true ) {
+        if ( this._players[color] != null && this._players[color]._readyToPlay == true ) {
         	countReadyPlayers++
         }
     }
@@ -101,11 +101,11 @@ Room.prototype.isReady = function() {
     return countReadyPlayers == this.maximumNumberOfPlayers();
 };
 
-Room.prototype.isPlaying = function() {
+Room.prototype.isReadyForNextRound = function() {
 	var countReadyPlayers = 0;
 	for (var color in this._players) 
     {
-        if ( this._players[color] != null && this._players[color]._playing == true ) {
+        if ( this._players[color] != null && this._players[color]._readyForNextRound == true ) {
         	countReadyPlayers++
         }
     }
@@ -113,12 +113,31 @@ Room.prototype.isPlaying = function() {
     return countReadyPlayers == this.maximumNumberOfPlayers();
 };
 
-Room.prototype.resetReady = function() {
-	for(var color in this._players) {
-		if( this._players[color] != null ) {
-			this._players[color]._ready = false;
-		}
-	}
+Room.prototype.resetReadyToPlay = function() {
+	for (var color in this._players) 
+    {
+        if ( this._players[color] != null ) {
+        	this._players[color]._readyToPlay = false;
+        }
+    }
+};
+
+Room.prototype.resetReadyForNextRound = function() {
+	for (var color in this._players) 
+    {
+        if ( this._players[color] != null ) {
+        	this._players[color]._readyForNextRound = false;
+        }
+    }
+};
+
+Room.prototype.setAllPlayersPlaying = function() {
+	for (var color in this._players) 
+    {
+        if ( this._players[color] != null ) {
+        	this._players[color]._playing = true;
+        }
+    }
 };
 
 module.exports = Room;

@@ -12,7 +12,7 @@ function Map(name, tileWidth, tileHeight, game, socket, player){
     this._map;
     this._layers = [];
     this._waves = [];
-    this._round = 1;
+    this._round = 0;
     this._socket = socket;
     this._player = player;
     this._monsterFactory = new MonsterFactory(this);
@@ -90,33 +90,7 @@ Map.prototype.moveWaves = function() {
 
 Map.prototype.goToNextRound = function() {
     if(this.areAllWavesEmpty()) {
-        this._round++;
-        // Compte à rebours
-        var that = this;
-        var count = 5;
-        var text = "";
-        var countdown = setInterval(function(){
-
-            if(text != "")
-                text.destroy();
-
-            text = that._game.add.text(that._game.world.centerX, that._game.world.centerY, "Round "+that._round+" \n"+count);
-            text.anchor.set(0.5);
-            text.align = 'center';
-            text.font = 'Arial';
-            text.fontWeight = 'bold';
-            text.fontSize = 30;
-            text.fill = "#000000";
-
-            if( count == 0 ) {
-                clearInterval(countdown);
-                text.destroy();
-                $('#round').empty().append("Round "+that._round);
-                that.createWaves();
-            }
-            count--;
-
-        }, 1000);
+        this._socket.emit('READY_FOR_NEXT_ROUND');
     }
 }
 

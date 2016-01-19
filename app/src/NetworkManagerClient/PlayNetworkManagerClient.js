@@ -7,7 +7,7 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
 
     map._socket.on('INIT_DATAS_GAME', onRequestInitDatasGame);
     map._socket.on('GET_MY_LIFE', onRequestGetMyLife);
-    map._socket.on('START_GAME', onRequestStartGame);
+    map._socket.on('GO_TO_NEXT_ROUND', onRequestGoToNextRound);
     map._socket.on('CHECK_SPRITE_POSITION', onRequestCheckSpritePosition);
     map._socket.on('A_MONSTER_IS_DEAD', onRequestAMonsterIsDead);
     map._socket.on('A_TOWER_HAS_BEEN_BUILT', onRequestATowerHasBeenBuilt);
@@ -15,11 +15,12 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
     map._socket.on('A_WEAPON_HAS_BEEN_BOUGHT', onRequestAWeaponHasBeenBought);
 
     function onRequestInitDatasGame(data) {
-        player._ready = data.ready;
+        player._readyForNextRound = data.ready;
         player._color = data.color;
         player._idRoom = data.idRoom;
         onRequestGetMyLife(data.life);
         onRequestGetMyGold(data.gold);
+        menu._infos.init();
     }
 
     function onRequestGetMyLife(life) {
@@ -30,16 +31,19 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
         $('#gold').empty().append(player._gold);
     }
 
-    function onRequestStartGame() {
+    function onRequestGoToNextRound() {
+
+        map._round++;
+
         // Compte à rebours
-        var count = 1;
+        var count = 5;
         var text = "";
         var countdown = setInterval(function(){
 
             if(text != "")
                 text.destroy();
 
-            text = map._game.add.text(map._game.world.centerX, map._game.world.centerY, count);
+            text = map._game.add.text(map._game.world.centerX, map._game.world.centerY, "Round "+map._round+" \n"+count);
             text.anchor.set(0.5);
             text.align = 'center';
             text.font = 'Arial';
@@ -48,15 +52,20 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
             text.fill = "#000000";
 
             if( count == 0 ) {
-                map._game.time.reset();
+                if( map._round == 1 ) {
+                    map._game.time.reset();
+                    player._playing = true;
+                }
                 clearInterval(countdown);
+                $('#round').empty().append("Round "+map._round);
                 text.destroy();
-                player._ready = true;
-                player._playing = true;
+                map.createWaves();
+                player._readyForNextRound = false;
             }
             count--;
 
         }, 1000);
+
     }
 
     function onRequestCheckSpritePosition(data) {
