@@ -46,6 +46,8 @@ function RoomNetworkManagerServer(client, rooms){
 
 		// Si la room est pleine, on envoie un message invitant les joueurs à lancer la partie
 		if(room.isFull()) {
+			// On réinitialise à false l'attribut "Ready" des joueurs de la room
+			room.resetReadyToPlay();
 			// On autorise l'affichage du bouton pour démarrer la partie
 			client.emit('CLICK_TO_START_THE_GAME');
 			client.broadcast.in(room._name).emit('CLICK_TO_START_THE_GAME');
