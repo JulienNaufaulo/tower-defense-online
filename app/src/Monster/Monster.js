@@ -68,9 +68,9 @@ Monster.prototype.move = function() {
             if( that._currentIndex+1 == that._path.length) {
                 that._currentIndex=0;
                 that.hide();
-                if(!that._isDead) {
+                //if(!that._isDead) {
                     that._map._socket.emit('LIFE_LOST', that._wave._owner);
-                }
+                //}
             }
             else 
                 that._currentIndex++;
@@ -114,10 +114,8 @@ Monster.prototype.hide = function() {
 }
 
 Monster.prototype.reveal = function() {
-    if(!this._isDead) {
-        this._sprite.alpha = 1;
-        this._healthBar.alpha = 1;
-    }  
+    this._sprite.alpha = 1;
+    this._healthBar.alpha = 1;
 }
 
 Monster.prototype.die = function() {

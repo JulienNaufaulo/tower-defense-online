@@ -30,8 +30,8 @@ Play.prototype = {
     create: function() {
 
         // Création de la map
-        var mapFactory = new MapFactory("castle", 32, 32, this.game, this._socket, this._player);
-        this._map = mapFactory.getInstance();
+        var mapFactory = new MapFactory(this.game, this._socket, this._player);
+        this._map = mapFactory.getInstance("castle");
         this._map.init();
         this._map.createWaves(); 
 
