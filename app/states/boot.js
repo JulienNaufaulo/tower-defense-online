@@ -31,7 +31,6 @@ Boot.prototype = {
 
     loadAssets: function(){
         this.game.load.image('healthbar', 'images/monsters/hp.jpg');
-        this.game.load.image('bgmenu', 'images/bg-menu.jpg');
         this.game.load.spritesheet('btnPlay', 'images/btn_play.jpg', 213, 52);
         this.game.load.spritesheet('btnReady', 'images/btn_ready.jpg', 213, 52);
         this.game.load.spritesheet('skeleton', 'images/monsters/sprites-squelette.png', 31, 48);

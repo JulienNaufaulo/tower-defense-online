@@ -63,14 +63,13 @@ Monster.prototype.move = function() {
             that._tileX = newTileX;
             that._tileY = newTileY;
 
-            //that._map._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id, "owner" : that._wave._owner});
+            that._map._socket.emit('SPRITE_TWEEN_FINISHED', {"idMonster" : that._id, "currentIndex" : that._currentIndex, "tileX" : that._tileX, "tileY" : that._tileY, "idWave" : that._wave._id, "owner" : that._wave._owner});
             
             if( that._currentIndex+1 == that._path.length) {
                 that._currentIndex=0;
                 that.hide();
-                //if(!that._isDead) {
-                    that._map._socket.emit('LIFE_LOST', that._wave._owner);
-                //}
+                that._map._socket.emit('LIFE_LOST', that._wave._owner);
+               
             }
             else 
                 that._currentIndex++;

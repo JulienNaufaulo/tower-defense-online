@@ -69,10 +69,14 @@ function RoomNetworkManagerClient(phaser, chat) {
         chat.displayNewConnectedPlayer(player);
     }
 
-    function onReceiveOtherPlayerDisconnected(player) {
+    function onReceiveOtherPlayerDisconnected(data) {
+        console.log(data);
         clearInterval(that._intervalReadyTime);
         that._btnPlay.destroy();
-        chat.displayDisconnectedPlayer(player);
+        chat.displayDisconnectedPlayer(data.playerDisconnected);
+        if(data.nbPlayers == 1) {
+            chat.displaySimpleMessage('<a href="">Revenir au menu principal</a>');
+        }
     }
 
     function onReceiveClickToStart() {

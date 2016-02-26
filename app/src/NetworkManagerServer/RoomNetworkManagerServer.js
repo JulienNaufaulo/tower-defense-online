@@ -113,6 +113,26 @@ function RoomNetworkManagerServer(client, rooms){
 		client.broadcast.in(room._name).emit('MESSAGE_SENT_BY_A_PLAYER', { "player": player, "message": message });
 		console.log(player.toString()+" a envoyé le message "+message);
 	}
+
+	function onDisconnected() {
+		
+	    // On récupère la room du client
+		var room = rooms.getRoomOfPlayer(client);
+
+		// On récupère les infos sur le joueur
+		var playerDisconnected = room.getPlayerById(client);
+
+		// On signale à tous les autres joueurs de la room que le joueur s'est déconnecté
+		client.broadcast.in(room._name).emit('SERVER_OTHER_PLAYER_DISCONNECTED', { "playerDisconnected": playerDisconnected, "nbPlayers" : (room.numberOfConnectedPlayers()-1) });
+
+		// On enlève le joueur de la room
+		room.removePlayer(client);
+
+		// On réinitialise à false l'attribut "Ready" des joueurs de la room
+		room.resetReadyToPlay();
+
+		console.log(playerDisconnected.toString()+" s'est déconnecté");
+	};
 };
 
 module.exports = RoomNetworkManagerServer;

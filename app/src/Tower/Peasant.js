@@ -11,7 +11,7 @@ function Peasant(type, owner, map, listTowers, tile){
     this._weapon = WeaponFactory.getInstance("Fists");
     this._range = this._weapon._range;
     this._fireRate = 1000;
-    this._strengh = 3;
+    this._strengh = 5;
     this._cost = 5;
 
     this._sprite = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, this._type+"-"+this._weapon._name);

@@ -123,8 +123,6 @@ function PlayNetworkManagerServer(client, rooms){
 			client.broadcast.in(room._name).emit('GO_TO_NEXT_ROUND');
 			client.emit('GO_TO_NEXT_ROUND');
 		}
-
-
 	}
 };
 
