@@ -12,6 +12,7 @@ function PlayNetworkManagerServer(client, rooms){
     client.on('I_WANT_TO_BUY_A_TOWER', onRequestBuyATower);
     client.on('I_WANT_TO_BUY_A_WEAPON', onRequestBuyAWeapon);
     client.on('READY_FOR_NEXT_ROUND', onRequestReadyForNextRound);
+    client.on('MONSTER_HIT', onRequestMonsterHit);
 
     function onRequestReadyToStart() {
 
@@ -123,6 +124,21 @@ function PlayNetworkManagerServer(client, rooms){
 			client.broadcast.in(room._name).emit('GO_TO_NEXT_ROUND');
 			client.emit('GO_TO_NEXT_ROUND');
 		}
+	}
+
+	function onRequestMonsterHit(data) {
+		// On récupère la room du client
+		var room = rooms.getRoomOfPlayer(client);
+
+		// On récupère les infos du joueur
+		var player = room.getPlayerById(client);
+
+		client.broadcast.in(room._name).emit('MONSTER_HIT', {
+			"idMonster" : data.idMonster, 
+			"newLifeMonster":data.newLifeMonster,
+			"idWave":data.idWave,
+			"ownerWave":data.ownerWave
+		});
 	}
 };
 
