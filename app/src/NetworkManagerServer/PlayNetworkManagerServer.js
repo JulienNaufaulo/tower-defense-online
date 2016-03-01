@@ -60,8 +60,17 @@ function PlayNetworkManagerServer(client, rooms){
 		if(waveOwner == player._color){
 			player._life--;
 			client.emit('GET_MY_LIFE', player._life);
+			client.broadcast.in(room._name).emit('LIFE_LOST', player);
+
+			if(player._life == 0) {
+				client.emit('YOU_LOST');
+				client.broadcast.in(room._name).emit('A_PLAYER_LOSE_GAME', player);
+				if((room.numberOfConnectedPlayers()-1) == 1) {
+					room._isGameOver = true;
+					client.broadcast.in(room._name).emit('YOU_WIN');
+				}	
+			}	
 		}
-		
 	}
 
 	function onRequestMonsterDead(data) {
@@ -140,6 +149,7 @@ function PlayNetworkManagerServer(client, rooms){
 			"ownerWave":data.ownerWave
 		});
 	}
+
 };
 
 module.exports = PlayNetworkManagerServer;

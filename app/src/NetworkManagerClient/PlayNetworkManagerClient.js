@@ -13,8 +13,10 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
     map._socket.on('A_TOWER_HAS_BEEN_BUILT', onRequestATowerHasBeenBuilt);
     map._socket.on('GOLD_EARN', onRequestGoldEarn);
     map._socket.on('A_WEAPON_HAS_BEEN_BOUGHT', onRequestAWeaponHasBeenBought);
-    map._socket.on('SERVER_OTHER_PLAYER_DISCONNECTED', onReceiveOtherPlayerDisconnected);
+    map._socket.on('WIN_BY_FORFAIT', onReceiveWinByForfait);
     map._socket.on('MONSTER_HIT', onReceiveMonsterHit);
+    map._socket.on('YOU_LOST', onReceiveYouLost);
+    map._socket.on('YOU_WIN', onReceiveYouWin);
 
     function onRequestInitDatasGame(data) {
         player._readyForNextRound = data.ready;
@@ -145,27 +147,25 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
         }
     }
 
-    function onReceiveOtherPlayerDisconnected(data) {
-        if(data.nbPlayers == 1) {
+    function onReceiveWinByForfait() {
 
-            map._game.paused = true;
+        map._game.paused = true;
 
-            var text = map._game.add.text(map._game.world.centerX, map._game.world.centerY, "Vous avez gagné !");
-            text.anchor.set(0.5);
-            text.align = 'center';
-            text.font = 'Arial';
-            text.fontWeight = 'bold';
-            text.fontSize = 30;
-            text.fill = "#000000";
+        var text = map._game.add.text(map._game.world.centerX, map._game.world.centerY, "Vous avez gagné !");
+        text.anchor.set(0.5);
+        text.align = 'center';
+        text.font = 'Arial';
+        text.fontWeight = 'bold';
+        text.fontSize = 30;
+        text.fill = "#000000";
 
-            var text2 = map._game.add.text(map._game.world.centerX, map._game.world.centerY+50, "Le joueur "+data.playerDisconnected._color+"\ns'est déconnecté");
-            text2.anchor.set(0.5);
-            text2.align = 'center';
-            text2.font = 'Arial';
-            text2.fontWeight = 'bold';
-            text2.fontSize = 20;
-            text2.fill = "#000000";
-        }
+        var text2 = map._game.add.text(map._game.world.centerX, map._game.world.centerY+50, "Les autres joueurs ont abandonné");
+        text2.anchor.set(0.5);
+        text2.align = 'center';
+        text2.font = 'Arial';
+        text2.fontWeight = 'bold';
+        text2.fontSize = 20;
+        text2.fill = "#000000"; 
         
     }
 
@@ -174,6 +174,30 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
         var monster = wave.getMonsterById(data.idMonster);
         monster._currentHP = data.newLifeMonster;
         monster._healthBar.width = monster._currentHP*monster._healthBar.width/monster._maxHP;
+    }
+
+    function onReceiveYouLost() {
+        map._game.paused = true;
+
+        var text = map._game.add.text(map._game.world.centerX, map._game.world.centerY, "Perdu !");
+        text.anchor.set(0.5);
+        text.align = 'center';
+        text.font = 'Arial';
+        text.fontWeight = 'bold';
+        text.fontSize = 30;
+        text.fill = "#000000";
+    }
+
+    function onReceiveYouWin() {
+        map._game.paused = true;
+
+        var text = map._game.add.text(map._game.world.centerX, map._game.world.centerY, "Vous avez gagné !");
+        text.anchor.set(0.5);
+        text.align = 'center';
+        text.font = 'Arial';
+        text.fontWeight = 'bold';
+        text.fontSize = 30;
+        text.fill = "#000000";
     }
 
 };

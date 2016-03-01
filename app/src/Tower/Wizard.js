@@ -31,6 +31,7 @@ Wizard.prototype = Object.create(Tower.prototype);
 Wizard.prototype.constructor = Wizard;
 
 Wizard.prototype.hitEnemy = function() {
+
     if(this._monsterFocused != null && !this._monsterFocused._isDead) {
 
         // Si touché, le monstre est gelé
@@ -39,9 +40,14 @@ Wizard.prototype.hitEnemy = function() {
             this._monsterFocused._tween.stop();
         }
 
-        this._monsterFocused._currentHP -= this._weapon._damage+this._strengh;
-        if(this._monsterFocused._currentHP <= 0 ) {
-            if(this._map._player._color == this._owner) {
+
+        if(this._map._player._color == this._owner) {
+
+        
+            this._monsterFocused._currentHP -= this._weapon._damage+this._strengh;
+
+            if(this._monsterFocused._currentHP <= 0 ) {
+
                 this._map._socket.emit('MONSTER_DEAD', {
                     "idMonster" : this._monsterFocused._id, 
                     "idWave" : this._monsterFocused._wave._id, 
@@ -49,13 +55,21 @@ Wizard.prototype.hitEnemy = function() {
                     "ownerWave" : this._monsterFocused._wave._owner, 
                     "price" : this._monsterFocused._price
                 });
+            
+                this._monsterFocused.die();
+                this._monsterFocused = null;
+            } else {
+                this._monsterFocused._healthBar.width = this._monsterFocused._currentHP*this._monsterFocused._healthBar.width/this._monsterFocused._maxHP;
+                this._map._socket.emit('MONSTER_HIT', {
+                    "idMonster" : this._monsterFocused._id, 
+                    "newLifeMonster":this._monsterFocused._currentHP,
+                    "idWave" : this._monsterFocused._wave._id,
+                    "ownerWave" : this._monsterFocused._wave._owner
+                });
             }
-            this._monsterFocused.die();
-            this._monsterFocused = null;
-        } else {
-            this._monsterFocused._healthBar.width = this._monsterFocused._currentHP*this._monsterFocused._healthBar.width/this._monsterFocused._maxHP;
         }
-    }
+    } 
+    
     this._anim.stop(1);
     this._isShooting = false;  
 }

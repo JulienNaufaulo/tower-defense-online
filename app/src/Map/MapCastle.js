@@ -43,7 +43,13 @@ function MapCastle(name, tileWidth, tileHeight, game, socket, player){
             "monsters" : [
                 { "type":"orc", "nb":2 },
                 { "type":"skeleton", "nb":3 },
-                { "type":"orc", "nb":5 },
+                { "type":"orc", "nb":5 }
+            ]
+        },
+        { 
+            "round" : 5, 
+            "monsters" : [
+                { "type":"orc", "nb":10 }
             ]
         }
     ];

@@ -6,6 +6,7 @@ function Room(id){
 	this._id = id;
 	this._name = this.generateName();
     this._isPlaying = false;
+    this._isGameOver = false;
 	this._players = {
 		"Bleu" : null,
 		"Rouge" : null

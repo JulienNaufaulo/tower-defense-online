@@ -62,6 +62,14 @@ Chat.prototype.displayReadyPlayer = function(player) {
     this.displayMessage("<span class=\"txt-"+player._color+"\">Joueur "+player._color+" est prêt !</span>");
 };
 
+Chat.prototype.displayLifeLost = function(player) {
+    this.displayMessage("<span class=\"txt-"+player._color+"\">Joueur "+player._color+" a perdu une vie.</span>");
+};
+
+Chat.prototype.displayPlayerLose = function(player) {
+    this.displayMessage("<span class=\"txt-"+player._color+"\">Joueur "+player._color+" a perdu !</span>");
+};
+
 Chat.prototype.displayMessage = function(message) {
     $('#'+this._txt).append("<p><span>"+this._timeUtils.getTime()+"</span>"+message+"</p>");
 	var elem = document.getElementById(this._txt);

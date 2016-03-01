@@ -28,6 +28,11 @@ function RoomNetworkManagerClient(phaser, chat) {
     this._socket.on('GO_TO_MENU', onReceiveGoToMenu);
     this._socket.on('MESSAGE_SENT_BY_A_PLAYER', onReceiveMessageByAPlayer);
     this._socket.on('SERVER_OTHER_PLAYER_DISCONNECTED', onReceiveOtherPlayerDisconnected);
+    this._socket.on('LIFE_LOST', onReceiveLifeLost);
+    this._socket.on('A_PLAYER_LOSE_GAME', onReceiveAPlayerLoseGame);
+    this._socket.on('WIN_BY_FORFAIT', onReceiveWinByForfait);
+    this._socket.on('YOU_WIN', onReceiveYouWin);
+    this._socket.on('YOU_LOST', onReceiveYouLost);
 
     function onConnectedToServer() {
         that._socket.emit('CLIENT_REQUEST_ID');
@@ -70,13 +75,9 @@ function RoomNetworkManagerClient(phaser, chat) {
     }
 
     function onReceiveOtherPlayerDisconnected(data) {
-        console.log(data);
         clearInterval(that._intervalReadyTime);
         that._btnPlay.destroy();
         chat.displayDisconnectedPlayer(data.playerDisconnected);
-        if(data.nbPlayers == 1) {
-            chat.displaySimpleMessage('<a href="">Revenir au menu principal</a>');
-        }
     }
 
     function onReceiveClickToStart() {
@@ -128,6 +129,26 @@ function RoomNetworkManagerClient(phaser, chat) {
 
     function onReceiveMessageByAPlayer(data) {
         chat.displayPlayerMessage(data.player, data.message);
+    }
+
+    function onReceiveLifeLost(player) {
+        chat.displayLifeLost(player);
+    }
+
+    function onReceiveAPlayerLoseGame(player) {
+        chat.displayPlayerLose(player);
+    }
+
+    function onReceiveWinByForfait() {
+        chat.displaySimpleMessage('Félicitations champion ! Vous avez gagné !<br /><a href="">Revenir au menu principal</a>');
+    }
+
+    function onReceiveYouWin() {
+        chat.displaySimpleMessage('Félicitations champion ! Vous avez gagné !<br /><a href="">Revenir au menu principal</a>');
+    }
+
+    function onReceiveYouLost() {
+        chat.displaySimpleMessage('Vous avez perdu :\'(<br />Courage, vous ferez mieux la prochaine fois !<br /><a href="">Revenir au menu principal</a>');
     }
 };
 
