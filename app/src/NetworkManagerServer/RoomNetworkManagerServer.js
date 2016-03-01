@@ -86,6 +86,7 @@ function RoomNetworkManagerServer(client, rooms){
 		client.broadcast.in(room._name).emit('SERVER_THAT_PLAYER_IS_READY', player);
 
 		if(room.isReadyToPlay()) {
+			room._isPlaying = true;
 			client.emit('GO_TO_PLAY');
 			client.broadcast.in(room._name).emit('GO_TO_PLAY');
 		}

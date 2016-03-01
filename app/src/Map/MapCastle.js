@@ -21,13 +21,29 @@ function MapCastle(name, tileWidth, tileHeight, game, socket, player){
     	{ 
     		"round" : 1, 
     		"monsters" : [
-    			{ "type":"skeleton", "nb":5 }
+                { "type":"skeleton", "nb":5 },
     		]
     	},
         { 
             "round" : 2, 
             "monsters" : [
                 { "type":"skeleton", "nb":10 }
+            ]
+        },
+        { 
+            "round" : 3, 
+            "monsters" : [
+                { "type":"skeleton", "nb":3 },
+                { "type":"orc", "nb":3 },
+                { "type":"skeleton", "nb":4 }
+            ]
+        },
+        { 
+            "round" : 4, 
+            "monsters" : [
+                { "type":"orc", "nb":2 },
+                { "type":"skeleton", "nb":3 },
+                { "type":"orc", "nb":5 },
             ]
         }
     ];

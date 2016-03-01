@@ -3,7 +3,7 @@
 var NormalStateMonster = require('../StateMonster/NormalStateMonster');
 var FrozenStateMonster = require('../StateMonster/FrozenStateMonster');
 
-function Monster(id, type, tileX, tileY, path, map, wave, maxHp, currentHp, moveSpeed, price){
+function Monster(id, type, tileX, tileY, path, map, wave, maxHp, moveSpeed, price){
     this._id = id; 
     this._map = map;
     this._tileX = tileX;
@@ -30,7 +30,7 @@ function Monster(id, type, tileX, tileY, path, map, wave, maxHp, currentHp, move
     this._isDead = false;
 
     this._maxHP = maxHp;
-    this._currentHP = currentHp;
+    this._currentHP = maxHp;
     this._moveSpeed = moveSpeed;
     this._price = price;
 

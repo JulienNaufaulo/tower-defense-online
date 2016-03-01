@@ -18,6 +18,7 @@ function Play(){
     this._player = new Player();
     this._marker;
     this._menu;
+    this._mapName = "castle";
 }
 
 Play.prototype = {
@@ -31,7 +32,7 @@ Play.prototype = {
 
         // Création de la map
         var mapFactory = new MapFactory(this.game, this._socket, this._player);
-        this._map = mapFactory.getInstance("castle");
+        this._map = mapFactory.getInstance(this._mapName);
         this._map.init();
         this._map.createWaves(); 
 

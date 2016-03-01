@@ -4,7 +4,7 @@ var Monster = require('./Monster');
 
 function Skeleton(id, type, tileX, tileY, path, map, wave){
 
-    Monster.call(this, id, type, tileX, tileY, path, map, wave, 10, 10, 2, 3); 
+    Monster.call(this, id, type, tileX, tileY, path, map, wave, 10, 3, 1); 
 
     this._sprite.animations.add('top', [0, 1, 2, 3, 4, 5, 6, 7], 20, true);
     this._sprite.animations.add('right', [25, 26, 27, 28, 29, 30, 31, 32, 33], 15, true);

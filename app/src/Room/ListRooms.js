@@ -25,7 +25,7 @@ ListRooms.prototype.addPlayer = function(client) {
 		// On assigne le joueur à une room de libre
 		var start = 0;
 		for(var count=this._rooms.length; start < count; start++) {
-			if(!this._rooms[start].isFull()) {
+			if(!this._rooms[start].isFull() && !this._rooms[start]._isPlaying) {
 				var idRoom = start+1;
 				this._rooms[start].addPlayer(client, idRoom);
 				return;

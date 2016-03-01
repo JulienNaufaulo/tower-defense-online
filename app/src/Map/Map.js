@@ -57,12 +57,15 @@ Map.prototype.createWaves = function() {
 
                 var wave = new Wave(this._round, this, this._paths[p].player);
 
+                var idMonster = 1;
+
                 for(var j=0, nbMonsters = this._configurationWaves[i].monsters.length; j < nbMonsters; j++) {
 
                     for(var k=0, nbMonstersType = this._configurationWaves[i].monsters[j].nb; k < nbMonstersType; k++) {
 
-                        wave.addMonster(this._monsterFactory.getInstance(k, this._configurationWaves[i].monsters[j].type, this._paths[p].path[0].x, TileYStartWave, this._paths[p].path, wave));
+                        wave.addMonster(this._monsterFactory.getInstance(idMonster, this._configurationWaves[i].monsters[j].type, this._paths[p].path[0].x, TileYStartWave, this._paths[p].path, wave));
                         TileYStartWave -= 2;
+                        idMonster++;
 
                     }   
 
