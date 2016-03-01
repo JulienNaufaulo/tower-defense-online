@@ -14,6 +14,7 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
     map._socket.on('GOLD_EARN', onRequestGoldEarn);
     map._socket.on('A_WEAPON_HAS_BEEN_BOUGHT', onRequestAWeaponHasBeenBought);
     map._socket.on('SERVER_OTHER_PLAYER_DISCONNECTED', onReceiveOtherPlayerDisconnected);
+    map._socket.on('MONSTER_HIT', onReceiveMonsterHit);
 
     function onRequestInitDatasGame(data) {
         player._readyForNextRound = data.ready;
@@ -166,6 +167,13 @@ function PlayNetworkManagerClient(map, player, listTowers, menu) {
             text2.fill = "#000000";
         }
         
+    }
+
+    function onReceiveMonsterHit(data) {
+        var wave = map.getWaveByIdAndOwner(data.idWave, data.ownerWave);
+        var monster = wave.getMonsterById(data.idMonster);
+        monster._currentHP = data.newLifeMonster;
+        monster._healthBar.width = monster._currentHP*monster._healthBar.width/monster._maxHP;
     }
 
 };
