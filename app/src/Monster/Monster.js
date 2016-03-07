@@ -25,7 +25,6 @@ function Monster(id, type, tileX, tileY, path, map, wave, maxHp, moveSpeed, pric
     this._healthBar.width = 30;
     // this._map._game.physics.arcade.enable(this._healthBar);
 
-    this._cropRect = new Phaser.Rectangle(0, 0, 0, this._healthBar.height);
     this._healthBar.alpha = 0;
     this._isDead = false;
 

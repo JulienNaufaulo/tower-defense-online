@@ -2,6 +2,7 @@
 
 var Skeleton = require('./Skeleton');
 var Orc = require('./Orc');
+var Quickos = require('./Quickos');
 
 function MonsterFactory(map){
     this._map = map;
@@ -14,6 +15,9 @@ MonsterFactory.prototype.getInstance = function(i, type, tileX, tileY, path, wav
             break;
         case "orc":
             return new Orc(i, type, tileX, tileY, path, this._map, wave);
+            break;
+        case "quickos":
+            return new Quickos(i, type, tileX, tileY, path, this._map, wave);
             break;
     }
 };

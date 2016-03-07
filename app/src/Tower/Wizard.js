@@ -11,8 +11,8 @@ function Wizard(type, owner, map, listTowers, tile){
     this._weapon = WeaponFactory.getInstance("MagicStick");
     this._range = this._weapon._range;
     this._fireRate = 1000;
-    this._strengh = 1;
-    this._cost = 0;
+    this._strengh = 3;
+    this._cost = 3;
 
     this._sprite = this._listTowers._groupTowers.create(this._tileX*map._tileWidth, this._tileY*map._tileHeight, this._type+"-"+this._weapon._name);
     this._sprite.alpha = 1;
@@ -42,7 +42,6 @@ Wizard.prototype.hitEnemy = function() {
 
 
         if(this._map._player._color == this._owner) {
-
         
             this._monsterFocused._currentHP -= this._weapon._damage+this._strengh;
 

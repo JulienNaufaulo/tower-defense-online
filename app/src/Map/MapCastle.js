@@ -19,37 +19,53 @@ function MapCastle(name, tileWidth, tileHeight, game, socket, player){
 
     this._configurationWaves = [
     	{ 
-    		"round" : 1, 
-    		"monsters" : [
-                { "type":"skeleton", "nb":5 },
-    		]
-    	},
-        { 
-            "round" : 2, 
+            "round" : 1, 
             "monsters" : [
-                { "type":"skeleton", "nb":10 }
+                { "type":"skeleton", "nb":5 }
             ]
         },
         { 
+    		"round" : 2, 
+    		"monsters" : [
+                { "type":"quickos", "nb":4 },
+                { "type":"skeleton", "nb":7 },
+                { "type":"quickos", "nb":3 }
+    		]
+    	},
+        { 
             "round" : 3, 
             "monsters" : [
-                { "type":"skeleton", "nb":3 },
-                { "type":"orc", "nb":3 },
-                { "type":"skeleton", "nb":4 }
+                { "type":"quickos", "nb":5 },
+                { "type":"orc", "nb":5 },
+                { "type":"skeleton", "nb":2 }
             ]
         },
         { 
             "round" : 4, 
             "monsters" : [
-                { "type":"orc", "nb":2 },
                 { "type":"skeleton", "nb":3 },
-                { "type":"orc", "nb":5 }
+                { "type":"orc", "nb":15 },
             ]
         },
         { 
             "round" : 5, 
             "monsters" : [
-                { "type":"orc", "nb":10 }
+                { "type":"quickos", "nb":25 }
+            ]
+        },
+        { 
+            "round" : 6, 
+            "monsters" : [
+                { "type":"quickos", "nb":2 },
+                { "type":"orc", "nb":2 },
+                { "type":"quickos", "nb":2 },
+                { "type":"skeleton", "nb":2 },
+                { "type":"orc", "nb":2 },
+                { "type":"quickos", "nb":2 },
+                { "type":"skeleton", "nb":2 },
+                { "type":"orc", "nb":5 },
+                { "type":"quickos", "nb":5 },
+                { "type":"skeleton", "nb":5 },
             ]
         }
     ];
