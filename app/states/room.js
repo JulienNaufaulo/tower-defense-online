@@ -12,8 +12,6 @@ Room.prototype = {
         var chat = new Chat("#chat", "content", "#inputchat");
 
         // Création de l'objet qui va gérer la communication avec le serveur
-        // var networkManagerClient = new NetworkManagerClient(this.game, chat);
-
         var roomNetworkManagerClient = new RoomNetworkManagerClient(this.game, chat);
 
         // Affichage du texte de chargement
