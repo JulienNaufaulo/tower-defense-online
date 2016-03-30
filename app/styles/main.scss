@@ -6,7 +6,7 @@ body {
   padding:0;
   font-family: Arial, sans-serif;
   font-size: 16px;
-  background: #262626;
+  background: #262626 url('../images/bg.jpg');
   color: $default-text;
 }
 p{
@@ -235,8 +235,10 @@ section{
 
 }
 footer {
-  color:#666;
+  background:#312c24;
+  color:#eee;
   font-size: 0.7em;
+  padding:10px 0;
   p{
     width: 768px;
     text-align: center;
