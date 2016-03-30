@@ -25,7 +25,21 @@ function MapCastle(name, tileWidth, tileHeight, game, socket, player){
             ]
         },
         { 
-    		"round" : 2, 
+            "round" : 2, 
+            "monsters" : [
+                { "type":"quickos", "nb":3 },
+                { "type":"skeleton", "nb":5 }
+            ]
+        },
+        { 
+            "round" : 3, 
+            "monsters" : [
+                { "type":"skeleton", "nb":5 },
+                { "type":"orc", "nb":2 }
+            ]
+        },
+        { 
+    		"round" : 4, 
     		"monsters" : [
                 { "type":"quickos", "nb":4 },
                 { "type":"skeleton", "nb":7 },
@@ -33,7 +47,7 @@ function MapCastle(name, tileWidth, tileHeight, game, socket, player){
     		]
     	},
         { 
-            "round" : 3, 
+            "round" : 5, 
             "monsters" : [
                 { "type":"quickos", "nb":5 },
                 { "type":"orc", "nb":5 },
@@ -41,20 +55,20 @@ function MapCastle(name, tileWidth, tileHeight, game, socket, player){
             ]
         },
         { 
-            "round" : 4, 
+            "round" : 6, 
             "monsters" : [
                 { "type":"skeleton", "nb":3 },
                 { "type":"orc", "nb":15 },
             ]
         },
         { 
-            "round" : 5, 
+            "round" : 7, 
             "monsters" : [
                 { "type":"quickos", "nb":25 }
             ]
         },
         { 
-            "round" : 6, 
+            "round" : 8, 
             "monsters" : [
                 { "type":"quickos", "nb":2 },
                 { "type":"orc", "nb":2 },
@@ -66,6 +80,36 @@ function MapCastle(name, tileWidth, tileHeight, game, socket, player){
                 { "type":"orc", "nb":5 },
                 { "type":"quickos", "nb":5 },
                 { "type":"skeleton", "nb":5 },
+            ]
+        },
+        { 
+            "round" : 9, 
+            "monsters" : [
+                { "type":"quickos", "nb":5 },
+                { "type":"orc", "nb":5 },
+                { "type":"quickos", "nb":5 },
+                { "type":"skeleton", "nb":5 },
+                { "type":"orc", "nb":5 },
+                { "type":"quickos", "nb":5 },
+                { "type":"skeleton", "nb":5 },
+                { "type":"orc", "nb":5 },
+                { "type":"quickos", "nb":5 },
+                { "type":"skeleton", "nb":5 },
+            ]
+        },
+        { 
+            "round" : 10, 
+            "monsters" : [
+                { "type":"quickos", "nb":10 },
+                { "type":"orc", "nb":10 },
+                { "type":"quickos", "nb":10 },
+                { "type":"skeleton", "nb":10 },
+                { "type":"orc", "nb":10 },
+                { "type":"quickos", "nb":10 },
+                { "type":"skeleton", "nb":10 },
+                { "type":"orc", "nb":10 },
+                { "type":"quickos", "nb":10 },
+                { "type":"skeleton", "nb":10 },
             ]
         }
     ];

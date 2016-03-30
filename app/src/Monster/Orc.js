@@ -4,7 +4,7 @@ var Monster = require('./Monster');
 
 function Orc(id, type, tileX, tileY, path, map, wave){
 
-    Monster.call(this, id, type, tileX, tileY, path, map, wave, 30, 2, 2); 
+    Monster.call(this, id, type, tileX, tileY, path, map, wave, 60, 2, 2); 
 
     this._sprite.animations.add('top', [0, 1, 2, 3, 4, 5, 6, 7], 20, true);
     this._sprite.animations.add('right', [27, 28, 29, 30, 31, 32, 33, 34], 15, true);
